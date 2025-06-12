@@ -1,0 +1,33 @@
+/* Estilos adicionais para o acesso administrativo */
+.admin-login-link {
+  text-align: center;
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+.admin-login-link a {
+  color: #666;
+  font-size: 0.9rem;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.admin-login-link a:hover {
+  color: #b91c1c;
+  text-decoration: underline;
+}
+
+/* Garantir que o estilo do formulário de admin seja consistente */
+#admin-login .form-group {
+  margin-bottom: 1.5rem;
+}
+
+#admin-login .btn {
+  background-color: #b91c1c;
+  color: white;
+}
+
+#admin-login .btn:hover {
+  background-color: #991b1b;
+}

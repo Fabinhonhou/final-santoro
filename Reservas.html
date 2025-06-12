@@ -3,23 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="css/navbar-common.css">
     <link rel="stylesheet" href="css/reserva.css">
     <title>Document</title>
 </head>
 <body>
-   <header>
-   <div class="logo-container">
-        <a href="#"> <img src="imgs/logosantoros.png" alt="Santoro's Logo" class="Logo" id="logo" />
-        </a>
-    </div>
-    
-    <nav>
-        <a href="index.html">INICIO</a>
-        <a href="cardapio.html">CARDÁPIO</a>
-        <a href="reservas.html">RESERVAS</a>
-        <a href="contato.html">CONTATO</a>
-        <a href="login.html">LOGIN</a>
-    </nav>
+ 
+<header class="navbar">
+           <div class="logo-container">
+        <img src="/img/Red_and_Maroon_Classic_Italian_Restaurant_Logo__1_-removebg-preview.png" alt="Santoro's Logo" class="Logo" id="logo" />
+      </div>
+        <div class="nav-container">
+
+            </div>
+            <ul class="nav-menu" id="navMenu">
+                <li class="nav-item">
+                    <a href="index.html" class="nav-link">INÍCIO</a>
+                </li>
+                <li class="nav-item">
+                    <a href="cardapio.html" class="nav-link">CARDÁPIO</a>
+                </li>
+                <li class="nav-item">
+                    <a href="reservas.html" class="nav-link active">RESERVAS</a>
+                </li>
+                <li class="nav-item">
+                    <a href="contato.html" class="nav-link ">CONTATO</a>
+                </li>
+                <li class="nav-item" id="loginLink">
+                    <a href="login.html" class="nav-link btn-outline">LOGIN</a>
+                </li>
+                <li class="nav-item" id="registerLink">
+                    <a href="registro.html" class="nav-link btn-primary">REGISTRAR</a>
+                </li>
+            </ul>
+            <div class="hamburger" id="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </header>
+
         <div class="mobile-menu-btn">
             <button id="mobileMenuToggle">
                 <span></span>
@@ -173,5 +197,8 @@
     </div>
   </div>
 </footer>
+    <script src="js/main.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/script.js"></script>
 </body>
 </html>

@@ -1,75 +1,71 @@
-document.addEventListener("DOMContentLoaded"), function () {
-    const navbar = document.getElementById("navbar");
-    const mobileMenu = document.getElementById('mobile-menu');
-    const mainNav = document.querySelector('.main-nav');
-    const logo = document.getElementById('logo');
+// Script principal para index.html
+console.log("🍝 Santoro's Restaurant - Script.js carregado")
 
-    // ... (código existente da navbar, menu hambúrguer, rolagem da logo) ...
+document.addEventListener("DOMContentLoaded", () => {
+  console.log("🚀 DOM carregado, inicializando script.js")
 
-    // Função para mostrar/esconder a navbar ao rolar (opcional se a navbar é sticky)
-    let navbarRevelada = false;
-    window.addEventListener("scroll", function () {
-        if (!navbarRevelada && window.scrollY > 50) {
-            navbar.classList.add("visible");
-            navbarRevelada = true;
-        } else if (navbarRevelada && window.scrollY <= 50) {
-            // Opcional: remover a classe se rolar de volta para o topo
-            // navbar.classList.remove("visible");
-            // navbarRevelada = false;
-        }
-    });
+  // Inicializar funcionalidades básicas
+  initializeScrollEffects()
+  initializeButtons()
+  initializeNavigation()
 
-    // Toggle para o menu hambúrguer
-    mobileMenu.addEventListener('click', function () {
-        mobileMenu.classList.toggle('active');
-        mainNav.classList.toggle('active');
-    });
+  // Verificar se auth.js está disponível e atualizar navegação
+  if (window.auth && typeof window.auth.updateNavigation === "function") {
+    window.auth.updateNavigation()
+  }
+})
 
-    // Fechar o menu ao clicar em um link (para melhor UX em mobile)
-    mainNav.querySelectorAll('a').forEach(link => {
-        link.addEventListener('click', () => {
-            if (mainNav.classList.contains('active')) { // Verifica se o menu está aberto
-                mobileMenu.classList.remove('active');
-                mainNav.classList.remove('active');
-            }
-        });
-    });
+function initializeNavigation() {
+  // Configurar menu mobile
+  const hamburger = document.getElementById("hamburger")
+  const navMenu = document.getElementById("navMenu")
 
-    // Rolar para o topo ao clicar na logo
-    logo.addEventListener('click', function () {
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
-    });
+  if (hamburger && navMenu) {
+    hamburger.addEventListener("click", () => {
+      hamburger.classList.toggle("active")
+      navMenu.classList.toggle("active")
+    })
+  }
+}
 
-const carrossel = document.querySelector('.carrossel .lista');
+function initializeScrollEffects() {
+  // Efeitos de scroll suaves
+  const links = document.querySelectorAll('a[href^="#"]')
 
-let isDown = false;
-let startX;
-let scrollLeft;
+  links.forEach((link) => {
+    link.addEventListener("click", function (e) {
+      const href = this.getAttribute("href")
+      if (href === "#") return
 
-carrossel.addEventListener('mousedown', (e) => {
-  isDown = true;
-  carrossel.classList.add('active');
-  startX = e.pageX - carrossel.offsetLeft;
-  scrollLeft = carrossel.scrollLeft;
-});
+      const target = document.querySelector(href)
+      if (target) {
+        e.preventDefault()
+        target.scrollIntoView({
+          behavior: "smooth",
+        })
+      }
+    })
+  })
+}
 
-carrossel.addEventListener('mouseleave', () => {
-  isDown = false;
-  carrossel.classList.remove('active');
-});
+function initializeButtons() {
+  // Configurar botões da página inicial
+  const reservaBtn = document.querySelector(".btn.red")
+  const cardapioBtn = document.querySelector(".btn.beige")
 
-carrossel.addEventListener('mouseup', () => {
-  isDown = false;
-  carrossel.classList.remove('active');
-});
+  if (reservaBtn) {
+    reservaBtn.addEventListener("click", (e) => {
+      e.preventDefault()
+      window.location.href = "reservas.html"
+    })
+  }
 
-carrossel.addEventListener('mousemove', (e) => {
-  if (!isDown) return;
-  e.preventDefault();
-  const x = e.pageX - carrossel.offsetLeft;
-  const walk = (x - startX) * 2;
-  carrossel.scrollLeft = scrollLeft - walk;
-})};
+  if (cardapioBtn) {
+    cardapioBtn.addEventListener("click", (e) => {
+      e.preventDefault()
+      window.location.href = "cardapio.html"
+    })
+  }
+}
+
+console.log("✅ Script.js inicializado")

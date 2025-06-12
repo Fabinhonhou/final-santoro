@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Santoro's Restaurant</title>
+        <link rel="stylesheet" href="css/navbar-common.css">
     <link rel="stylesheet" href="css/login.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Albert+Sans:ital,wght@0,200;0,400;0,700;1,200&display=swap" rel="stylesheet">
@@ -11,19 +12,41 @@
 </head>
 <body>
     <!-- Navigation -->
-    <header>
-        <div class="logo-container">
-            <img src="/img/Red_and_Maroon_Classic_Italian_Restaurant_Logo__1_-removebg-preview.png" alt="Santoro's Logo" class="Logo" id="logo" />
+  <header class="navbar">
+           <div class="logo-container">
+        <img src="/img/Red_and_Maroon_Classic_Italian_Restaurant_Logo__1_-removebg-preview.png" alt="Santoro's Logo" class="Logo" id="logo" />
+      </div>
+        <div class="nav-container">
+
+            </div>
+            <ul class="nav-menu" id="navMenu">
+                <li class="nav-item">
+                    <a href="index.html" class="nav-link">INÍCIO</a>
+                </li>
+                <li class="nav-item">
+                    <a href="cardapio.html" class="nav-link">CARDÁPIO</a>
+                </li>
+                <li class="nav-item">
+                    <a href="reservas.html" class="nav-link">RESERVAS</a>
+                </li>
+                <li class="nav-item">
+                    <a href="contato.html" class="nav-link">CONTATO</a>
+                </li>
+                <li class="nav-item" id="loginLink">
+                    <a href="login.html" class="nav-link btn-outline">LOGIN</a>
+                </li>
+                <li class="nav-item" id="registerLink">
+                    <a href="registro.html" class="nav-link btn-primary">REGISTRAR</a>
+                </li>
+            </ul>
+            <div class="hamburger" id="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
         </div>
-        
-        <nav>
-            <a href="index.html">INICIO</a>
-            <a href="menu.html">MENU</a>
-            <a href="reservations.html">RESERVAS</a>
-            <a href="contato.html">CONTATO</a>
-            <a href="registro.html" id="registerLink">REGISTRAR</a>
-        </nav>
     </header>
+
 
     <div class="auth-page">
         <div class="auth-container">
@@ -42,33 +65,73 @@
             </div>
             
             <div class="auth-form">
-                <h1>Entrar na sua conta</h1>
-                <p class="auth-subtitle">Bem-vindo de volta ao Santoro's!</p>
-                
-                <form id="loginForm" method="POST">
-                    <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="email" id="email" name="email" required placeholder="seu@email.com">
-                    </div>
+                <!-- Login de Cliente -->
+                <div id="user-login" class="login-section active">
+                    <h1>Entrar na sua conta</h1>
+                    <p class="auth-subtitle">Bem-vindo de volta ao Santoro's!</p>
                     
-                    <div class="form-group">
-                        <label for="password">Senha</label>
-                        <input type="password" id="password" name="password" required placeholder="Sua senha">
-                    </div>
-                    
-                    <div class="form-options">
-                        <div class="checkbox-group">
-                            <input type="checkbox" id="remember" name="remember">
-                            <label for="remember">Lembrar de mim</label>
+                    <form id="loginForm" method="POST">
+                        <input type="hidden" name="loginType" value="user">
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" required placeholder="seu@email.com">
                         </div>
-                        <a href="#" class="forgot-password">Esqueceu a senha?</a>
+                        
+                        <div class="form-group">
+                            <label for="password">Senha</label>
+                            <input type="password" id="password" name="password" required placeholder="Sua senha">
+                        </div>
+                        
+                        <div class="form-options">
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="remember" name="remember">
+                                <label for="remember">Lembrar de mim</label>
+                            </div>
+                            <a href="#" class="forgot-password">Esqueceu a senha?</a>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary btn-full">Entrar</button>
+                    </form>
+                    
+                    <div class="auth-switch">
+                        Não tem uma conta? <a href="registro.html">Criar conta</a>
                     </div>
                     
-                    <button type="submit" class="btn btn-primary btn-full">Entrar</button>
-                </form>
-                
-                <div class="auth-switch">
-                    Não tem uma conta? <a href="registro.html">Criar conta</a>
+                    <!-- Link para alternar para login de administrador -->
+                    <div class="admin-login-link">
+                        <a href="#" id="showAdminLogin">Acesso administrativo</a>
+                    </div>
+                </div>
+
+                <!-- Login de Administrador (escondido por padrão) -->
+                <div id="admin-login" class="login-section" style="display: none;">
+                    <h1>Acesso Administrativo</h1>
+                    <p class="auth-subtitle">Área restrita para administradores</p>
+                    
+                    <div class="admin-warning">
+                        <i class="fas fa-shield-alt"></i>
+                        <p>Esta área é restrita a administradores autorizados. Após o login, você será redirecionado para o painel administrativo.</p>
+                    </div>
+                    
+                    <form id="adminLoginForm" method="POST">
+                        <input type="hidden" name="loginType" value="admin">
+                        <div class="form-group">
+                            <label for="admin-email">Email do Administrador</label>
+                            <input type="email" id="admin-email" name="email" required placeholder="admin@santoros.com">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="admin-password">Senha</label>
+                            <input type="password" id="admin-password" name="password" required placeholder="Senha do administrador">
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary btn-full admin-btn">Acessar Painel Administrativo</button>
+                    </form>
+                    
+                    <!-- Link para voltar ao login normal -->
+                    <div class="auth-switch">
+                        <a href="#" id="showUserLogin">Voltar ao login de cliente</a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -109,7 +172,7 @@
                     <ul class="footer-links">
                         <li><a href="index.html" class="footer-link">Início</a></li>
                         <li><a href="menu.html" class="footer-link">Menu</a></li>
-                        <li><a href="reservations.html" class="footer-link">Reservas</a></li>
+                        <li><a href="reservas.html" class="footer-link">Reservas</a></li>
                         <li><a href="contato.html" class="footer-link">Contato</a></li>
                     </ul>
                 </div>
@@ -146,80 +209,31 @@
     <script src="js/main.js"></script>
     <script src="js/auth.js"></script>
     <script>
-        // Script adicional para garantir funcionalidade
         document.addEventListener('DOMContentLoaded', function() {
             console.log('✅ Login page loaded');
             
-            const form = document.getElementById('loginForm');
-            if (form) {
-                console.log('✅ Login form found');
-                
-                // Adicionar listener adicional como backup
-                form.addEventListener('submit', function(e) {
-                    console.log('🔥 Login form submitted!');
-                    
-                    // Se o auth.js não estiver carregado, usar fallback
-                    if (typeof handleLogin === 'undefined') {
-                        console.log('⚠️ Auth.js não carregado, usando fallback');
-                        handleLoginFallback(e);
-                    }
+            // Configurar alternância entre tipos de login
+            const showAdminLogin = document.getElementById('showAdminLogin');
+            const showUserLogin = document.getElementById('showUserLogin');
+            const userLoginSection = document.getElementById('user-login');
+            const adminLoginSection = document.getElementById('admin-login');
+            
+            if (showAdminLogin) {
+                showAdminLogin.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    userLoginSection.style.display = 'none';
+                    adminLoginSection.style.display = 'block';
+                });
+            }
+            
+            if (showUserLogin) {
+                showUserLogin.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    adminLoginSection.style.display = 'none';
+                    userLoginSection.style.display = 'block';
                 });
             }
         });
-        
-        // Função de fallback para login
-        async function handleLoginFallback(e) {
-            e.preventDefault();
-            
-            const formData = new FormData(e.target);
-            const loginData = {
-                email: formData.get('email'),
-                password: formData.get('password')
-            };
-            
-            console.log('📧 Tentando login com:', loginData.email);
-            
-            const submitBtn = e.target.querySelector('button[type="submit"]');
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'Entrando...';
-            
-            try {
-                const response = await fetch('/api/login', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(loginData)
-                });
-                
-                const data = await response.json();
-                console.log('📡 Resposta do login:', data);
-                
-                if (data.success) {
-                    // Salvar sessão
-                    localStorage.setItem('userSession', JSON.stringify({
-                        user: data.user,
-                        token: data.token
-                    }));
-                    
-                    // Mostrar sucesso
-                    showMessage('success-message', 'Login realizado com sucesso!');
-                    
-                    // Redirecionar
-                    setTimeout(() => {
-                        window.location.href = 'dashboard.html';
-                    }, 1500);
-                } else {
-                    throw new Error(data.message);
-                }
-            } catch (error) {
-                console.error('❌ Erro no login:', error);
-                showMessage('error-message', error.message || 'Erro ao fazer login');
-            } finally {
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'Entrar';
-            }
-        }
         
         function showMessage(elementId, message = '') {
             const element = document.getElementById(elementId);
@@ -232,7 +246,6 @@
                 }
                 element.style.display = 'block';
                 
-                // Auto-esconder mensagens de sucesso
                 if (elementId === 'success-message') {
                     setTimeout(() => {
                         element.style.display = 'none';

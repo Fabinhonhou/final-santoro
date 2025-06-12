@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Administrativo - Santoro's</title>
+    <link rel="stylesheet" href="css/sla.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <header class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="index.html">Santoro's</a>
+            </div>
+            <ul class="nav-menu" id="navMenu">
+                <li class="nav-item">
+                    <a href="index.html" class="nav-link">SITE PRINCIPAL</a>
+                </li>
+                <li class="nav-item">
+                    <a href="inicio.html" class="nav-link active">PAINEL INICIAL</a>
+                </li>
+                <li class="nav-item">
+                    <a href="ReservasServidor.html" class="nav-link">RESERVAS</a>
+                </li>
+                <li class="nav-item">
+                    <a href="ClientesServidor.html" class="nav-link">CLIENTES</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link logout-btn" style="color: #b91c1c;">SAIR</a>
+                </li>
+            </ul>
+            <div class="hamburger" id="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Admin Content -->
+    <div class="admin-page">
+        <div class="container">
+            <!-- Admin Header -->
+            <div class="dashboard-header">
+                <h1>Painel Administrativo</h1>
+                <p id="adminWelcome">Bem-vindo ao sistema de gerenciamento do Santoro's</p>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="admin-actions">
+                <div class="action-card">
+                    <div class="action-icon">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <div class="action-content">
+                        <h3>Gerenciar Reservas</h3>
+                        <p>Visualize e gerencie todas as reservas do restaurante</p>
+                        <a href="ReservasServidor.html" class="btn btn-primary">Acessar Reservas</a>
+                    </div>
+                </div>
+
+                <div class="action-card">
+                    <div class="action-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="action-content">
+                        <h3>Gerenciar Clientes</h3>
+                        <p>Visualize informações dos clientes cadastrados</p>
+                        <a href="ClientesServidor.html" class="btn btn-primary">Acessar Clientes</a>
+                    </div>
+                </div>
+
+                <div class="action-card">
+                    <div class="action-icon">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <div class="action-content">
+                        <h3>Relatórios</h3>
+                        <p>Visualize estatísticas e relatórios do sistema</p>
+                        <button class="btn btn-outline" onclick="alert('Em desenvolvimento')">Ver Relatórios</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats Section -->
+            <div class="stats-section">
+                <h2>Estatísticas Rápidas</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-calendar-day"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="todayReservations">0</h3>
+                            <p>Reservas Hoje</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="pendingReservations">0</h3>
+                            <p>Pendentes</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="totalUsers">0</h3>
+                            <p>Usuários</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="confirmedToday">0</h3>
+                            <p>Confirmadas</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Admin Info -->
+            <div class="account-section">
+                <h3>Informações do Administrador</h3>
+                <div class="account-info">
+                    <div class="info-item">
+                        <label>Nome:</label>
+                        <span id="adminName">Carregando...</span>
+                    </div>
+                    <div class="info-item">
+                        <label>Email:</label>
+                        <span id="adminEmail">Carregando...</span>
+                    </div>
+                    <div class="info-item">
+                        <label>Tipo:</label>
+                        <span class="status-badge status-confirmed">Administrador</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 Página de início admin carregada');
+            
+            // Verificar se é admin
+            const session = localStorage.getItem('userSession');
+            
+            if (!session) {
+                alert('Acesso negado. Faça login como administrador.');
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            const userData = JSON.parse(session);
+            
+            if (!userData.user || userData.user.type !== 'admin') {
+                alert('Acesso negado. Apenas administradores podem acessar esta página.');
+                window.location.href = 'index.html';
+                return;
+            }
+            
+            // Exibir informações do admin
+            document.getElementById('adminName').textContent = userData.user.name;
+            document.getElementById('adminEmail').textContent = userData.user.email;
+            document.getElementById('adminWelcome').textContent = `Bem-vindo, ${userData.user.name}!`;
+            
+            // Carregar estatísticas (mock)
+            document.getElementById('todayReservations').textContent = '8';
+            document.getElementById('pendingReservations').textContent = '3';
+            document.getElementById('totalUsers').textContent = '24';
+            document.getElementById('confirmedToday').textContent = '5';
+            
+            // Configurar logout
+            document.querySelector('.logout-btn').addEventListener('click', function(e) {
+                e.preventDefault();
+                if (confirm('Tem certeza que deseja sair do painel administrativo?')) {
+                    localStorage.removeItem('userSession');
+                    alert('Logout realizado com sucesso!');
+                    window.location.href = 'index.html';
+                }
+            });
+
+            // Configurar menu mobile
+            const hamburger = document.getElementById('hamburger');
+            const navMenu = document.getElementById('navMenu');
+            
+            if (hamburger && navMenu) {
+                hamburger.addEventListener('click', function() {
+                    hamburger.classList.toggle('active');
+                    navMenu.classList.toggle('active');
+                });
+            }
+        });
+    </script>
+</body>
+</html>

@@ -4,22 +4,46 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro - Santoro's Restaurant</title>
+        <link rel="stylesheet" href="css/navbar-common.css">
     <link rel="stylesheet" href="/css/registro.css">
     <link rel="icon" href="data:;base64,iVBORw0KGgo="> <!-- Favicon vazio para evitar erro 404 -->
 </head>
 <body>
-    <header>
-        <div class="logo-container">
-            <img src="/img/logo.png" alt="Santoro's Restaurant">
+   <header class="navbar">
+           <div class="logo-container">
+        <img src="/img/Red_and_Maroon_Classic_Italian_Restaurant_Logo__1_-removebg-preview.png" alt="Santoro's Logo" class="Logo" id="logo" />
+      </div>
+        <div class="nav-container">
+
+            </div>
+            <ul class="nav-menu" id="navMenu">
+                <li class="nav-item">
+                    <a href="index.html" class="nav-link">INÍCIO</a>
+                </li>
+                <li class="nav-item">
+                    <a href="cardapio.html" class="nav-link">CARDÁPIO</a>
+                </li>
+                <li class="nav-item">
+                    <a href="reservas.html" class="nav-link">RESERVAS</a>
+                </li>
+                <li class="nav-item">
+                    <a href="contato.html" class="nav-link">CONTATO</a>
+                </li>
+                <li class="nav-item" id="loginLink">
+                    <a href="login.html" class="nav-link btn-outline">LOGIN</a>
+                </li>
+                <li class="nav-item" id="registerLink">
+                    <a href="registro.html" class="nav-link btn-primary">REGISTRAR</a>
+                </li>
+            </ul>
+            <div class="hamburger" id="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
         </div>
-        <nav>
-            <a href="index.html">INICIO</a>
-            <a href="menu.html">MENU</a>
-            <a href="reservas.html">RESERVAS</a>
-            <a href="contato.html">CONTATO</a>
-            <a href="login.html" id="loginLink">LOGIN</a>
-        </nav>
     </header>
+
 
     <div class="auth-page">
         <div class="auth-container">

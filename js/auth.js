@@ -95,7 +95,7 @@ async function handleLogin(e) {
       updateNavigation()
 
       // Redirecionar para página principal
-      console.log("🚀 Redirecionando para menu...")
+      console.log("🚀 Redirecionando para dashboard...")
       window.location.href = "dashboard.html"
     } else {
       throw new Error(responseData.message || "Login falhou")
@@ -303,59 +303,152 @@ function isLoggedIn() {
 function logout() {
   clearSession()
   updateNavigation()
-  window.location.href = "dashboard.html"
+  window.location.href = "index.html"
 }
 
 function updateNavigation() {
   const session = getSession()
-  const navLinks = document.querySelectorAll("nav a, header nav a")
+  console.log("🔄 Atualizando navegação. Sessão:", !!session)
 
-  // Remover links de login/registro se o usuário estiver logado
-  navLinks.forEach((link) => {
-    if (link.href.includes("login.html") && session) {
-      link.style.display = "none"
-    } else if (link.href.includes("login.html") && !session) {
-      link.style.display = "inline-block"
+  // Encontrar diferentes tipos de navegação
+  const navMenu = document.querySelector(".nav-menu") || document.querySelector("#navMenu")
+  const desktopMenu = document.querySelector("#desktop-menu")
+  const mobileMenu = document.querySelector("#mobile-menu")
+  const headerNav = document.querySelector("header nav")
+
+  // Função para atualizar um menu específico
+  function updateMenu(menu, isMobile = false) {
+    if (!menu) return
+
+    console.log("🔄 Atualizando menu:", menu.className || menu.id)
+
+    // Não remover elementos se estivermos em páginas administrativas
+    const currentPage = window.location.pathname
+    const isAdminPage =
+      currentPage.includes("inicio.html") ||
+      currentPage.includes("ReservasServidor.html") ||
+      currentPage.includes("ClientesServidor.html")
+
+    if (isAdminPage) {
+      console.log("📋 Página administrativa detectada, mantendo navegação admin")
+      return // Não modificar navegação em páginas admin
     }
 
-    if (link.href.includes("registro.html") && session) {
-      link.style.display = "none"
-    } else if (link.href.includes("registro.html") && !session) {
-      link.style.display = "inline-block"
-    }
-  })
+    // Remover botões existentes de dashboard e logout apenas se não estivermos em páginas admin
+    const existingDashboard = menu.querySelector(".dashboard-link")
+    const existingLogout = menu.querySelector(".logout-btn")
+    const existingAdminLinks = menu.querySelectorAll(
+      'a[href*="inicio"], a[href*="ReservasServidor"], a[href*="ClientesServidor"]',
+    )
 
-  // Adicionar botão de logout se logado (apenas uma vez)
-  if (session) {
-    const nav = document.querySelector("nav") || document.querySelector("header nav")
-    if (nav && !nav.querySelector(".logout-btn")) {
-      // Criar link do dashboard
-      const dashboardBtn = document.createElement("a")
-      dashboardBtn.href = "dashboard.html"
-      dashboardBtn.textContent = "DASHBOARD"
-      dashboardBtn.className = "nav-link"
+    if (existingDashboard) existingDashboard.parentElement?.remove()
+    if (existingLogout) existingLogout.parentElement?.remove()
+    existingAdminLinks.forEach((link) => link.parentElement?.remove())
 
-      // Criar botão de logout
-      const logoutBtn = document.createElement("a")
-      logoutBtn.href = "#"
-      logoutBtn.textContent = "SAIR"
-      logoutBtn.className = "nav-link logout-btn"
-      logoutBtn.style.color = "#b91c1c"
-      logoutBtn.addEventListener("click", (e) => {
+    // Encontrar links de login e registro
+    const loginLinks = menu.querySelectorAll('a[href*="login"], #loginLink, #mobileLoginLink')
+    const registerLinks = menu.querySelectorAll('a[href*="registro"], #registerLink')
+
+    if (session) {
+      console.log("👤 Usuário logado:", session.user.type)
+
+      // Usuário logado - esconder login/registro
+      loginLinks.forEach((link) => {
+        if (link.parentElement) {
+          link.parentElement.style.display = "none"
+        } else {
+          link.style.display = "none"
+        }
+      })
+
+      registerLinks.forEach((link) => {
+        if (link.parentElement) {
+          link.parentElement.style.display = "none"
+        } else {
+          link.style.display = "none"
+        }
+      })
+
+      // Adicionar links baseados no tipo de usuário
+      if (session.user.type === "admin") {
+        // Admin - adicionar link para painel administrativo
+        const adminItem = document.createElement(menu.tagName === "UL" ? "li" : "a")
+        if (menu.tagName === "UL") {
+          adminItem.className = "nav-item"
+          adminItem.innerHTML = '<a href="inicio.html" class="nav-link admin-panel-link">PAINEL ADMIN</a>'
+        } else {
+          adminItem.href = "inicio.html"
+          adminItem.textContent = "PAINEL ADMIN"
+          adminItem.className = "admin-panel-link"
+        }
+        menu.appendChild(adminItem)
+      } else {
+        // Usuário comum - adicionar dashboard
+        const dashboardItem = document.createElement(menu.tagName === "UL" ? "li" : "a")
+        if (menu.tagName === "UL") {
+          dashboardItem.className = "nav-item"
+          dashboardItem.innerHTML = '<a href="dashboard.html" class="nav-link dashboard-link">DASHBOARD</a>'
+        } else {
+          dashboardItem.href = "dashboard.html"
+          dashboardItem.textContent = "DASHBOARD"
+          dashboardItem.className = "dashboard-link"
+        }
+        menu.appendChild(dashboardItem)
+      }
+
+      // Adicionar Logout
+      const logoutItem = document.createElement(menu.tagName === "UL" ? "li" : "a")
+      if (menu.tagName === "UL") {
+        logoutItem.className = "nav-item"
+        logoutItem.innerHTML = '<a href="#" class="nav-link logout-btn" style="color: #b91c1c;">SAIR</a>'
+      } else {
+        logoutItem.href = "#"
+        logoutItem.textContent = "SAIR"
+        logoutItem.className = "logout-btn"
+        logoutItem.style.color = "#b91c1c"
+      }
+
+      // Adicionar event listener para logout
+      const logoutLink = logoutItem.tagName === "LI" ? logoutItem.querySelector("a") : logoutItem
+      logoutLink.addEventListener("click", (e) => {
         e.preventDefault()
         logout()
       })
 
-      nav.appendChild(dashboardBtn)
-      nav.appendChild(logoutBtn)
-    }
-  } else {
-    // Remover botões de usuário logado se não estiver logado
-    const dashboardBtn = document.querySelector('a[href="dashboard.html"]')
-    const logoutBtn = document.querySelector(".logout-btn")
+      menu.appendChild(logoutItem)
+    } else {
+      // Usuário não logado - mostrar login/registro
+      loginLinks.forEach((link) => {
+        if (link.parentElement) {
+          link.parentElement.style.display = ""
+        } else {
+          link.style.display = ""
+        }
+      })
 
-    if (dashboardBtn) dashboardBtn.remove()
-    if (logoutBtn) logoutBtn.remove()
+      registerLinks.forEach((link) => {
+        if (link.parentElement) {
+          link.parentElement.style.display = ""
+        } else {
+          link.style.display = ""
+        }
+      })
+    }
+  }
+
+  // Atualizar todos os menus encontrados
+  if (navMenu) updateMenu(navMenu)
+  if (desktopMenu) updateMenu(desktopMenu)
+  if (mobileMenu) updateMenu(mobileMenu, true)
+  if (headerNav && headerNav !== navMenu) updateMenu(headerNav)
+
+  // Configurar logout existente no dashboard
+  const existingLogoutBtn = document.getElementById("logoutBtn")
+  if (existingLogoutBtn) {
+    existingLogoutBtn.addEventListener("click", (e) => {
+      e.preventDefault()
+      logout()
+    })
   }
 }
 

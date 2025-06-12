@@ -431,7 +431,7 @@ app.post("/api/register", async (req, res) => {
   }
 })
 
-// User Login - ATUALIZADO para suportar admin
+// User Login - CORRIGIDO para priorizar admin_users
 app.post("/api/login", async (req, res) => {
   try {
     console.log("=== LOGIN ===")
@@ -447,50 +447,8 @@ app.post("/api/login", async (req, res) => {
 
     console.log("🔍 Tentando login para:", email)
 
-    // Primeiro, tentar encontrar na tabela de usuários normais
-    console.log("🔍 Buscando em users...")
-    const [users] = await db.execute(
-      "SELECT id, name, email, password, cpf, date_birth, created_at FROM users WHERE email = ?",
-      [email.toLowerCase().trim()],
-    )
-
-    if (users.length > 0) {
-      const user = users[0]
-      console.log("✅ Usuário encontrado na tabela users:", user.email)
-
-      // Verify password
-      const passwordMatch = await bcrypt.compare(password, user.password)
-
-      if (!passwordMatch) {
-        console.log("❌ Senha incorreta para usuário")
-        return res.status(401).json({
-          success: false,
-          message: "Email ou senha incorretos",
-        })
-      }
-
-      // Generate JWT token
-      const token = jwt.sign({ userId: user.id, email: user.email, type: "user" }, JWT_SECRET, { expiresIn: "7d" })
-
-      console.log("✅ Login de usuário bem-sucedido para:", user.email)
-
-      return res.json({
-        success: true,
-        token,
-        user: {
-          id: user.id,
-          name: user.name,
-          email: user.email,
-          cpf: user.cpf,
-          date_birth: user.date_birth,
-          created_at: user.created_at,
-          type: "user",
-        },
-      })
-    }
-
-    // Se não encontrou em users, tentar em admin_users
-    console.log("🔍 Buscando em admin_users...")
+    // PRIMEIRO, tentar encontrar na tabela de administradores
+    console.log("🔍 Buscando em admin_users PRIMEIRO...")
     const [admins] = await db.execute(
       "SELECT id, name, email, password, role, active, created_at FROM admin_users WHERE email = ? AND active = true",
       [email.toLowerCase().trim()],
@@ -531,6 +489,48 @@ app.post("/api/login", async (req, res) => {
           role: admin.role,
           created_at: admin.created_at,
           type: "admin",
+        },
+      })
+    }
+
+    // DEPOIS, tentar encontrar na tabela de usuários normais
+    console.log("🔍 Buscando em users...")
+    const [users] = await db.execute(
+      "SELECT id, name, email, password, cpf, date_birth, created_at FROM users WHERE email = ?",
+      [email.toLowerCase().trim()],
+    )
+
+    if (users.length > 0) {
+      const user = users[0]
+      console.log("✅ Usuário encontrado na tabela users:", user.email)
+
+      // Verify password
+      const passwordMatch = await bcrypt.compare(password, user.password)
+
+      if (!passwordMatch) {
+        console.log("❌ Senha incorreta para usuário")
+        return res.status(401).json({
+          success: false,
+          message: "Email ou senha incorretos",
+        })
+      }
+
+      // Generate JWT token
+      const token = jwt.sign({ userId: user.id, email: user.email, type: "user" }, JWT_SECRET, { expiresIn: "7d" })
+
+      console.log("✅ Login de usuário bem-sucedido para:", user.email)
+
+      return res.json({
+        success: true,
+        token,
+        user: {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          cpf: user.cpf,
+          date_birth: user.date_birth,
+          created_at: user.created_at,
+          type: "user",
         },
       })
     }
@@ -651,7 +651,7 @@ async function startServer() {
     console.log(`🌐 Visit http://localhost:${PORT} to view the website`)
     console.log(`📝 Registration: http://localhost:${PORT}/registro.html`)
     console.log(`🔐 Login: http://localhost:${PORT}/login.html`)
-    console.log(`👨‍💼 Admin Login: admin@santoros.com / admin123`)
+    console.log(`👨‍💼 Admin Login: fabitorresrocha@gmail.com / SantorosADM123`)
     console.log(`📁 Static files served from: ${path.join(__dirname, "../")}`)
   })
 }

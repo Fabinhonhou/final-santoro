@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clientes</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script defer src="js/auth.js"></script>
+</head>
+<body>
+    <header class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="index.html">Santoro's</a>
+            </div>
+            <ul class="nav-menu" id="navMenu">
+                <li class="nav-item">
+                    <a href="index.html" class="nav-link">SITE PRINCIPAL</a>
+                </li>
+                <li class="nav-item">
+                    <a href="inicio.html" class="nav-link">PAINEL INICIAL</a>
+                </li>
+                <li class="nav-item">
+                    <a href="ReservasServidor.html" class="nav-link">RESERVAS</a>
+                </li>
+                <li class="nav-item">
+                    <a href="ClientesServidor.html" class="nav-link active">CLIENTES</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link logout-btn" style="color: #b91c1c;">SAIR</a>
+                </li>
+            </ul>
+            <div class="hamburger" id="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </header>
+
+    <div class="navBar">
+        <a href="inicio.html"><h1>PAGINA INICIAL</h1></a>
+        <a href="ReservasServidor.html"><h1>RESERVAS</h1></a>
+        <a href="ClientesServidor.html"><h1>CLIENTES</h1></a>
+    </div>
+
+    <div class="TClientes">
+        <h1>CLIENTES</h1>
+    </div>
+
+    <div class="Clientes">
+            <div class="quadradoc"></div>
+            <div class="quadradoc"></div>
+            <div class="quadradoc"></div>
+            <div class="quadradoc"></div>
+            <div class="quadradoc"></div>
+            <div class="quadradoc"></div>
+            <div class="quadradoc"></div>
+            <div class="quadradoc"></div>
+            <div class="quadradoc"></div>
+            <div class="quadradoc"></div>
+            <div class="quadradoc"></div>
+            <div class="quadradoc"></div>
+            <div class="quadradoc"></div>
+            <div class="quadradoc"></div>
+            <div class="quadradoc"></div>
+            <div class="quadradoc"></div>
+    </div>
+    <script src="js/main.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Verificar se é admin
+        const session = localStorage.getItem('userSession');
+        
+        if (!session) {
+            alert('Acesso negado. Faça login como administrador.');
+            window.location.href = 'login.html';
+            return;
+        }
+        
+        const userData = JSON.parse(session);
+        
+        if (!userData.user || userData.user.type !== 'admin') {
+            alert('Acesso negado. Apenas administradores podem acessar esta página.');
+            window.location.href = 'index.html';
+            return;
+        }
+        
+        // Configurar logout
+        document.querySelector('.logout-btn').addEventListener('click', function(e) {
+            e.preventDefault();
+            if (confirm('Tem certeza que deseja sair do painel administrativo?')) {
+                localStorage.removeItem('userSession');
+                alert('Logout realizado com sucesso!');
+                window.location.href = 'index.html';
+            }
+        });
+
+        // Menu mobile
+        const hamburger = document.getElementById('hamburger');
+        const navMenu = document.getElementById('navMenu');
+        
+        if (hamburger && navMenu) {
+            hamburger.addEventListener('click', function() {
+                hamburger.classList.toggle('active');
+                navMenu.classList.toggle('active');
+            });
+        }
+    });
+    </script>
+</body>
+</html>
