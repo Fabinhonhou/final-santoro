@@ -1,0 +1,1079 @@
+@font-face {
+    font-family: 'Permatha Signature';
+    src: url(./fonts/Permatha\ Signature.otf);
+}
+
+
+
+
+/* ======= Estilos gerais ======= */
+body {
+
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    background-color: #fdf4ef;
+    /* Cor de fundo principal */
+}
+
+
+
+body {
+    margin: 0;
+    font-family: sans-serif;
+}
+
+
+
+header {
+    background-color: #fdf4ef;
+    padding: 10px 30px;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    border-bottom: 1px solid #ccc;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+}
+
+/* Logo levemente à direita */
+.logo-container {
+    flex: 1;
+    display: flex;
+    justify-content: flex-start;
+    padding-left: 40px;
+}
+
+header img {
+    max-width: 150px;
+    padding-top: 10px;
+}
+
+/* Navbar alinha à direita da logo */
+header nav {
+    flex: 2;
+    display: flex;
+    justify-content: flex-end;
+    gap: 30px;
+    padding-right: 40px;
+}
+
+header nav a {
+    position: relative;
+    /* necessário para o ::after */
+    text-decoration: none;
+    color: #640E0E;
+    font-weight: 500;
+    /* corrigido para um só */
+    font-family: "Albert Sans", sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+    transition: color 0.9s ease;
+    padding-bottom: 4px;
+    /* espaço para o underline */
+}
+
+header nav a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 2px;
+    width: 0;
+    background-color: #640E0E;
+    /* mesma cor do texto */
+    transition: width 0.3s ease 0.06s;
+    /* duração 0.3s, delay 0.5s */
+}
+
+header nav a:hover::after {
+    width: 100%;
+}
+
+
+
+/* Torna visível com transição suave */
+#navbar.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+
+
+.pagina-home .johnny img {
+    height: 700px;
+
+}
+
+
+
+/* ======= Navbar ======= */
+.navbar {
+    position: fixed;
+    /* Fixa no topo */
+    top: 0;
+    width: 100%;
+    background-color: #ede9df;
+    /* Mantém a cor de fundo */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    /* Sombra sutil para destacar a navbar */
+    z-index: 4;
+    /* Garante que fique acima de outros elementos */
+}
+
+/* ======= Logo ======= */
+.content .logo img {
+    height: 100px;
+    width: 500px;
+
+}
+
+/* ======= Menu Responsivo ======= */
+.menu {
+    display: flex;
+    list-style: none;
+    gap: 20px;
+    /* Espaço entre os itens */
+}
+
+.menu li {
+    display: inline;
+}
+
+.menu a {
+    text-decoration: none;
+    color: #5a1d0d;
+    /* Cor do texto */
+    font-weight: bold;
+}
+
+/* Botão de menu para dispositivos móveis */
+.menu-toggle {
+    display: none;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+/* ======= Layout principal da página ======= */
+.home {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100vh;
+    /* Ocupa toda a altura da tela */
+    padding: 0px 5%;
+    position: relative;
+    margin-bottom: 80px;
+}
+
+/* ======= Conteúdo textual ======= */
+.content {
+    max-width: 40%;
+    padding-bottom: 220px;
+}
+
+.content img {
+    width: 500px;
+}
+
+.content p {
+    font-size: 20px;
+    color: #333;
+    margin: 20px 0;
+    font-family: "Albert Sans", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+
+
+}
+
+/* ======= Botões ======= */
+.buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.btn {
+    padding: 10px 20px;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 5px;
+    display: inline-block;
+    font-family: "Albert Sans", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.red {
+    background-color: #5a1d0d;
+    color: #ede9df;
+}
+
+.beige {
+    background-color: #bcb59a;
+    color: black;
+}
+
+/* ======= Container das imagens ======= */
+.image-container {
+    position: relative;
+    /* Define um contexto de posicionamento */
+    width: 50%;
+    display: flex;
+    justify-content: center;
+}
+
+/* ======= Fundo vermelho (ajustado para ocupar a lateral direita) ======= */
+.fundo img {
+    width: 45%;
+    /* Reduz um pouco para melhor ajuste */
+    height: 100vh;
+    /* Ocupa toda a altura da tela */
+    position: absolute;
+    right: 0;
+    /* Cola no canto direito */
+    top: 10%;
+    /* Cola no topo */
+    z-index: 1;
+    /* Garante que fique atrás do prato */
+    padding-top: 0%;
+}
+
+/* ======= Segunda camada do fundo (para um efeito sobreposto) ======= */
+.home2 {
+    display: flex;
+    position: relative;
+    padding-top: 0;
+    /* Remove qualquer espaço extra */
+}
+
+
+.home2 .fundo2 img {
+    width: 60%;
+    height: 110%;
+    z-index: 2;
+    position: absolute;
+    right: 0;
+    /* Move completamente para o canto direito */
+    top: 50%;
+    /* Centraliza verticalmente */
+    transform: translateY(-50%);
+    /* Ajusta para um posicionamento mais preciso */
+    padding-top: 50px;
+}
+
+/* ======= Imagem do prato ======= */
+.image-container img {
+    position: absolute;
+    /* Para sobrepor corretamente */
+    width: 500px;
+    /* Ajuste do tamanho */
+    height: auto;
+    /* Mantém proporção */
+    border-radius: 50%;
+    /* Deixa a imagem circular */
+    z-index: 3;
+    /* Mantém sobreposta ao fundo */
+    right: 10%;
+    /* Ajusta um pouco para a esquerda */
+    top: 50%;
+    /* Centraliza verticalmente */
+    transform: translateY(-50%);
+    /* Ajusta melhor o posicionamento */
+}
+
+
+
+
+
+
+
+
+
+
+
+/* ======= Ajustes para telas menores (Responsividade) ======= */
+@media (max-width: 768px) {
+    .home {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .content {
+        max-width: 100%;
+    }
+
+    .image-container {
+        width: 100%;
+        margin-top: 20px;
+    }
+
+    /* Menu dropdown para dispositivos móveis */
+    .menu {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 60px;
+        right: 20px;
+        background-color: #ede9df;
+        width: 150px;
+        padding: 10px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .menu.show {
+        display: flex;
+    }
+
+    .menu-toggle {
+        display: block;
+    }
+}
+
+
+.johnny {
+    position: relative;
+    top: 0;
+    right: 0;
+    width: auto;
+    /* Ajuste conforme necessário */
+    height: 100%;
+    /* Para cobrir a altura total */
+    padding-bottom: 70px;
+}
+
+.johnny img {
+    position: absolute;
+    top: 0%;
+    right: 0;
+    width: 750px;
+    height: 700px;
+    top: 0%;
+    padding-bottom: 700px;
+    margin-bottom: 80%;
+
+}
+
+.johnny2 {
+    width: 60%;
+    height: 90%;
+    z-index: 2;
+    position: absolute;
+    right: 0;
+    /* Move completamente para o canto direito */
+    top: 50%;
+    /* Centraliza verticalmente */
+    transform: translateY(-50%);
+    /* Ajusta para um posicionamento mais preciso */
+
+}
+
+.johnny2 img {
+    width: 480px;
+    height: 350px;
+    padding-bottom: 80px;
+}
+
+.johnny3 {
+    width: 47%;
+    height: 80%;
+    z-index: 2;
+    position: absolute;
+    right: 0;
+    /* Move completamente para o canto direito */
+    top: 45%;
+    /* Centraliza verticalmente */
+    transform: translateY(-50%);
+    /* Ajusta para um posicionamento mais preciso */
+}
+
+.johnny3 img {
+    width: 550px;
+    height: 550px;
+    padding-bottom: 10px;
+    padding-left: 20px;
+}
+
+
+.johnny3 img {
+    animation: fadeOut 2s;
+}
+
+@keyframes fadeOut {
+    from {
+        transform: scale(0.1);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1.2);
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+
+
+
+
+
+
+.home-meio {
+    height: 694px;
+    z-index: 0;
+    background-image: url(/img/macarrao.png);
+    background-size: cover;
+    background-position: center;
+    padding-top: 40px;
+
+
+}
+
+
+.final .redes-sociais .linha2{
+      width: 2px;               /* largura da linha */
+  height: 100%;             /* altura igual à altura da imagem */
+  color: black;
+  background-color: black;
+  position: absolute;
+  top: 0;
+  right: -30px;
+  z-index: 3;
+}
+
+.home-meio background-image {
+    padding-top: 1000px;
+}
+
+
+.home-meio .texto-meio {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 70px;
+    position: relative;
+    text-align: left;
+    margin-right: 75%;
+    padding: 30px;
+    background-color: rgba(230, 228, 228, 1);
+    border-radius: 20px;
+    width: 23%;
+    height: 70%;
+
+
+}
+
+.texto-meio h1 {
+    font-family: "Italiana", serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 2rem;
+}
+
+.texto-meio p {
+    font-family: "Albert Sans", serif;
+    font-optical-sizing: auto;
+    font-weight: 300;
+    font-style: normal;
+}
+
+
+
+
+
+.historia .container {
+    width: 80%;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+}
+
+
+.historia .texto {
+    width: 80%;
+    padding: 0 60px;
+    padding-top: 80px;
+    justify-content: center;
+
+}
+
+.historia .texto h1 {
+    font-size: 60px;
+    font-family: 'Permatha Signature';
+    font-weight: 400;
+    text-align: center;
+    margin: 0%;
+    padding-right: 100px;
+}
+
+.historia .texto h2 {
+    font-size: 60px;
+    font-family: 'Permatha Signature';
+    font-weight: 400;
+    margin: 0%;
+    padding-left: 200px;
+    padding-bottom: 20px;
+    position: relative;
+    top: -30px;
+
+}
+
+.texto .titulo {
+    position: relative;
+    top: -50px;
+
+}
+
+
+
+.historia .texto p {
+    font-size: 20px;
+    font-family: "Albert Sans", serif;
+    font-optical-sizing: auto;
+    font-weight: 300;
+    font-style: normal;
+    align-items: center;
+    position: relative;
+    top: -60px;
+    text-align: center;
+}
+
+.historia .img-meio {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* Centraliza a imagem */
+}
+
+.historia .img-meio img {
+    width: 150%;
+    height: 400px;
+    margin: 5px auto;
+    /* Espaçamento e centralização */
+    padding: 10px;
+    border-radius: 10px;
+    /* Se quiser um efeito arredondado */
+}
+
+
+
+
+
+.carrossel-section {
+  background-color: #640e0e;
+  padding: 60px 20px;
+  color: white;
+  text-align: center;
+    font-family: "Albert Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: normal;
+}
+
+.titulo-espaco h1 {
+  font-family: "Aboreto", serif;
+  font-size: 40px;
+  margin-bottom: 10px;
+}
+
+.titulo-espaco p {
+  font-family: "Albert Sans", sans-serif;
+  font-size: 18px;
+  max-width: 800px;
+  margin: 0 auto 40px;
+}
+
+.carrossel-scroll {
+  display: flex;
+  overflow-x: auto;
+  gap: 20px;
+  scroll-behavior: smooth;
+  padding: 10px;
+  scrollbar-width: none; /* Firefox */
+}
+
+.carrossel-scroll::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
+}
+
+.carrossel-scroll img {
+  flex: 0 0 auto;
+  width: 500px;
+  height: 350px;
+  object-fit: cover;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+
+
+
+
+
+.final .redes-sociais img {
+    margin: 0%;
+    gap: 0%;
+    z-index: 2;
+    padding-bottom: 40%;
+    left: 10%;
+    width: 1149px;
+    /* garante que vá até a borda direita */
+height: 300px;
+    margin: 0;
+    padding: 0;
+    display: block;
+    position: relative;
+    /* ou absolute se for encaixado sobre outro */
+    display: flex;
+    align-items: center;
+}
+
+.final .redes-sociais .linha1{
+width: 105%;
+  height: 2px;           /* espessura da linha */
+  background-color: black;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 3;
+margin-top: 25px;
+left: 40px;
+}
+
+.final .redes-sociais .linha2{
+      width: 2px;               /* largura da linha */
+  height: 100%;             /* altura igual à altura da imagem */
+  color: black;
+  background-color: black;
+  position: absolute;
+  top: 0;
+  right: -30px;
+  z-index: 3;
+}
+
+.final .redes-sociais h1{
+    padding-top: 80px;
+    left: 60px;
+    font-size: 35px;
+    color: black;
+  font-family: "Albert Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 800;
+  font-style: normal;
+}
+
+
+.redes-sociais {
+    position: relative;
+    display: inline-block;
+}
+
+.redes-sociais img {
+
+    width: 100%;
+    padding: 40px;
+    display: flex;
+    align-items: center;
+    left: 80%;
+
+}
+
+.redes-sociais h1 {
+    position: absolute;
+    top: 20px;
+    /* ajuste a posição vertical */
+    left: 20px;
+    /* ajuste a posição horizontal */
+    z-index: 2;
+    color: black;
+    font-size: 2rem;
+    font-family: "Albert Sans", sans-serif;
+    font-weight: 600;
+    font-style: normal;
+    margin: 0;
+}
+
+
+.instagram {
+  display: flex;
+  justify-content: center;   /* centraliza horizontalmente */
+  align-items: center;       /* centraliza verticalmente */
+  flex-wrap: wrap;           /* para quebrar em telas menores */
+}
+
+.instagram img {
+  display: block;
+  z-index: 3;
+    filter: grayscale(100%);
+  transition: filter 0.5s ease;
+}
+
+.instagram img:hover {
+  filter: grayscale(0%);
+}
+
+
+/* Variáveis CSS */
+:root {
+  --burgundy: #8b0000;
+  --burgundy-light: #a0252f;
+  --cream: #000000;
+  --cream-dark: #0000;
+  --gold: #8C1616;
+  --charcoal: #E1ddd4;
+}
+
+
+
+/* Footer Principal */
+.footer {
+  background-color: var(--charcoal);
+  color: white;
+  padding: 46px 0;
+}
+
+.footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 32px;
+  margin-bottom: 32px;
+}
+
+/* Colunas do Footer */
+.footer-column {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Logo */
+.footer-logo {
+  font-family: 'Albert Sans', sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--gold);
+  margin-bottom: 16px;
+  margin-top: -px;
+}
+
+/* Descrição */
+.footer-description {
+   font-family: "Albert Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 16px;
+
+  margin-top: -10px;
+  color: #000000;
+  margin-bottom: 16px;
+  line-height: 1.6;
+}
+
+/* Redes Sociais */
+.social-links {
+  display: flex;
+  gap: 16px;
+  
+}
+
+.social-link {
+  
+  color: #000000;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.social-link:hover {
+  color: var(--gold);
+  transform: translateY(-2px);
+}
+
+.social-icon {
+  width: 20px;
+  height: 20px;
+}
+
+/* Títulos das Seções */
+:root {
+  --burgundy: #8b0000;
+  --burgundy-light: #a0252f;
+  --cream: #000000;
+  --cream-dark: #0000;
+  --gold: #8C1616;
+  --charcoal: #E1ddd4;
+}
+
+/* Footer Principal */
+.footer {
+  background-color: var(--charcoal);
+  color: white;
+  padding: 46px 0;
+  z-index: 1000;
+}
+
+.footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 32px;
+  margin-bottom: 32px;
+}
+
+/* Colunas do Footer */
+.footer-column {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Logo */
+.footer-logo {
+  font-family: 'Albert Sans', sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--gold);
+  margin-bottom: 16px;
+  margin-top: -px;
+}
+
+/* Descrição */
+.footer-description {
+   font-family: "Albert Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 16px;
+
+  margin-top: -10px;
+  color: #000000;
+  margin-bottom: 16px;
+  line-height: 1.6;
+}
+
+/* Redes Sociais */
+.social-links {
+  display: flex;
+  gap: 16px;
+  
+}
+
+.social-link {
+  
+  color: #000000;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.social-link:hover {
+  color: var(--gold);
+  transform: translateY(-2px);
+}
+
+.social-icon {
+  width: 20px;
+  height: 20px;
+}
+
+/* Títulos das Seções */
+.footer-title {
+  color: var(--gold);
+  margin-bottom: 13px;
+  font-size: 1.1rem;
+
+    font-family: "Albert Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 900;
+  font-style: normal;
+}
+
+/* Links do Footer */
+.footer-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+   font-family: "Albert Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.footer-links li {
+  margin-bottom: 8px;
+}
+
+.footer-link {
+  color: #000000;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.footer-link:hover {
+  color: #8C1616;
+}
+
+/* Informações de Contato */
+.footer-info {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  color: #000000;
+
+   font-family: "Albert Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.footer-info li {
+  margin-bottom: 8px;
+}
+
+/* Horários */
+.footer-hours {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  color: #000000;
+  font-size: 0.9rem;
+
+  font-family: "Albert Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.footer-hours li {
+  margin-bottom: 8px;
+}
+
+/* Copyright */
+.footer-bottom {
+  border-top: 1px solid #000000;
+  padding-top: 32px;
+  text-align: center;
+}
+
+.footer-bottom p {
+  color: #000000;
+  margin: 0;
+
+  font-family: "Albert Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: normal;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .footer {
+    padding: 32px 0;
+  }
+  
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    text-align: center;
+  }
+  
+  .footer-logo {
+    font-size: 1.75rem;
+  }
+  
+  .social-links {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer-container {
+    padding: 0 12px;
+  }
+  
+  .footer-grid {
+    gap: 20px;
+  }
+  
+  .footer-logo {
+    font-size: 1.5rem;
+  }
+}
+@media (max-width: 480px) {
+    .conteudo h1 {
+        font-size: 2rem;
+    }
+    
+    .section-header h2 {
+        font-size: 1.8rem;
+    }
+    
+    .wine-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    
+    .wine-info {
+        margin-right: 0;
+    }
+    
+    .form-container {
+        padding: 25px;
+    }
+}
+
+/* Smooth Scrolling */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

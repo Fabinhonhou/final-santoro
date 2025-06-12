@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Santoro's Restaurant</title>
+    <link rel="stylesheet" href="css/login.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Albert+Sans:ital,wght@0,200;0,400;0,700;1,200&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <header>
+        <div class="logo-container">
+            <img src="/img/Red_and_Maroon_Classic_Italian_Restaurant_Logo__1_-removebg-preview.png" alt="Santoro's Logo" class="Logo" id="logo" />
+        </div>
+        
+        <nav>
+            <a href="index.html">INICIO</a>
+            <a href="menu.html">MENU</a>
+            <a href="reservations.html">RESERVAS</a>
+            <a href="contato.html">CONTATO</a>
+            <a href="registro.html" id="registerLink">REGISTRAR</a>
+        </nav>
+    </header>
+
+    <div class="auth-page">
+        <div class="auth-container">
+            <!-- Mensagens de feedback -->
+            <div id="success-message" class="success-message" style="display: none;">
+                <i class="fas fa-check-circle"></i>
+                <div>
+                    <h3>Login realizado com sucesso!</h3>
+                    <p>Redirecionando...</p>
+                </div>
+            </div>
+            
+            <div id="error-message" class="error-message" style="display: none;">
+                <i class="fas fa-exclamation-circle"></i>
+                <p>Erro ao fazer login.</p>
+            </div>
+            
+            <div class="auth-form">
+                <h1>Entrar na sua conta</h1>
+                <p class="auth-subtitle">Bem-vindo de volta ao Santoro's!</p>
+                
+                <form id="loginForm" method="POST">
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required placeholder="seu@email.com">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password">Senha</label>
+                        <input type="password" id="password" name="password" required placeholder="Sua senha">
+                    </div>
+                    
+                    <div class="form-options">
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="remember" name="remember">
+                            <label for="remember">Lembrar de mim</label>
+                        </div>
+                        <a href="#" class="forgot-password">Esqueceu a senha?</a>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary btn-full">Entrar</button>
+                </form>
+                
+                <div class="auth-switch">
+                    Não tem uma conta? <a href="registro.html">Criar conta</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-grid">
+                <!-- Coluna 1: Logo e Redes Sociais -->
+                <div class="footer-column">
+                    <h3 class="footer-logo">Santoro's</h3>
+                    <p class="footer-description">
+                        Culinária italiana autêntica elaborada com paixão e tradição por mais de três gerações.
+                    </p>
+                    <div class="social-links">
+                        <a href="#" class="social-link">
+                            <svg class="social-icon" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="social-link">
+                            <svg class="social-icon" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.174-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.769 1.518 1.688 0 1.029-.653 2.567-.992 3.992-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.199 0 1.033.394 2.143.889 2.741.099.12.112.225.085.345-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.402.165-1.495-.69-2.433-2.878-2.433-4.646 0-3.776 2.748-7.252 7.92-7.252 4.158 0 7.392 2.967 7.392 6.923 0 4.135-2.607 7.462-6.233 7.462-1.214 0-2.357-.629-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24.009 12.017 24c6.624 0 11.99-5.367 11.99-11.987C24.007 5.367 18.641.001 12.017.001z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="social-link">
+                            <svg class="social-icon" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Coluna 2: Links Rápidos -->
+                <div class="footer-column">
+                    <h4 class="footer-title">LINKS RÁPIDOS</h4>
+                    <ul class="footer-links">
+                        <li><a href="index.html" class="footer-link">Início</a></li>
+                        <li><a href="menu.html" class="footer-link">Menu</a></li>
+                        <li><a href="reservations.html" class="footer-link">Reservas</a></li>
+                        <li><a href="contato.html" class="footer-link">Contato</a></li>
+                    </ul>
+                </div>
+
+                <!-- Coluna 3: Informações de Contato -->
+                <div class="footer-column">
+                    <h4 class="footer-title">INFORMAÇÕES DE CONTATO</h4>
+                    <ul class="footer-info">
+                        <li>Rua Italiana, 123</li>
+                        <li>Centro</li>
+                        <li>São Paulo, SP 01234-567</li>
+                        <li>(11) 3456-7890</li>
+                    </ul>
+                </div>
+
+                <!-- Coluna 4: Horários -->
+                <div class="footer-column">
+                    <h4 class="footer-title">HORÁRIOS</h4>
+                    <ul class="footer-hours">
+                        <li>Seg-Qui: 17:00 - 22:00</li>
+                        <li>Sex-Sáb: 17:00 - 23:00</li>
+                        <li>Dom: 16:00 - 21:00</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Copyright -->
+            <div class="footer-bottom">
+                <p>&copy; 2024 Santoro's Italian Restaurant. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        // Script adicional para garantir funcionalidade
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('✅ Login page loaded');
+            
+            const form = document.getElementById('loginForm');
+            if (form) {
+                console.log('✅ Login form found');
+                
+                // Adicionar listener adicional como backup
+                form.addEventListener('submit', function(e) {
+                    console.log('🔥 Login form submitted!');
+                    
+                    // Se o auth.js não estiver carregado, usar fallback
+                    if (typeof handleLogin === 'undefined') {
+                        console.log('⚠️ Auth.js não carregado, usando fallback');
+                        handleLoginFallback(e);
+                    }
+                });
+            }
+        });
+        
+        // Função de fallback para login
+        async function handleLoginFallback(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const loginData = {
+                email: formData.get('email'),
+                password: formData.get('password')
+            };
+            
+            console.log('📧 Tentando login com:', loginData.email);
+            
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Entrando...';
+            
+            try {
+                const response = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(loginData)
+                });
+                
+                const data = await response.json();
+                console.log('📡 Resposta do login:', data);
+                
+                if (data.success) {
+                    // Salvar sessão
+                    localStorage.setItem('userSession', JSON.stringify({
+                        user: data.user,
+                        token: data.token
+                    }));
+                    
+                    // Mostrar sucesso
+                    showMessage('success-message', 'Login realizado com sucesso!');
+                    
+                    // Redirecionar
+                    setTimeout(() => {
+                        window.location.href = 'dashboard.html';
+                    }, 1500);
+                } else {
+                    throw new Error(data.message);
+                }
+            } catch (error) {
+                console.error('❌ Erro no login:', error);
+                showMessage('error-message', error.message || 'Erro ao fazer login');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Entrar';
+            }
+        }
+        
+        function showMessage(elementId, message = '') {
+            const element = document.getElementById(elementId);
+            if (element) {
+                if (message) {
+                    const messageElement = element.querySelector('p');
+                    if (messageElement) {
+                        messageElement.textContent = message;
+                    }
+                }
+                element.style.display = 'block';
+                
+                // Auto-esconder mensagens de sucesso
+                if (elementId === 'success-message') {
+                    setTimeout(() => {
+                        element.style.display = 'none';
+                    }, 3000);
+                }
+            }
+        }
+    </script>
+</body>
+</html>

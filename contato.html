@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Santoro's Italian Cuisine</title>
+    <link rel="stylesheet" href="css/contato.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Albert+Sans:ital,wght@0,200;0,400;0,700;1,200&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <header>
+      <div class="logo-container">
+        <img src="/img/Red_and_Maroon_Classic_Italian_Restaurant_Logo__1_-removebg-preview.png" alt="Santoro's Logo" class="Logo" id="logo" />
+      </div>
+      
+      <button id="menu-btn" class="mobile-menu-button" aria-label="Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    
+      <nav id="desktop-menu">
+        <a href="index.html">INICIO</a>
+        <a href="cardapio.html">CARDÁPIO</a>
+        <a href="reserva.html">RESERVAS</a>
+        <a href="contato.html">CONTATO</a>
+        <a href="login.html" id="loginLink">LOGIN</a>
+      </nav>
+      
+      <nav id="mobile-menu" class="hidden">
+        <a href="inicio">INICIO</a>
+        <a href="cardapio.html">CARDÁPIO</a>
+        <a href="reserva.html">RESERVAS</a>
+        <a href="contato.html">CONTATO</a>
+        <a href="login.html" id="mobileLoginLink">LOGIN</a>
+      </nav>
+    </header>
+    
+    <div class="imagem-container">
+      <img src="/img/Gemini_Generated_Image_hugnmshugnmshugn.jpg" alt="Prato" />
+      <div class="overlay"></div>
+      <div class="conteudo">CONTATO</div>
+    </div>
+
+    <section id="contato">
+      <div class="contato-flex">
+        <div class="contato-texto">
+          <p>
+            Fazemos de tudo para tornar possível a realização de momentos
+            incríveis em sua vida. Mas se surgir qualquer dúvida, sugestão ou algo
+            que precise nos comunicar, este espaço é ideal para você se expressar.
+          </p>
+        </div>
+    
+        <div class="form-container">
+          <h2>FALE CONOSCO</h2>
+          <form action="#" method="POST" id="contactForm">
+            <label for="nome">Nome:</label>
+            <input type="text" id="nome" name="nome" required />
+    
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required />
+    
+            <label for="telefone">Telefone:</label>
+            <input type="tel" id="telefone" name="telefone" required />
+    
+            <label for="mensagem">Mensagem:</label>
+            <textarea id="mensagem" name="mensagem" rows="4" required></textarea>
+    
+            <button type="submit">Enviar Mensagem</button>
+          </form>
+        </div>
+      </div>
+    </section>
+    
+    <section class="about" id="about">
+      <img src="/img/social.jpg" alt="Chef in the kitchen" />
+      <div class="text">
+        <h2>Santoro's: Arte e Sabor</h2>
+        <p>
+          Dedicamo-nos a criar momentos inesquecíveis para você. Se tiver alguma dúvida, sugestão ou precisar nos contatar, este é o espaço ideal para se expressar.
+        </p>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="footer-container">
+        <div class="footer-grid">
+          <!-- Coluna 1: Logo e Redes Sociais -->
+          <div class="footer-column">
+            <h3 class="footer-logo">Santoro's</h3>
+            <p class="footer-description">
+              Culinária italiana autêntica elaborada com paixão e tradição por mais de três gerações.
+            </p>
+            <div class="social-links">
+              <a href="#" class="social-link">
+                <svg class="social-icon" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                </svg>
+              </a>
+              <a href="#" class="social-link">
+                <svg class="social-icon" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.174-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.769 1.518 1.688 0 1.029-.653 2.567-.992 3.992-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.199 0 1.033.394 2.143.889 2.741.099.12.112.225.085.345-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.402.165-1.495-.69-2.433-2.878-2.433-4.646 0-3.776 2.748-7.252 7.92-7.252 4.158 0 7.392 2.967 7.392 6.923 0 4.135-2.607 7.462-6.233 7.462-1.214 0-2.357-.629-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24.009 12.017 24c6.624 0 11.99-5.367 11.99-11.987C24.007 5.367 18.641.001 12.017.001z"/>
+                </svg>
+              </a>
+              <a href="#" class="social-link">
+                <svg class="social-icon" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+                </svg>
+              </a>
+            </div>
+          </div>
+
+          <!-- Coluna 2: Links Rápidos -->
+          <div class="footer-column">
+            <h4 class="footer-title">LINKS RÁPIDOS</h4>
+            <ul class="footer-links">
+              <li><a href="#home" class="footer-link">Início</a></li>
+              <li><a href="#about" class="footer-link">Sobre</a></li>
+              <li><a href="#menu" class="footer-link">Cardápio</a></li>
+              <li><a href="#reservations" class="footer-link">Reservas</a></li>
+            </ul>
+          </div>
+
+          <!-- Coluna 3: Informações de Contato -->
+          <div class="footer-column">
+            <h4 class="footer-title">INFORMAÇÕES DE CONTATO</h4>
+            <ul class="footer-info">
+              <li>Rua Italiana, 123</li>
+              <li>Centro</li>
+              <li>São Paulo, SP 01234-567</li>
+              <li>(11) 3456-7890</li>
+            </ul>
+          </div>
+
+          <!-- Coluna 4: Horários -->
+          <div class="footer-column">
+            <h4 class="footer-title">HORÁRIOS</h4>
+            <ul class="footer-hours">
+              <li>Seg-Qui: 17:00 - 22:00</li>
+              <li>Sex-Sáb: 17:00 - 23:00</li>
+              <li>Dom: 16:00 - 21:00</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Copyright -->
+        <div class="footer-bottom">
+          <p>&copy; 2024 Santoros's Italian Kitchen. Todos os direitos reservados.</p>
+        </div>
+      </div>
+    </footer>
+    
+    <script src="js/main.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/contato.js"></script>
+<script>
+    // Script para o formulário de contato
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('contactForm');
+        const mobileMenuBtn = document.getElementById('menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        // Funcionalidade do menu mobile
+        if (mobileMenuBtn && mobileMenu) {
+            mobileMenuBtn.addEventListener('click', function() {
+                mobileMenu.classList.toggle('hidden');
+            });
+        }
+        
+        // Funcionalidade do formulário de contato
+        if (form) {
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const formData = new FormData(form);
+                const contactData = {
+                    nome: formData.get('nome'),
+                    email: formData.get('email'),
+                    telefone: formData.get('telefone'),
+                    mensagem: formData.get('mensagem')
+                };
+                
+                console.log('Enviando dados do contato:', contactData);
+                
+                const submitBtn = form.querySelector('button[type="submit"]');
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Enviando...';
+                
+                try {
+                    const response = await fetch('/api/contact', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(contactData)
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        showMessage('success-message', data.message);
+                        form.reset();
+                    } else {
+                        throw new Error(data.message);
+                    }
+                } catch (error) {
+                    console.error('Erro ao enviar mensagem:', error);
+                    showMessage('error-message', 'Erro ao enviar mensagem. Tente novamente.');
+                } finally {
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Enviar Mensagem';
+                }
+            });
+        }
+    });
+    
+    function showMessage(elementId, message = '') {
+        const element = document.getElementById(elementId);
+        if (element) {
+            if (message) {
+                const messageElement = element.querySelector('p');
+                if (messageElement) {
+                    messageElement.textContent = message;
+                }
+            }
+            element.style.display = 'block';
+            
+            // Auto-esconder mensagens após 5 segundos
+            setTimeout(() => {
+                element.style.display = 'none';
+            }, 5000);
+        }
+    }
+</script>
+  </body>
+</html>

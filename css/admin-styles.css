@@ -1,0 +1,129 @@
+/* Estilos específicos para admin */
+.admin-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.admin-header h1 {
+  color: #b91c1c;
+  margin-bottom: 0.5rem;
+}
+
+.admin-header p {
+  color: #666;
+  margin-bottom: 0;
+}
+
+.admin-info {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background-color: #f9fafb;
+  border-radius: 8px;
+  border-left: 4px solid #b91c1c;
+}
+
+.admin-info p {
+  margin-bottom: 1rem;
+  color: #374151;
+  font-weight: 600;
+}
+
+.admin-info ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.admin-info li {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0;
+  color: #4b5563;
+}
+
+.admin-info li i {
+  color: #b91c1c;
+  width: 16px;
+}
+
+/* Admin profile section */
+.admin-profile {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+}
+
+.admin-profile h3 {
+  color: #b91c1c;
+  margin-bottom: 1rem;
+}
+
+.admin-profile-info {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.admin-profile-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.admin-profile-item label {
+  font-weight: 600;
+  color: #374151;
+  font-size: 0.875rem;
+}
+
+.admin-profile-item span {
+  color: #6b7280;
+}
+
+/* Role badges */
+.role-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.role-admin {
+  background-color: #dbeafe;
+  color: #1e40af;
+}
+
+.role-super_admin {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+/* Security section */
+.security-section {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-top: 2rem;
+}
+
+.security-section h3 {
+  color: #b91c1c;
+  margin-bottom: 1rem;
+}
+
+.security-actions {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.security-actions .btn {
+  min-width: 150px;
+}

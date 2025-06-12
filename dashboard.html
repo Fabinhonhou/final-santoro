@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Santoro's Restaurant</title>
+    <link rel="stylesheet" href="css/sla.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="index.html">Santoro's</a>
+            </div>
+            <ul class="nav-menu" id="navMenu">
+                <li class="nav-item">
+                    <a href="index.html" class="nav-link">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a href="menu.html" class="nav-link">Menu</a>
+                </li>
+                <li class="nav-item">
+                    <a href="reservations.html" class="nav-link">Reservas</a>
+                </li>
+                <li class="nav-item">
+                    <a href="contato.html" class="nav-link">Contato</a>
+                </li>
+                <li class="nav-item">
+                    <a href="dashboard.html" class="nav-link active">Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link logout-btn" id="logoutBtn" style="color: #b91c1c;">Sair</a>
+                </li>
+            </ul>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="dashboard-page" style="background-color: #f9fafb; min-height: 100vh;">
+        <div class="container">
+            <div class="dashboard-header">
+                <h1>Bem-vindo, <span id="userName">Usuário</span>!</h1>
+                <p>Gerencie suas reservas e informações pessoais</p>
+            </div>
+
+            <div class="dashboard-content">
+                <!-- Informações do usuário -->
+                <section class="account-section">
+                    <h2>Suas Informações</h2>
+                    <div class="account-info">
+                        <div class="info-item">
+                            <label>Nome:</label>
+                            <span id="userNameDisplay">-</span>
+                        </div>
+                        <div class="info-item">
+                            <label>Email:</label>
+                            <span id="userEmailDisplay">-</span>
+                        </div>
+                        <div class="info-item">
+                            <label>CPF:</label>
+                            <span id="userCpfDisplay">-</span>
+                        </div>
+                        <div class="info-item">
+                            <label>Data de Nascimento:</label>
+                            <span id="userBirthDisplay">-</span>
+                        </div>
+                        <div class="info-item">
+                            <label>Membro desde:</label>
+                            <span id="userSinceDisplay">-</span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Reservas do usuário -->
+                <section class="reservations-section">
+                    <div class="section-header">
+                        <h2>Suas Reservas</h2>
+                        <a href="reservations.html" class="btn btn-primary">Nova Reserva</a>
+                    </div>
+                    <div id="userReservations">
+                        <p>Carregando reservas...</p>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <h3>Santoro's</h3>
+                    <p>Autêntica culinária italiana em um ambiente acolhedor desde 1987.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Contato</h3>
+                    <address>
+                        <p>123 Pasta Street</p>
+                        <p>New York, NY 10001</p>
+                        <p>Phone: (212) 555-1234</p>
+                    </address>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Santoro's Italian Restaurant. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Verificar se o usuário está logado
+            const session = localStorage.getItem('userSession');
+            
+            if (!session) {
+                alert('Você precisa fazer login para acessar esta página');
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            const userData = JSON.parse(session);
+            console.log('👤 Usuário logado:', userData);
+            
+            // Exibir informações do usuário
+            displayUserInfo(userData.user);
+            
+            // Carregar reservas do usuário
+            loadUserReservations();
+
+            // Atualizar navegação para mostrar itens corretos
+            function updateDashboardNavigation() {
+                const session = localStorage.getItem('userSession');
+                if (!session) {
+                    window.location.href = 'login.html';
+                    return;
+                }
+                
+                // A navegação já está correta no HTML, apenas configurar logout
+                document.getElementById('logoutBtn').addEventListener('click', function(e) {
+                    e.preventDefault();
+                    localStorage.removeItem('userSession');
+                    alert('Logout realizado com sucesso!');
+                    window.location.href = 'index.html';
+                });
+            }
+            
+            // Chamar a função no DOMContentLoaded
+            updateDashboardNavigation();
+        });
+        
+        function displayUserInfo(user) {
+            document.getElementById('userName').textContent = user.name;
+            document.getElementById('userNameDisplay').textContent = user.name;
+            document.getElementById('userEmailDisplay').textContent = user.email;
+            document.getElementById('userCpfDisplay').textContent = user.cpf || 'Não informado';
+            
+            if (user.date_birth) {
+                const birthDate = new Date(user.date_birth);
+                document.getElementById('userBirthDisplay').textContent = birthDate.toLocaleDateString('pt-BR');
+            } else {
+                document.getElementById('userBirthDisplay').textContent = 'Não informado';
+            }
+            
+            if (user.created_at) {
+                const createdDate = new Date(user.created_at);
+                document.getElementById('userSinceDisplay').textContent = createdDate.toLocaleDateString('pt-BR');
+            }
+        }
+        
+        async function loadUserReservations() {
+            const session = JSON.parse(localStorage.getItem('userSession'));
+            const container = document.getElementById('userReservations');
+            
+            try {
+                const response = await fetch('/api/reservations', {
+                    headers: {
+                        'Authorization': `Bearer ${session.token}`
+                    }
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.success && data.reservations) {
+                        displayReservations(data.reservations);
+                    } else {
+                        container.innerHTML = '<p>Nenhuma reserva encontrada.</p>';
+                    }
+                } else {
+                    container.innerHTML = '<p>Erro ao carregar reservas.</p>';
+                }
+            } catch (error) {
+                console.error('Erro ao carregar reservas:', error);
+                container.innerHTML = '<p>Erro ao carregar reservas.</p>';
+            }
+        }
+        
+        function displayReservations(reservations) {
+            const container = document.getElementById('userReservations');
+            
+            if (reservations.length === 0) {
+                container.innerHTML = '<p>Você ainda não tem reservas. <a href="reservations.html">Fazer uma reserva</a></p>';
+                return;
+            }
+            
+            const html = reservations.map(reservation => `
+                <div class="reservation-card">
+                    <h3>Reserva #${reservation.id}</h3>
+                    <p><strong>Data:</strong> ${new Date(reservation.date).toLocaleDateString('pt-BR')}</p>
+                    <p><strong>Horário:</strong> ${reservation.time}</p>
+                    <p><strong>Pessoas:</strong> ${reservation.guests}</p>
+                    <p><strong>Status:</strong> <span class="status-${reservation.status}">${getStatusText(reservation.status)}</span></p>
+                    ${reservation.special_requests ? `<p><strong>Observações:</strong> ${reservation.special_requests}</p>` : ''}
+                </div>
+            `).join('');
+            
+            container.innerHTML = html;
+        }
+        
+        function getStatusText(status) {
+            const statusMap = {
+                'pending': 'Pendente',
+                'confirmed': 'Confirmada',
+                'cancelled': 'Cancelada'
+            };
+            return statusMap[status] || status;
+        }
+    </script>
+    
+    <style>
+        .dashboard-page {
+            margin-top: 80px;
+            padding: 3rem 0;
+            min-height: calc(100vh - 80px);
+        }
+        
+        .dashboard-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .dashboard-header h1 {
+            color: #b91c1c;
+            margin-bottom: 0.5rem;
+        }
+        
+        .dashboard-content {
+            display: flex;
+            flex-direction: column;
+            gap: 3rem;
+        }
+        
+        .account-section,
+        .reservations-section {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        
+        .account-info {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .info-item {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .info-item label {
+            font-weight: 600;
+            min-width: 150px;
+            color: #374151;
+        }
+        
+        .reservation-card {
+            border: 1px solid #e5e7eb;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+        
+        .status-pending { color: #f59e0b; }
+        .status-confirmed { color: #10b981; }
+        .status-cancelled { color: #ef4444; }
+        
+        @media (max-width: 768px) {
+            .section-header {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: stretch;
+            }
+            
+            .info-item {
+                flex-direction: column;
+                gap: 0.25rem;
+            }
+            
+            .info-item label {
+                min-width: auto;
+            }
+        }
+    </style>
+</body>
+</html>
