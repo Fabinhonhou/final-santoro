@@ -600,6 +600,160 @@ app.post("/api/contact", async (req, res) => {
   }
 })
 
+// Reservations API
+app.post("/api/reservations", optionalAuth, async (req, res) => {
+  try {
+    console.log("=== CRIANDO RESERVA ===")
+    const { name, email, phone, date, time, guests, specialRequests } = req.body
+
+    // Validate input
+    if (!name || !email || !phone || !date || !time || !guests) {
+      return res.status(400).json({
+        success: false,
+        message: "Todos os campos obrigatórios devem ser preenchidos",
+      })
+    }
+
+    // Validar formato do email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({
+        success: false,
+        message: "Por favor, insira um email válido",
+      })
+    }
+
+    // Verificar se a data não é no passado
+    const reservationDate = new Date(date)
+    const today = new Date()
+    today.setHours(0, 0, 0, 0)
+
+    if (reservationDate < today) {
+      return res.status(400).json({
+        success: false,
+        message: "A data da reserva não pode ser no passado",
+      })
+    }
+
+    console.log("📋 Dados da reserva:", {
+      name,
+      email,
+      phone,
+      date,
+      time,
+      guests,
+      specialRequests,
+    })
+
+    // Inserir reserva no banco
+    const [result] = await db.execute(
+      `INSERT INTO reservations (user_id, name, email, phone, date, time, guests, special_requests, status) 
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'pending')`,
+      [
+        req.user ? req.user.userId : null, // user_id se estiver logado
+        name,
+        email,
+        phone,
+        date,
+        time,
+        guests,
+        specialRequests || null,
+      ],
+    )
+
+    console.log("✅ Reserva criada com ID:", result.insertId)
+
+    res.status(201).json({
+      success: true,
+      message: "Reserva criada com sucesso!",
+      reservationId: result.insertId,
+    })
+  } catch (error) {
+    console.error("❌ Erro ao criar reserva:", error)
+    res.status(500).json({
+      success: false,
+      message: "Erro interno do servidor",
+    })
+  }
+})
+
+// Get user reservations
+app.get("/api/reservations", authenticateToken, async (req, res) => {
+  try {
+    console.log("=== BUSCANDO RESERVAS DO USUÁRIO ===")
+    console.log("User ID:", req.user.userId)
+
+    const [reservations] = await db.execute(
+      `SELECT id, name, email, phone, date, time, guests, special_requests, status, created_at 
+       FROM reservations 
+       WHERE user_id = ? 
+       ORDER BY date DESC, time DESC`,
+      [req.user.userId],
+    )
+
+    console.log("✅ Reservas encontradas:", reservations.length)
+
+    res.json({
+      success: true,
+      reservations,
+    })
+  } catch (error) {
+    console.error("❌ Erro ao buscar reservas:", error)
+    res.status(500).json({
+      success: false,
+      message: "Erro interno do servidor",
+    })
+  }
+})
+
+// Cancel reservation
+app.put("/api/reservations/:id/cancel", authenticateToken, async (req, res) => {
+  try {
+    const reservationId = req.params.id
+    console.log("=== CANCELANDO RESERVA ===")
+    console.log("Reservation ID:", reservationId)
+    console.log("User ID:", req.user.userId)
+
+    // Verificar se a reserva pertence ao usuário
+    const [reservations] = await db.execute("SELECT id, status FROM reservations WHERE id = ? AND user_id = ?", [
+      reservationId,
+      req.user.userId,
+    ])
+
+    if (reservations.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Reserva não encontrada",
+      })
+    }
+
+    const reservation = reservations[0]
+
+    if (reservation.status === "cancelled") {
+      return res.status(400).json({
+        success: false,
+        message: "Esta reserva já foi cancelada",
+      })
+    }
+
+    // Cancelar reserva
+    await db.execute("UPDATE reservations SET status = 'cancelled' WHERE id = ?", [reservationId])
+
+    console.log("✅ Reserva cancelada com sucesso")
+
+    res.json({
+      success: true,
+      message: "Reserva cancelada com sucesso",
+    })
+  } catch (error) {
+    console.error("❌ Erro ao cancelar reserva:", error)
+    res.status(500).json({
+      success: false,
+      message: "Erro interno do servidor",
+    })
+  }
+})
+
 // Rota específica para contato.html
 app.get("/contato.html", (req, res) => {
   res.sendFile(path.join(__dirname, "../contato.html"))

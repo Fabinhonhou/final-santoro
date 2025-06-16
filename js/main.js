@@ -1,92 +1,68 @@
-// Main JavaScript file for Santoro's Restaurant
-console.log("🍝 Santoro's Restaurant - Main JS loaded")
+// Script principal para todas as páginas
+console.log("🍝 Santoro's Restaurant - Main.js carregado")
 
 document.addEventListener("DOMContentLoaded", () => {
-  console.log("🚀 DOM loaded, initializing main.js")
+  console.log("🚀 DOM carregado, inicializando main.js")
 
-  // Initialize mobile menu
-  initializeMobileMenu()
+  // Inicializar funcionalidades básicas
+  initializeNavigation()
+  initializeScrollEffects()
+  initializeButtons()
 
-  // Initialize smooth scrolling
-  initializeSmoothScrolling()
-
-  // Initialize form validations
-  initializeFormValidations()
-
-  // Initialize animations
-  initializeAnimations()
-
-  // Check authentication status
-  updateNavigationBasedOnAuth()
+  // Aguardar um pouco para garantir que auth.js carregou
+  setTimeout(() => {
+    // Verificar se auth.js está disponível e atualizar navegação
+    if (window.auth && typeof window.auth.updateNavigation === "function") {
+      console.log("🔄 Atualizando navegação via auth.js")
+      window.auth.updateNavigation()
+    } else {
+      console.log("⚠️ Auth.js não disponível, usando fallback")
+      updateBasicNavigation()
+    }
+  }, 100)
 })
 
-// Mobile Menu Functionality
-function initializeMobileMenu() {
-  const mobileMenuBtn = document.getElementById("menu-btn")
-  const mobileMenu = document.getElementById("mobile-menu")
-  const hamburger = document.querySelector(".hamburger")
-  const navMenu = document.querySelector(".nav-menu")
+function initializeNavigation() {
+  console.log("🧭 Inicializando navegação...")
 
-  // Handle mobile menu button (if exists)
-  if (mobileMenuBtn && mobileMenu) {
-    mobileMenuBtn.addEventListener("click", function () {
-      mobileMenu.classList.toggle("hidden")
-      this.classList.toggle("active")
-    })
-  }
+  // Menu mobile
+  const hamburger = document.getElementById("hamburger")
+  const navMenu = document.getElementById("navMenu")
 
-  // Handle hamburger menu (if exists)
   if (hamburger && navMenu) {
+    console.log("📱 Configurando menu mobile")
     hamburger.addEventListener("click", () => {
       hamburger.classList.toggle("active")
       navMenu.classList.toggle("active")
+      console.log("📱 Menu mobile toggled")
     })
 
-    // Close menu when clicking on a link
-    const navLinks = navMenu.querySelectorAll("a")
+    // Fechar menu ao clicar em um link
+    const navLinks = navMenu.querySelectorAll(".nav-link")
     navLinks.forEach((link) => {
       link.addEventListener("click", () => {
         hamburger.classList.remove("active")
         navMenu.classList.remove("active")
       })
     })
+  } else {
+    console.log("⚠️ Elementos do menu mobile não encontrados")
   }
-
-  // Close mobile menu when clicking outside
-  document.addEventListener("click", (e) => {
-    if (mobileMenu && !mobileMenuBtn?.contains(e.target) && !mobileMenu.contains(e.target)) {
-      mobileMenu.classList.add("hidden")
-      mobileMenuBtn?.classList.remove("active")
-    }
-
-    if (navMenu && !hamburger?.contains(e.target) && !navMenu.contains(e.target)) {
-      hamburger?.classList.remove("active")
-      navMenu?.classList.remove("active")
-    }
-  })
 }
 
-// Smooth Scrolling for anchor links
-function initializeSmoothScrolling() {
+function initializeScrollEffects() {
+  // Efeitos de scroll suaves
   const links = document.querySelectorAll('a[href^="#"]')
 
   links.forEach((link) => {
     link.addEventListener("click", function (e) {
       const href = this.getAttribute("href")
-
-      // Skip if it's just "#"
       if (href === "#") return
 
       const target = document.querySelector(href)
-
       if (target) {
         e.preventDefault()
-
-        const headerHeight = document.querySelector("header")?.offsetHeight || 80
-        const targetPosition = target.offsetTop - headerHeight
-
-        window.scrollTo({
-          top: targetPosition,
+        target.scrollIntoView({
           behavior: "smooth",
         })
       }
@@ -94,224 +70,93 @@ function initializeSmoothScrolling() {
   })
 }
 
-// Form Validations
-function initializeFormValidations() {
-  const forms = document.querySelectorAll("form")
+function initializeButtons() {
+  // Configurar botões da página inicial
+  const reservaBtn = document.querySelector(".btn.red")
+  const cardapioBtn = document.querySelector(".btn.beige")
 
-  forms.forEach((form) => {
-    // Add real-time validation
-    const inputs = form.querySelectorAll("input, textarea, select")
-
-    inputs.forEach((input) => {
-      // Validate on blur
-      input.addEventListener("blur", function () {
-        validateField(this)
-      })
-
-      // Clear validation on focus
-      input.addEventListener("focus", function () {
-        clearFieldValidation(this)
-      })
+  if (reservaBtn) {
+    reservaBtn.addEventListener("click", (e) => {
+      e.preventDefault()
+      window.location.href = "reservas.html"
     })
+  }
 
-    // Enhanced form submission
-    form.addEventListener("submit", function (e) {
-      if (!validateForm(this)) {
-        e.preventDefault()
-      }
+  if (cardapioBtn) {
+    cardapioBtn.addEventListener("click", (e) => {
+      e.preventDefault()
+      window.location.href = "cardapio.html"
     })
-  })
-}
-
-// Field validation
-function validateField(field) {
-  const value = field.value.trim()
-  const type = field.type
-  const required = field.hasAttribute("required")
-
-  // Clear previous validation
-  clearFieldValidation(field)
-
-  // Check if required field is empty
-  if (required && !value) {
-    showFieldError(field, "Este campo é obrigatório")
-    return false
-  }
-
-  // Email validation
-  if (type === "email" && value) {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    if (!emailRegex.test(value)) {
-      showFieldError(field, "Por favor, insira um email válido")
-      return false
-    }
-  }
-
-  // Phone validation (basic)
-  if (type === "tel" && value) {
-    const phoneRegex = /^[\d\s\-$$$$+]{10,}$/
-    if (!phoneRegex.test(value)) {
-      showFieldError(field, "Por favor, insira um telefone válido")
-      return false
-    }
-  }
-
-  // Password validation
-  if (type === "password" && value && value.length < 8) {
-    showFieldError(field, "A senha deve ter pelo menos 8 caracteres")
-    return false
-  }
-
-  return true
-}
-
-// Show field error
-function showFieldError(field, message) {
-  field.classList.add("error")
-
-  // Remove existing error message
-  const existingError = field.parentNode.querySelector(".field-error")
-  if (existingError) {
-    existingError.remove()
-  }
-
-  // Add error message
-  const errorDiv = document.createElement("div")
-  errorDiv.className = "field-error"
-  errorDiv.textContent = message
-  errorDiv.style.color = "#640E0E"
-  errorDiv.style.fontSize = "0.875rem"
-  errorDiv.style.marginTop = "0.25rem"
-
-  field.parentNode.appendChild(errorDiv)
-}
-
-// Clear field validation
-function clearFieldValidation(field) {
-  field.classList.remove("error")
-
-  const errorDiv = field.parentNode.querySelector(".field-error")
-  if (errorDiv) {
-    errorDiv.remove()
   }
 }
 
-// Validate entire form
-function validateForm(form) {
-  const fields = form.querySelectorAll("input, textarea, select")
-  let isValid = true
+function updateBasicNavigation() {
+  console.log("🔄 Atualizando navegação básica...")
 
-  fields.forEach((field) => {
-    if (!validateField(field)) {
-      isValid = false
-    }
-  })
-
-  return isValid
-}
-
-// Initialize animations and scroll effects
-function initializeAnimations() {
-  // Fade in animation for elements
-  const observerOptions = {
-    threshold: 0.1,
-    rootMargin: "0px 0px -50px 0px",
-  }
-
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.style.opacity = "1"
-        entry.target.style.transform = "translateY(0)"
-      }
-    })
-  }, observerOptions)
-
-  // Observe elements with fade-in class
-  const fadeElements = document.querySelectorAll(".fade-in, .dish-card, .testimonial-card")
-  fadeElements.forEach((el) => {
-    el.style.opacity = "0"
-    el.style.transform = "translateY(20px)"
-    el.style.transition = "opacity 0.6s ease, transform 0.6s ease"
-    observer.observe(el)
-  })
-}
-
-// Update navigation based on authentication status
-function updateNavigationBasedOnAuth() {
-  // Esta função agora apenas verifica se auth.js está carregado
-  // A lógica principal está no auth.js para evitar duplicação
-
-  if (window.auth && typeof window.auth.updateNavigation === "function") {
-    // Se auth.js está carregado, usar sua função
-    return
-  }
-
-  // Fallback básico se auth.js não estiver carregado
   const session = localStorage.getItem("userSession")
   const isLoggedIn = session !== null
 
-  const loginLinks = document.querySelectorAll('a[href*="login"]')
-  const registerLinks = document.querySelectorAll('a[href*="registro"]')
+  const navMenu = document.getElementById("navMenu")
+  if (!navMenu) {
+    console.log("⚠️ NavMenu não encontrado para navegação básica")
+    return
+  }
+
+  // Remover links existentes de dashboard/logout
+  const existingDashboard = navMenu.querySelector(".dashboard-link")
+  const existingLogout = navMenu.querySelector(".logout-link")
+  if (existingDashboard) existingDashboard.parentElement.remove()
+  if (existingLogout) existingLogout.parentElement.remove()
+
+  const loginLink = document.getElementById("loginLink")
+  const registerLink = document.getElementById("registerLink")
 
   if (isLoggedIn) {
-    loginLinks.forEach((link) => (link.style.display = "none"))
-    registerLinks.forEach((link) => (link.style.display = "none"))
+    console.log("👤 Usuário logado - navegação básica")
+
+    // Esconder login e registro
+    if (loginLink) loginLink.style.display = "none"
+    if (registerLink) registerLink.style.display = "none"
+
+    // Adicionar dashboard e logout
+    const dashboardItem = document.createElement("li")
+    dashboardItem.className = "nav-item"
+    dashboardItem.innerHTML = '<a href="dashboard.html" class="nav-link dashboard-link">DASHBOARD</a>'
+
+    const logoutItem = document.createElement("li")
+    logoutItem.className = "nav-item"
+    logoutItem.innerHTML = '<a href="#" class="nav-link logout-link" style="color: #b91c1c;">SAIR</a>'
+
+    logoutItem.querySelector("a").addEventListener("click", (e) => {
+      e.preventDefault()
+      localStorage.removeItem("userSession")
+      console.log("🚪 Logout realizado")
+      window.location.reload()
+    })
+
+    navMenu.appendChild(dashboardItem)
+    navMenu.appendChild(logoutItem)
   } else {
-    loginLinks.forEach((link) => (link.style.display = ""))
-    registerLinks.forEach((link) => (link.style.display = ""))
+    console.log("👤 Usuário não logado - navegação básica")
+
+    // Mostrar login e registro
+    if (loginLink) loginLink.style.display = ""
+    if (registerLink) registerLink.style.display = ""
   }
 }
 
-// Global logout function
+// Função de logout global
 function logout() {
-  localStorage.removeItem("userSession")
-  alert("Logout realizado com sucesso!")
-  window.location.href = "index.html"
-}
-
-// Utility functions
-function showMessage(elementId, message, type = "info") {
-  const element = document.getElementById(elementId)
-  if (element) {
-    element.textContent = message
-    element.className = `message ${type}`
-    element.style.display = "block"
-
-    // Auto-hide after 5 seconds
-    setTimeout(() => {
-      element.style.display = "none"
-    }, 5000)
+  if (window.auth && typeof window.auth.logout === "function") {
+    window.auth.logout()
+  } else {
+    localStorage.removeItem("userSession")
+    console.log("🚪 Logout realizado via fallback")
+    window.location.href = "index.html"
   }
 }
 
-function formatDate(dateString) {
-  const date = new Date(dateString)
-  return date.toLocaleDateString("pt-BR")
-}
-
-function formatTime(timeString) {
-  return timeString
-}
-
-function formatPhone(phone) {
-  // Basic phone formatting for Brazilian phones
-  const cleaned = phone.replace(/\D/g, "")
-
-  if (cleaned.length === 11) {
-    return `(${cleaned.slice(0, 2)}) ${cleaned.slice(2, 7)}-${cleaned.slice(7)}`
-  } else if (cleaned.length === 10) {
-    return `(${cleaned.slice(0, 2)}) ${cleaned.slice(2, 6)}-${cleaned.slice(6)}`
-  }
-
-  return phone
-}
-
-// Export functions for global use
+// Exportar para uso global
 window.logout = logout
-window.showMessage = showMessage
-window.formatDate = formatDate
-window.formatTime = formatTime
-window.formatPhone = formatPhone
 
-console.log("✅ Main.js initialized successfully")
+console.log("✅ Main.js inicializado com sucesso")
