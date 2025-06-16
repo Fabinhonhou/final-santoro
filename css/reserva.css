@@ -1,11 +1,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Albert+Sans:ital,wght@0,100..900;1,100..900&display=swap');
 
-html{
-    background-color: #fdf4ef;
-    font-family: Albert Sans, sans-serif;
+/* Reset e Base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
-body{
-    overflow-x: hidden;
+
+body {
+    font-family: 'Albert Sans', sans-serif;
+    color: #333;
+    background-color: #fdf4ef;
+    line-height: 1.6;
 }
 
 
@@ -134,17 +140,42 @@ main .mid-image img {
 }
 
 section.hero {
-    background-image: url(/images/imgreserva.png);
-    background-repeat: no-repeat;
-    background-size: 100%;
+  background-image: url(/img/reservas.jpg);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
-    background-color: #fdf4ef;
-    padding: 100px ;
-  }
+
+  width: 98.8vw;
+  height: 90vh; /* Altura reduzida como banner */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  position: relative;
+  font-family: "Albert Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: normal;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.4); /* escurece imagem */
+  z-index: 1;
+}
+
+.hero .text {
+  position: relative;
+  z-index: 2;
+  color: white;
+  text-align: center;
+  padding: 20px;
+}
 
   section.hero div.text {
     
@@ -152,18 +183,29 @@ section.hero {
     max-width: 700px;
     text-align: center;
     margin: 2px;
+      font-family: "Albert Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: normal;
   }
 
   .hero .text h1 {
     color: #ffffff;
-    font-size: 6rem;
+    font-size: 4rem;
     text-align: center;
     background-color: #640E0E;
     opacity: 90%;
+  font-family: "Albert Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 200;
+  font-style: normal;
   }
 
   section.hero div.text p {
-    margin: 10px 0 20px;
+   
+    font-size: 1.5rem;
+    font-style: italic;
+    font-weight: 300;
   }
 
   section.hero div.text button {
@@ -202,20 +244,31 @@ section.hero {
     margin-top: 50px;
 }
 
-.address .txt-address{
+.address .txt-address {
   margin-left: 50px;
-  font-size: 20px;
+  font-size: 25px;
+  
+  
+
+}
+
+.horario{
+  right: 50px;
 }
 
 .text-time h1{
   margin-left: 55px;
   font-weight: 900;
-  font-size: 30px;
+  font-size: 25px;
+  font-family: "Albert Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 600;
+  font-style: normal;
 }
 .text-time p{
   margin-left: 55px;
   margin-right: 60%;
-  font-size: 30px;
+  font-size: 25px;
 }
 
 .about {
@@ -302,8 +355,8 @@ section.hero {
   position: absolute; /* ou absolute, se preferir relativo ao body */
   top: 280px;       /* ajuste a altura desejada */
   right: -1px;         /* cola na lateral direita */
-  width: 550px;     /* controla o tamanho */
-  height: auto;
+  width: 650px;     /* controla o tamanho */
+  height: 400px;
   z-index: 999;
 }
 

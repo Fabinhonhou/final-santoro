@@ -1,4 +1,16 @@
-/* Navbar Styles - Design Original */
+@import url('https://fonts.googleapis.com/css2?family=Albert+Sans:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,900&display=swap');
+
+/* Atualize as declarações de font-family para usar aspas */
+html{
+    background-color: #fdf4ef;
+    font-family: 'Albert Sans', sans-serif;
+}
+
+body{
+    overflow-x: hidden;
+}
+
+/* Navbar Styles - Design Original do Cardápio */
 .navbar {
   background-color: #fdf4ef;
   padding: 10px 30px;
@@ -24,8 +36,8 @@
 }
 
 .nav-logo a {
-  font-size: 1.8rem;
-  font-weight: 700;
+  font-size: 1.6rem;
+  font-weight: 200;
   color: #640e0e;
   text-decoration: none;
   font-family: "Albert Sans", sans-serif;
@@ -49,7 +61,7 @@
   position: relative;
   text-decoration: none;
   color: #640e0e;
-  font-weight: 500;
+  font-weight: 200;
   font-family: "Albert Sans", sans-serif;
   transition: color 0.3s ease;
   padding-bottom: 4px;
@@ -161,6 +173,272 @@
   }
 }
 
+/* REMOVENDO OS ESTILOS ANTIGOS DO HEADER - mantendo apenas para compatibilidade se necessário */
+.logo-container {
+    flex: 1;
+    display: flex;
+    justify-content: flex-start;
+    padding-left: 40px;
+    font-family: 'Albert Sans', sans-serif;
+    font-weight: 400;
+}
+
+header img {
+    max-width: 150px;
+    padding-top: 5px;
+}
+
+/* Mobile Menu Button - mantendo para compatibilidade */
+.mobile-menu-btn {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+    padding: 10px;
+}
+
+.mobile-menu-btn span {
+    width: 25px;
+    height: 3px;
+    background-color: #640E0E;
+    margin: 3px 0;
+    transition: 0.3s;
+}
+
+.mobile-nav {
+    display: none;
+    position: fixed;
+    top: 70px;
+    left: 0;
+    width: 100%;
+    background-color: #fff5f0;
+    border-bottom: 1px solid #ccc;
+    z-index: 999;
+}
+
+.mobile-nav a {
+    display: block;
+    padding: 15px 30px;
+    color: #640E0E;
+    text-decoration: none;
+    border-bottom: 1px solid #eee;
+    transition: background-color 0.3s ease;
+}
+
+.mobile-nav a:hover {
+    background-color: #f0e6e1;
+}
+
+  main .mid-image {
+    width: 100%; /* Ajusta a largura do contêiner */
+    height: auto; /* Mantém a proporção da imagem */
+    overflow: hidden /* Garante que a imagem não ultrapasse os limites do contêiner */
+}
+
+main .mid-image img {
+    width: 100%; /* Faz a imagem ocupar 100% da largura do contêiner */
+    height: 100%; /* Faz a imagem ocupar 100% da altura do contêiner */
+    object-fit: cover; /* Ajusta a imagem para cobrir o contêiner sem distorcer */
+}
+
+section.hero {
+    background-image: url(/images/imgreserva.png);
+    background-repeat: no-repeat;
+    background-size: 100%;
+
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    background-color: #fdf4ef;
+    padding: 100px ;
+  }
+
+  section.hero div.text {
+    
+    
+    max-width: 700px;
+    text-align: center;
+    margin: 2px;
+  }
+.hero .text h1 {
+    color: #ffffff;
+    font-size: 6rem;
+    text-align: center;
+    background-color: #640E0E;
+    opacity: 90%;
+    font-family: 'Albert Sans', sans-serif;
+    font-weight: 300; /* adicione esta linha */
+}
+
+  section.hero div.text p {
+    margin: 10px 0 20px;
+  }
+
+  section.hero div.text button {
+    padding: 10px 20px;
+    background-color: #a52a2a;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  section.hero img {
+    max-width: 300px;
+    border-radius: 15px;
+  }
+
+  .img{
+    display: flex;
+    margin-left: 300px;
+    height: 800px;
+  }
+  
+  .address .img-address {
+    width: 50%;  /* Ajusta a largura do contêiner */
+    height: auto;  /* A altura se ajusta automaticamente */
+    position: relative;  /* Isso ajuda a manter a estrutura correta */
+    overflow: hidden;  /* Garante que nada saia do contêiner */
+    margin-left: 40px ;
+}
+
+.address .img-address img {
+    width: 20%;  /* A imagem ocupa 100% da largura do contêiner */
+    height: auto;  /* A imagem ocupa 100% da altura do contêiner */
+    object-fit: cover;  /* A imagem preenche o contêiner sem distorcer */
+    display: block;  /* Remove qualquer espaçamento extra abaixo da imagem */
+    margin-top: 50px;
+}
+
+.address .txt-address{
+  margin-left: 50px;
+  font-size: 20px;
+}
+
+.text-time h1{
+    margin-left: 55px;
+    font-weight: 400; /* mudou de 900 para 400 */
+    font-size: 30px;
+    font-family: 'Albert Sans', sans-serif;
+}
+.text-time p{
+  margin-left: 55px;
+  margin-right: 60%;
+  font-size: 30px;
+}
+
+.about {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 50px;
+  /* border: solid red; */
+}
+
+.about h1{
+    font-family: 'Albert Sans', sans-serif;
+    font-weight: 400; /* mudou de 900 para 400 */
+}
+
+
+.img-about{
+  width: 50%;
+  /* border: #640E0E solid; */
+}
+
+.img-about img {
+  width: 100%;
+}
+
+.txt-about{
+  width: 50%;
+  font-size: 23px;
+  padding-top: 150px;
+  /* border: solid blue; */
+}
+
+.where {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 5px;
+  /* border: solid green; */
+}
+.where h1{
+    font-family: 'Albert Sans', sans-serif;
+    font-weight: 400; /* mudou de 900 para 400 */
+    font-size: 30px;
+}
+
+.txt-where {
+  width: 50%;
+  text-align: right;
+  margin-top: 190px;
+  font-size: 23px;
+  /* border: solid black; */
+}
+
+.location {
+  width: fit-content;
+  height: max-content;
+  margin-bottom: 5px;
+  margin-top: 40px;
+}
+
+
+/* Container principal precisa ser relativo */
+.container {
+  position: relative;
+}
+
+.imagem-decorativa {
+  position: absolute;  /* faz a imagem sair do fluxo do conteúdo */
+  top: 0px;          /* ajuste a posição vertical */
+  right: 0;            /* cola na lateral direita */
+  z-index: 1;
+}
+
+.imagem-decorativa img {
+  width: 700px;        /* controle do tamanho */
+  height: auto;
+  display: block;
+}
+
+.frigideira {
+  position: absolute; /* ou absolute, se preferir relativo ao body */
+  top: 280px;       /* ajuste a altura desejada */
+  right: -1px;         /* cola na lateral direita */
+  width: 550px;     /* controla o tamanho */
+  height: auto;
+  z-index: 999;
+}
+
+
+.about {
+  padding-top: 500px; /* ou ajuste esse valor até a imagem ficar totalmente visível */
+}
+
+.btn-reserva {
+  display: block;
+  position: absolute;    /* posiciona fora do fluxo normal */
+  top: 100px;            /* ajuste conforme necessário */
+  right: 40px;           /* cola à direita */
+  width: 500px;          /* controla o tamanho do botão */
+  z-index: 10;           /* fica acima do conteúdo se necessário */
+}
+
+.btn-reserva img {
+  width: 100%;
+  height: auto;
+  border-radius: 30px;   /* bordas arredondadas */
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2); /* sombra opcional */
+  transition: transform 0.2s ease;
+  cursor: pointer;
+}
+
+.btn-reserva img:hover {
+  transform: scale(1.05); /* leve efeito de "zoom" ao passar o mouse */
+}
+
 /* Variáveis CSS */
 :root {
   --burgundy: #8b0000;
@@ -199,22 +477,20 @@
 
 /* Logo */
 .footer-logo {
-  font-family: 'Albert Sans', sans-serif;
-  font-size: 2rem;
-  font-weight: 700;
-  color: var(--gold);
-  margin-bottom: 16px;
-  margin-top: -px;
+    font-family: 'Albert Sans', sans-serif;
+    font-size: 2rem;
+    font-weight: 700; /* mudou de 400 para 700 */
+    color: var(--gold);
+    margin-bottom: 16px;
 }
 
 /* Descrição */
 .footer-description {
-   font-family: "Albert Sans", sans-serif;
+  font-family: "Albert Sans", sans-serif;
   font-optical-sizing: auto;
   font-weight: 400;
   font-style: normal;
   font-size: 16px;
-
   margin-top: -10px;
   color: #000000;
   margin-bottom: 16px;
@@ -225,11 +501,9 @@
 .social-links {
   display: flex;
   gap: 16px;
-  
 }
 
 .social-link {
-  
   color: #000000;
   transition: all 0.3s ease;
   text-decoration: none;
@@ -247,14 +521,13 @@
 
 /* Títulos das Seções */
 .footer-title {
-  color: var(--gold);
-  margin-bottom: 13px;
-  font-size: 1.1rem;
-
-    font-family: "Albert Sans", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 900;
-  font-style: normal;
+    color: var(--gold);
+    margin-bottom: 13px;
+    font-size: 1.1rem;
+    font-family: 'Albert Sans', sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 900; /* mudou de 400 para 900 */
+    font-style: normal;
 }
 
 /* Links do Footer */
@@ -262,8 +535,7 @@
   list-style: none;
   padding: 0;
   margin: 0;
-
-   font-family: "Albert Sans", sans-serif;
+  font-family: "Albert Sans", sans-serif;
   font-optical-sizing: auto;
   font-weight: 400;
   font-style: normal;
@@ -289,8 +561,7 @@
   padding: 0;
   margin: 0;
   color: #000000;
-
-   font-family: "Albert Sans", sans-serif;
+  font-family: "Albert Sans", sans-serif;
   font-optical-sizing: auto;
   font-weight: 400;
   font-style: normal;
@@ -307,8 +578,7 @@
   margin: 0;
   color: #000000;
   font-size: 0.9rem;
-
-   font-family: "Albert Sans", sans-serif;
+  font-family: "Albert Sans", sans-serif;
   font-optical-sizing: auto;
   font-weight: 400;
   font-style: normal;
@@ -326,13 +596,12 @@
 }
 
 .footer-bottom p {
-  color: #000000;
-  margin: 0;
-
-    font-family: "Albert Sans", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 500;
-  font-style: normal;
+    color: #000000;
+    margin: 0;
+    font-family: 'Albert Sans', sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 500; /* mudou de 400 para 500 */
+    font-style: normal;
 }
 
 /* Responsividade */
@@ -369,43 +638,44 @@
     font-size: 1.5rem;
   }
 }
+
 @media (max-width: 480px) {
-    .conteudo h1 {
-        font-size: 2rem;
-    }
-    
-    .section-header h2 {
-        font-size: 1.8rem;
-    }
-    
-    .wine-item {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 10px;
-    }
-    
-    .wine-info {
-        margin-right: 0;
-    }
-    
-    .form-container {
-        padding: 25px;
-    }
+  .conteudo h1 {
+    font-size: 2rem;
+  }
+  
+  .section-header h2 {
+    font-size: 1.8rem;
+  }
+  
+  .wine-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  
+  .wine-info {
+    margin-right: 0;
+  }
+  
+  .form-container {
+    padding: 25px;
+  }
 }
 
 /* Smooth Scrolling */
 html {
-    scroll-behavior: smooth;
+  scroll-behavior: smooth;
 }
 
 /* Animations */
 @keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

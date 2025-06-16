@@ -1,62 +1,64 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reservas Servidor</title>
-    <link rel="stylesheet" href="css/reservas-servidor.css">
+    <link rel="stylesheet" href="styleserv.css">
 </head>
+
 <body>
-    <nav class="navBar">
-        <div class="logo">
-            <img src="assets/logo.png" alt="Logo">
-        </div>
-        <div class="search-bar">
-            <input type="text" placeholder="Pesquisar...">
-            <button>Pesquisar</button>
-        </div>
-        <div class="user-profile">
-            <img src="assets/user-profile.jpg" alt="User Profile">
-            <span>Nome do Usuário</span>
-        </div>
-    </nav>
+    <div class="navBar">
+        <a href="inicio.html"><h1>PAGINA INICIAL</h1></a>
+        <a href="ReservasServidor.html"><h1>RESERVAS</h1></a>
+        <a href="ClientesServidor.html"><h1>CLIENTES</h1></a>
+    </div>
 
     <div class="data-reservas">
-        <h1 id="current-date">Carregando data...</h1>
+        <h1>dia/mes</h1>
     </div>
 
     <!-- Adicionando a estrutura onde o quadrado grande vai para a esquerda e a grid vai para a direita -->
     <div class="container">
-        <div class="grid" id="tables-grid">
-            <!-- Mesas serão carregadas dinamicamente -->
-        </div>
+        <div class="grid">
+    <div class="quadrado"><span class="numero">01<br><span class="label">Mesa</span></span></div>
+    <div class="quadrado"><span class="numero">02<br><span class="label">Mesa</span></span></div>
+    <div class="quadrado"><span class="numero">03<br><span class="label">Mesa</span></span></div>
+    <div class="quadrado"><span class="numero">04<br><span class="label">Mesa</span></span></div>
+    <div class="quadrado"><span class="numero">05<br><span class="label">Mesa</span></span></div>
+    <div class="quadrado"><span class="numero">06<br><span class="label">Mesa</span></span></div>
+    <div class="quadrado"><span class="numero">07<br><span class="label">Mesa</span></span></div>
+    <div class="quadrado"><span class="numero">08<br><span class="label">Mesa</span></span></div>
+    <div class="quadrado"><span class="numero">09<br><span class="label">Mesa</span></span></div>
+    <div class="quadrado"><span class="numero">10<br><span class="label">Mesa</span></span></div>
+    <div class="quadrado"><span class="numero">11<br><span class="label">Mesa</span></span></div>
+    <div class="quadrado"><span class="numero">12<br><span class="label">Mesa</span></span></div>
+    <div class="quadrado"><span class="numero">13<br><span class="label">Mesa</span></span></div>
+    <div class="quadrado"><span class="numero">14<br><span class="label">Mesa</span></span></div>
+    <div class="quadrado"><span class="numero">15<br><span class="label">Mesa</span></span></div>
+    <div class="quadrado"><span class="numero">16<br><span class="label">Mesa</span></span></div>
+</div>
 
         <div class="grid">
-            <div class="quadrado grande">
-                <div class="grid-interna">
-                    <div class="info mesas" id="total-tables"><span class="numero">16<br><span class="label">MESAS</span></span></div>
-                    <div class="info almoco" id="lunch-reservations"><span class="numero">00<br><span class="label">ALMOÇO</span></span></div>
-                    <div class="info livres" id="available-tables"><span class="numero">00<br><span class="label">LIVRES</span></span></div>
-                    <div class="info jantar" id="dinner-reservations"><span class="numero">00<br><span class="label">JANTAR</span></span></div>
-                    <div class="info ocupadas" id="occupied-tables"><span class="numero">00<br><span class="label">OCUPADAS</span></span></div>
-                    <div class="info comercial" id="business-reservations"><span class="numero">00<br><span class="label">COMERCIAL</span></span></div>
-                </div>
-                <div class="reservar-mesa" onclick="openNewReservationModal()">RESERVAR MESA</div>
+  <div class="quadrado grande">
+    <div class="grid-interna">
+      <div class="info mesas"><span class="numero">16<br><span class="label">MESAS</span></span></div>
+      <div class="info almoco"><span class="numero">00<br><span class="label">ALMOÇO</span></span></div>
+      <div class="info livres"><span class="numero">00<br><span class="label">LIVRES</span></span></div>
+      <div class="info jantar"><span class="numero">00<br><span class="label">JANTAR</span></span></div>
+      <div class="info ocupadas"><span class="numero">00<br><span class="label">OCUPADAS</span></span></div>
+      <div class="info comercial"><span class="numero">00<br><span class="label">COMERCIAL</span></span></div>
+    </div>
+    <div class="reservar-mesa">RESERVAR MESA</div>
+  </div>
+</div>
+
+
             </div>
         </div>
     </div>
 
-    <!-- Modal para detalhes da reserva -->
-    <div id="reservation-modal" style="display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5);">
-        <div style="background-color: white; margin: 5% auto; padding: 20px; border-radius: 10px; width: 80%; max-width: 600px; position: relative;">
-            <span onclick="closeReservationModal()" style="color: #aaa; float: right; font-size: 28px; font-weight: bold; cursor: pointer;">&times;</span>
-            <h2 id="modal-title">Detalhes da Reserva</h2>
-            <div id="modal-content">
-                <!-- Conteúdo será carregado dinamicamente -->
-            </div>
-        </div>
-    </div>
 
-    <script src="js/reservas-servidor.js"></script>
 </body>
+
 </html>

@@ -1,29 +1,19 @@
+/* Importar a fonte Albert Sans do Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Albert+Sans:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
 @font-face {
     font-family: 'Permatha Signature';
-    src: url(./fonts/Permatha\ Signature.otf);
+    src: url(/fonts/Permatha\ Signature.otf);
 }
-
-
-
 
 /* ======= Estilos gerais ======= */
 body {
-
     margin: 0;
-    font-family: 'Arial', sans-serif;
+    font-family: 'Albert Sans', 'Arial', sans-serif;
     background-color: #fdf4ef;
-    /* Cor de fundo principal */
 }
 
-
-
-body {
-    margin: 0;
-    font-family: sans-serif;
-}
-
-
-
+/* HEADER COM FONTE ESPECÍFICA */
 header {
     background-color: #fdf4ef;
     padding: 10px 30px;
@@ -31,16 +21,16 @@ header {
     top: 0;
     z-index: 1000;
     border-bottom: 1px solid #ccc;
-
     display: flex;
     align-items: center;
     justify-content: space-between;
-
+    width: 100%;
+    box-sizing: border-box;
 }
 
-/* Logo levemente à direita */
+/* Logo container */
 .logo-container {
-    flex: 1;
+    flex: 0 0 auto;
     display: flex;
     justify-content: flex-start;
     padding-left: 40px;
@@ -51,270 +41,61 @@ header img {
     padding-top: 10px;
 }
 
-/* Navbar alinha à direita da logo */
+/* Navbar centralizada à direita */
 header nav {
-    flex: 2;
+    flex: 1;
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
+    align-items: center;
     gap: 30px;
     padding-right: 40px;
 }
 
-header nav a {
-    position: relative;
-    /* necessário para o ::after */
-    text-decoration: none;
-    color: #640E0E;
-    font-weight: 500;
-    /* corrigido para um só */
-    font-family: "Albert Sans", sans-serif;
-    font-optical-sizing: auto;
-    font-style: normal;
-    transition: color 0.9s ease;
-    padding-bottom: 4px;
-    /* espaço para o underline */
+/* APLICAR FONTE ALBERT SANS WEIGHT 200 NA NAVBAR */
+.navbar .nav-link,
+.nav-menu .nav-link,
+.nav-item .nav-link {
+    font-family: "Albert Sans", sans-serif !important;
+    font-optical-sizing: auto !important;
+    font-weight: 200 !important;
+    font-style: normal !important;
 }
 
-header nav a::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    height: 2px;
-    width: 0;
-    background-color: #640E0E;
-    /* mesma cor do texto */
-    transition: width 0.3s ease 0.06s;
-    /* duração 0.3s, delay 0.5s */
-}
-
-header nav a:hover::after {
-    width: 100%;
-}
-
-
-
-/* Torna visível com transição suave */
-#navbar.visible {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-
-
-.pagina-home .johnny img {
-    height: 700px;
-
-}
-
-
-
-/* ======= Navbar ======= */
-/* ======= NAVBAR STYLES ======= */
-.navbar {
-  display: block !important;
-  visibility: visible !important;
-  background-color: #fdf4ef;
-  padding: 10px 30px;
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-  border-bottom: 1px solid #ccc;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.nav-container {
-  display: flex !important;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.nav-logo {
-  flex: 1;
-  display: flex;
-  justify-content: flex-start;
-  padding-left: 40px;
-}
-
-.nav-logo a {
-  font-size: 1.8rem;
-  font-weight: 700;
-  color: #640e0e;
-  text-decoration: none;
-  font-family: "Albert Sans", sans-serif;
-}
-
+/* Se quiser aplicar em toda a navbar */
+.navbar,
+.nav-container,
 .nav-menu {
-  display: flex !important;
-  display: flex;
-  list-style: none;
-  align-items: center;
-  gap: 30px;
-  margin: 0;
-  padding: 0;
-  padding-right: 40px;
+    font-family: "Albert Sans", sans-serif !important;
+    font-optical-sizing: auto !important;
+    font-weight: 200 !important;
+    font-style: normal !important;
 }
 
-.nav-item {
-  list-style: none;
-}
-
-.nav-link {
-  position: relative;
-  text-decoration: none;
-  color: #640e0e;
-  font-weight: 500;
-  font-family: "Albert Sans", sans-serif;
-  transition: color 0.3s ease;
-  padding-bottom: 4px;
-}
-
-.nav-link::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  height: 2px;
-  width: 0;
-  background-color: #640e0e;
-  transition: width 0.3s ease;
-}
-
-.nav-link:hover::after,
-.nav-link.active::after {
-  width: 100%;
-}
-
-.nav-link.active {
-  color: #640e0e;
-}
-
-.btn-outline {
-  background-color: transparent;
-  color: #640e0e;
-  border: 2px solid #640e0e;
-  padding: 8px 16px;
-  border-radius: 5px;
-  transition: all 0.3s ease;
-}
-
-.btn-outline:hover {
-  background-color: #640e0e;
-  color: white;
-}
-
-.btn-primary {
-  background-color: #640e0e;
-  color: white;
-  padding: 8px 16px;
-  border-radius: 5px;
-  transition: all 0.3s ease;
-}
-
-.btn-primary:hover {
-  background-color: #4a0a0a;
-}
-
-.hamburger {
-  display: none;
-  flex-direction: column;
-  cursor: pointer;
-  padding: 10px;
-}
-
-.bar {
-  width: 25px;
-  height: 3px;
-  background-color: #640e0e;
-  margin: 3px 0;
-  transition: 0.3s;
-}
-
-/* Responsive navbar */
 @media (max-width: 768px) {
-  .nav-menu {
-    position: fixed;
-    left: -100%;
-    top: 80px;
-    flex-direction: column;
-    background-color: #fdf4ef;
-    width: 100%;
-    text-align: center;
-    transition: 0.3s;
-    box-shadow: 0 10px 27px rgba(0, 0, 0, 0.05);
-    padding: 2rem 0;
-    gap: 1rem;
-  }
+    header {
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+    
+    .logo-container {
+        padding-left: 10px;
+        order: 1;
+    }
+    
+    header nav {
+        order: 3;
+        flex-basis: 100%;
+        justify-content: center;
+        padding: 20px 0;
+        border-top: 1px solid #ccc;
+        margin-top: 10px;
+    }
 
-  .nav-menu.active {
-    left: 0;
-  }
-
-  .hamburger {
-    display: flex;
-  }
-
-  .hamburger.active .bar:nth-child(2) {
-    opacity: 0;
-  }
-
-  .hamburger.active .bar:nth-child(1) {
-    transform: translateY(8px) rotate(45deg);
-  }
-
-  .hamburger.active .bar:nth-child(3) {
-    transform: translateY(-8px) rotate(-45deg);
-  }
-
-  .nav-logo {
-    padding-left: 10px;
-  }
-
-  .nav-menu {
-    padding-right: 0;
-  }
+    .menu-toggle {
+        display: block;
+        order: 2;
+    }
 }
-
-
-/* ======= Logo ======= */
-.content .logo img {
-    height: 100px;
-    width: 500px;
-
-}
-
-/* ======= Menu Responsivo ======= */
-.menu {
-    display: flex;
-    list-style: none;
-    gap: 20px;
-    /* Espaço entre os itens */
-}
-
-.menu li {
-    display: inline;
-}
-
-.menu a {
-    text-decoration: none;
-    color: #5a1d0d;
-    /* Cor do texto */
-    font-weight: bold;
-}
-
-/* Botão de menu para dispositivos móveis */
-.menu-toggle {
-    display: none;
-    font-size: 24px;
-    cursor: pointer;
-}
-
 /* ======= Layout principal da página ======= */
 .home {
     display: flex;
