@@ -20,16 +20,13 @@
                     <a href="index.html" class="nav-link">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a href="menu.html" class="nav-link">Menu</a>
+                    <a href="cardapio.html" class="nav-link">Cardápio</a>
                 </li>
                 <li class="nav-item">
                     <a href="Reservas.html" class="nav-link">Reservas</a>
                 </li>
                 <li class="nav-item">
                     <a href="contato.html" class="nav-link">Contato</a>
-                </li>
-                <li class="nav-item">
-                    <a href="dashboard.html" class="nav-link active">Dashboard</a>
                 </li>
                 <li class="nav-item">
                     <a href="#" class="nav-link logout-btn" id="logoutBtn" style="color: #b91c1c;">Sair</a>
@@ -82,7 +79,7 @@
                 <section class="reservations-section">
                     <div class="section-header">
                         <h2>Suas Reservas</h2>
-                        <a href="Reservas.html" class="btn btn-primary">Nova Reserva</a>
+                        <a href="reservations.html" class="btn btn-primary">Nova Reserva</a>
                     </div>
                     <div id="userReservations">
                         <p>Carregando reservas...</p>
@@ -146,12 +143,15 @@
                 }
                 
                 // A navegação já está correta no HTML, apenas configurar logout
-                document.getElementById('logoutBtn').addEventListener('click', function(e) {
-                    e.preventDefault();
-                    localStorage.removeItem('userSession');
-                    alert('Logout realizado com sucesso!');
-                    window.location.href = 'index.html';
-                });
+                const logoutBtn = document.getElementById('logoutBtn');
+                if (logoutBtn) {
+                    logoutBtn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        localStorage.removeItem('userSession');
+                        alert('Logout realizado com sucesso!');
+                        window.location.href = 'index.html';
+                    });
+                }
             }
             
             // Chamar a função no DOMContentLoaded

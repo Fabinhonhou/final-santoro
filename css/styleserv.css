@@ -1,0 +1,302 @@
+body {
+  background-color: rgba(225, 221, 212, 1);
+}
+
+.navBar {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  height: 100px;
+  background-color: rgb(77, 2, 2);
+  margin-top: -8px;
+}
+
+.navBar a {
+  text-decoration: none;
+}
+
+.navBar h1 {
+  font-size: 28px;
+  color: #ffffff;
+  margin: 0 10px;
+  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+}
+
+.data-reservas,
+.TClientes {
+  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+  margin-left: 4%;
+  color: rgb(77, 2, 2);
+  margin-top: 3%;
+}
+
+/* Estilos da página de reservas */
+
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 80%;
+  margin-top: 30px;
+  margin-left: 5%;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 26px;
+}
+
+.grid:first-child {
+  width: 50%;
+}
+
+.grid:last-child {
+  width: 50%;
+  margin-left: 20%;
+}
+
+.quadrado {
+  width: 150px;
+  height: 150px;
+  background-color: rgba(197, 197, 197);
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.quadrado:hover {
+  background-color: rgba(180, 180, 180);
+  transform: scale(1.05);
+}
+
+.quadrado.occupied {
+  background-color: #ff6b6b;
+}
+
+.quadrado.reserved {
+  background-color: #ffd93d;
+}
+
+.quadrado.available {
+  background-color: #6bcf7f;
+}
+
+.grande {
+  width: 400px;
+  height: 580px;
+  background-color: rgba(197, 197, 197);
+  border-radius: 4%;
+  margin-left: 30px;
+}
+
+/* Estilos da página de clientes */
+
+.Clientes {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.quadradoc {
+  width: 90%;
+  height: 100px;
+  background-color: rgba(197, 197, 197);
+  margin-bottom: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.quadradoc-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  width: 100%;
+  padding: 0 40px;
+  font-family: Arial, sans-serif;
+  font-size: 18px;
+  font-weight: 500;
+  color: #333;
+}
+
+.quadradoc-content div {
+  display: flex;
+  align-items: center;
+}
+
+.quadradoc.header {
+  background-color: #bcbcbc;
+  font-weight: bold;
+}
+
+.numero {
+  font-size: 60px;
+  color: rgb(77, 2, 2);
+  font-weight: bold;
+}
+
+.label {
+  font-size: 30px;
+  font-weight: bold;
+}
+
+.grid-interna {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  padding: 20px;
+}
+
+.info {
+  border-radius: 12px;
+  height: 100px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 12px 0 0 18px;
+  font-family: Arial, sans-serif;
+}
+
+/* Estilos comuns para o texto */
+.info .numero {
+  font-size: 32px;
+  font-weight: bold;
+  color: #333;
+  line-height: 1.3;
+}
+
+.info .label {
+  font-size: 18px;
+  color: #000000;
+}
+
+/* Cores específicas por tipo */
+
+.info.livres {
+  background-color: #1aff00; /* Verde */
+}
+
+.info.ocupadas {
+  background-color: #b00000; /* Vermelho claro */
+}
+
+.info.almoco {
+  background-color: #ffea05; /* Amarelo */
+}
+
+.info.jantar {
+  background-color: #fbd5f7; /* Rosa claro */
+}
+
+.info.comercial {
+  background-color: #ff8000; /* Laranja */
+}
+
+.info.mesas {
+  background-color: #e0e0e0; /* Cinza padrão para "MESAS" */
+}
+
+.reservar-mesa {
+  width: 80%;
+  height: 80px;
+  background-color: rgb(77, 2, 2);
+  color: white;
+  font-size: 24px;
+  font-weight: bold;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 30px auto 10px auto;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.reservar-mesa:hover {
+  background-color: rgb(105, 20, 20);
+}
+
+/* Estilos para modal de reserva */
+.reservation-modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.reservation-modal-content {
+  background-color: #fefefe;
+  margin: 5% auto;
+  padding: 20px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 600px;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.reservation-details {
+  background: #f8f9fa;
+  padding: 15px;
+  border-radius: 8px;
+  margin: 10px 0;
+}
+
+.reservation-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.btn-confirm {
+  background-color: #28a745;
+  color: white;
+}
+
+.btn-cancel {
+  background-color: #dc3545;
+  color: white;
+}
+
+.btn-close {
+  background-color: #6c757d;
+  color: white;
+}
+
+.loading {
+  text-align: center;
+  padding: 20px;
+}
+
+/* Status indicators */
+.status-pending {
+  color: #ffc107;
+  font-weight: bold;
+}
+
+.status-confirmed {
+  color: #28a745;
+  font-weight: bold;
+}
+
+.status-cancelled {
+  color: #dc3545;
+  font-weight: bold;
+}

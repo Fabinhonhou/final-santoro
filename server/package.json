@@ -1,6 +1,7 @@
 {
   "name": "santoros-restaurant-server",
   "version": "1.0.0",
+  "type": "module",
   "description": "Backend server for Santoro's Italian Restaurant website",
   "main": "server.js",
   "scripts": {

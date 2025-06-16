@@ -1,160 +1,178 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Painel Administrativo - Santoro's</title>
     <link rel="stylesheet" href="css/sla.css">
+    <link rel="stylesheet" href="css/admin-styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
     <!-- Navigation -->
-    <header class="navbar">
+    <nav class="navbar">
         <div class="nav-container">
             <div class="nav-logo">
-                <a href="index.html">Santoro's</a>
+                <a href="index.html">Santoro's Admin</a>
             </div>
-            <ul class="nav-menu" id="navMenu">
+            <ul class="nav-menu">
                 <li class="nav-item">
-                    <a href="index.html" class="nav-link">SITE PRINCIPAL</a>
+                    <a href="index.html" class="nav-link">Site Principal</a>
                 </li>
                 <li class="nav-item">
-                    <a href="inicio.html" class="nav-link active">PAINEL INICIAL</a>
+                    <a href="ReservasServidor.html" class="nav-link">Reservas</a>
                 </li>
                 <li class="nav-item">
-                    <a href="ReservasServidor.html" class="nav-link">RESERVAS</a>
+                    <a href="ClientesServidor.html" class="nav-link">Clientes</a>
                 </li>
                 <li class="nav-item">
-                    <a href="ClientesServidor.html" class="nav-link">CLIENTES</a>
+                    <a href="admin-estoque.html" class="nav-link">Estoque</a>
+                </li>
+                   <li class="nav-item">
+                    <a href="inicio.html" class="nav-link active">Dashboard</a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link logout-btn" style="color: #b91c1c;">SAIR</a>
+                    <a href="#" class="nav-link logout-btn" id="adminLogoutBtn">Sair</a>
                 </li>
             </ul>
-            <div class="hamburger" id="hamburger">
-                <span class="bar"></span>
-                <span class="bar"></span>
-                <span class="bar"></span>
-            </div>
         </div>
-    </header>
+    </nav>
 
     <!-- Admin Content -->
     <div class="admin-page">
         <div class="container">
             <!-- Admin Header -->
-            <div class="dashboard-header">
-                <h1>Painel Administrativo</h1>
-                <p id="adminWelcome">Bem-vindo ao sistema de gerenciamento do Santoro's</p>
+            <div class="admin-header">
+                <h1><i class="fas fa-tachometer-alt"></i> Painel Administrativo</h1>
+                <p>Bem-vindo ao sistema de gerenciamento do Santoro's</p>
             </div>
 
-            <!-- Quick Actions -->
-            <div class="admin-actions">
-                <div class="action-card">
-                    <div class="action-icon">
-                        <i class="fas fa-calendar-check"></i>
-                    </div>
-                    <div class="action-content">
-                        <h3>Gerenciar Reservas</h3>
-                        <p>Visualize e gerencie todas as reservas do restaurante</p>
-                        <a href="ReservasServidor.html" class="btn btn-primary">Acessar Reservas</a>
-                    </div>
-                </div>
-
-                <div class="action-card">
-                    <div class="action-icon">
-                        <i class="fas fa-users"></i>
-                    </div>
-                    <div class="action-content">
-                        <h3>Gerenciar Clientes</h3>
-                        <p>Visualize informações dos clientes cadastrados</p>
-                        <a href="ClientesServidor.html" class="btn btn-primary">Acessar Clientes</a>
-                    </div>
-                </div>
-
-                <div class="action-card">
-                    <div class="action-icon">
-                        <i class="fas fa-chart-bar"></i>
-                    </div>
-                    <div class="action-content">
-                        <h3>Relatórios</h3>
-                        <p>Visualize estatísticas e relatórios do sistema</p>
-                        <button class="btn btn-outline" onclick="alert('Em desenvolvimento')">Ver Relatórios</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Stats Section -->
-            <div class="stats-section">
-                <h2>Estatísticas Rápidas</h2>
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-icon">
-                            <i class="fas fa-calendar-day"></i>
-                        </div>
-                        <div class="stat-content">
-                            <h3 id="todayReservations">0</h3>
-                            <p>Reservas Hoje</p>
-                        </div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon">
-                            <i class="fas fa-clock"></i>
-                        </div>
-                        <div class="stat-content">
-                            <h3 id="pendingReservations">0</h3>
-                            <p>Pendentes</p>
-                        </div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon">
-                            <i class="fas fa-users"></i>
-                        </div>
-                        <div class="stat-content">
-                            <h3 id="totalUsers">0</h3>
-                            <p>Usuários</p>
-                        </div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon">
-                            <i class="fas fa-check-circle"></i>
-                        </div>
-                        <div class="stat-content">
-                            <h3 id="confirmedToday">0</h3>
-                            <p>Confirmadas</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Admin Info -->
-            <div class="account-section">
+            <!-- Admin Profile -->
+            <div class="admin-profile">
                 <h3>Informações do Administrador</h3>
-                <div class="account-info">
-                    <div class="info-item">
+                <div class="admin-profile-info">
+                    <div class="admin-profile-item">
                         <label>Nome:</label>
                         <span id="adminName">Carregando...</span>
                     </div>
-                    <div class="info-item">
+                    <div class="admin-profile-item">
                         <label>Email:</label>
                         <span id="adminEmail">Carregando...</span>
                     </div>
-                    <div class="info-item">
-                        <label>Tipo:</label>
-                        <span class="status-badge status-confirmed">Administrador</span>
+                    <div class="admin-profile-item">
+                        <label>Função:</label>
+                        <span id="adminRole" class="role-badge">Carregando...</span>
                     </div>
+                    <div class="admin-profile-item">
+                        <label>Último Login:</label>
+                        <span id="adminLastLogin">Carregando...</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="quick-actions-section">
+                <h2>Ações Rápidas</h2>
+                <div class="quick-actions-grid">
+                    <a href="ReservasServidor.html" class="quick-action-card">
+                        <div class="quick-action-icon">
+                            <i class="fas fa-calendar-check"></i>
+                        </div>
+                        <div class="quick-action-content">
+                            <h3>Gerenciar Reservas</h3>
+                            <p>Visualizar e gerenciar todas as reservas do restaurante</p>
+                        </div>
+                    </a>
+                    
+                    <a href="admin-estoque.html" class="quick-action-card">
+                        <div class="quick-action-icon">
+                            <i class="fas fa-boxes"></i>
+                        </div>
+                        <div class="quick-action-content">
+                            <h3>Controle de Estoque</h3>
+                            <p>Gerenciar itens do estoque e fornecedores</p>
+                        </div>
+                    </a>
+
+                    <a href="ClientesServidor.html" class="quick-action-card">
+                        <div class="quick-action-icon">
+                            <i class="fas fa-boxes"></i>
+                        </div>
+                        <div class="quick-action-content">
+                            <h3>Clientes</h3>
+                            <p>Lista de clientes que possuem conta no site</p>
+                        </div>
+                    </a>
+                    
+                </div>
+            </div>
+
+            <!-- System Status -->
+            <div class="system-status-section">
+                <h2>Status do Sistema</h2>
+                <div class="status-grid">
+                    <div class="status-item">
+                        <div class="status-indicator status-online"></div>
+                        <div class="status-info">
+                            <h4>Servidor</h4>
+                            <p>Online</p>
+                        </div>
+                    </div>
+                    <div class="status-item">
+                        <div class="status-indicator status-online"></div>
+                        <div class="status-info">
+                            <h4>Banco de Dados</h4>
+                            <p>Conectado</p>
+                        </div>
+                    </div>
+                    <div class="status-item">
+                        <div class="status-indicator status-online"></div>
+                        <div class="status-info">
+                            <h4>Sistema de Reservas</h4>
+                            <p>Funcionando</p>
+                        </div>
+                    </div>
+                    <div class="status-item">
+                        <div class="status-indicator status-online"></div>
+                        <div class="status-info">
+                            <h4>Controle de Estoque</h4>
+                            <p>Ativo</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Security Section -->
+            <div class="security-section">
+                <h3>Segurança e Acesso</h3>
+                <div class="security-actions">
+                    <button class="btn btn-warning" onclick="changePassword()">
+                        <i class="fas fa-key"></i> Alterar Senha
+                    </button>
+                    <button class="btn btn-primary" onclick="viewLogs()">
+                        <i class="fas fa-list"></i> Ver Logs
+                    </button>
+                    <button class="btn btn-danger" onclick="confirmLogout()">
+                        <i class="fas fa-sign-out-alt"></i> Sair do Sistema
+                    </button>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2024 Santoro's Italian Restaurant - Painel Administrativo</p>
+            </div>
+        </div>
+    </footer>
+
     <script src="js/main.js"></script>
-    <script src="js/auth.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('🚀 Página de início admin carregada');
-            
             // Verificar se é admin
             const session = localStorage.getItem('userSession');
             
@@ -168,42 +186,173 @@
             
             if (!userData.user || userData.user.type !== 'admin') {
                 alert('Acesso negado. Apenas administradores podem acessar esta página.');
-                window.location.href = 'index.html';
+                window.location.href = 'login.html';
                 return;
             }
             
-            // Exibir informações do admin
-            document.getElementById('adminName').textContent = userData.user.name;
-            document.getElementById('adminEmail').textContent = userData.user.email;
-            document.getElementById('adminWelcome').textContent = `Bem-vindo, ${userData.user.name}!`;
+            console.log('👨‍💼 Admin logado:', userData.user);
             
-            // Carregar estatísticas (mock)
-            document.getElementById('todayReservations').textContent = '8';
-            document.getElementById('pendingReservations').textContent = '3';
-            document.getElementById('totalUsers').textContent = '24';
-            document.getElementById('confirmedToday').textContent = '5';
+            // Exibir informações do admin
+            displayAdminInfo(userData.user);
             
             // Configurar logout
-            document.querySelector('.logout-btn').addEventListener('click', function(e) {
+            document.getElementById('adminLogoutBtn').addEventListener('click', function(e) {
                 e.preventDefault();
-                if (confirm('Tem certeza que deseja sair do painel administrativo?')) {
-                    localStorage.removeItem('userSession');
-                    alert('Logout realizado com sucesso!');
-                    window.location.href = 'index.html';
-                }
+                confirmLogout();
             });
-
-            // Configurar menu mobile
-            const hamburger = document.getElementById('hamburger');
-            const navMenu = document.getElementById('navMenu');
-            
-            if (hamburger && navMenu) {
-                hamburger.addEventListener('click', function() {
-                    hamburger.classList.toggle('active');
-                    navMenu.classList.toggle('active');
-                });
-            }
         });
+        
+        function displayAdminInfo(admin) {
+            document.getElementById('adminName').textContent = admin.name;
+            document.getElementById('adminEmail').textContent = admin.email;
+            
+            const roleElement = document.getElementById('adminRole');
+            roleElement.textContent = admin.role === 'super_admin' ? 'Super Administrador' : 'Administrador';
+            roleElement.className = `role-badge role-${admin.role}`;
+            
+            // Último login (se disponível)
+            if (admin.last_login) {
+                const lastLogin = new Date(admin.last_login);
+                document.getElementById('adminLastLogin').textContent = lastLogin.toLocaleString('pt-BR');
+            } else {
+                document.getElementById('adminLastLogin').textContent = 'Primeiro acesso';
+            }
+        }
+        
+        function showComingSoon() {
+            alert('Esta funcionalidade estará disponível em breve!');
+        }
+        
+        function changePassword() {
+            alert('Funcionalidade de alteração de senha será implementada em breve.');
+        }
+        
+        function viewLogs() {
+            alert('Visualização de logs será implementada em breve.');
+        }
+        
+        function confirmLogout() {
+            if (confirm('Tem certeza que deseja sair do painel administrativo?')) {
+                localStorage.removeItem('userSession');
+                alert('Logout realizado com sucesso!');
+                window.location.href = 'login.html';
+            }
+        }
     </script>
+    
+    <style>
+        .quick-actions-section {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+        
+        .quick-actions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        
+        .quick-action-card {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.5rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .quick-action-card:hover {
+            border-color: #b91c1c;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(185, 28, 28, 0.1);
+        }
+        
+        .quick-action-icon {
+            font-size: 2rem;
+            color: #b91c1c;
+            min-width: 60px;
+        }
+        
+        .quick-action-content h3 {
+            margin: 0 0 0.5rem 0;
+            color: #1f2937;
+        }
+        
+        .quick-action-content p {
+            margin: 0;
+            color: #6b7280;
+            font-size: 0.875rem;
+        }
+        
+        .coming-soon {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background: #fbbf24;
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .system-status-section {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+        
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+        }
+        
+        .status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        
+        .status-online {
+            background: #10b981;
+        }
+        
+        .status-offline {
+            background: #ef4444;
+        }
+        
+        .status-info h4 {
+            margin: 0 0 0.25rem 0;
+            font-size: 0.875rem;
+            color: #1f2937;
+        }
+        
+        .status-info p {
+            margin: 0;
+            font-size: 0.75rem;
+            color: #6b7280;
+        }
+    </style>
 </body>
 </html>

@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ReservaCliente</title>
+  <link rel="stylesheet" href="css/navbar-common.css">
   <link rel="stylesheet" href="css/tudo.css">
 </head>
 <body>
@@ -16,11 +17,26 @@
     
     <nav>
     
-          <a href="index.html">INÍCIO</a>
-          <a href="cardapio.html">CARDÁPIO</a>
-          <a href="Reservas.html">RESERVAS</a>
-          <a href="contato.html">CONTATO</a>
-          <a href="login.html">LOGIN</a>
+          <ul class="nav-menu" id="navMenu">
+                <li class="nav-item">
+                    <a href="index.html" class="nav-link active">INÍCIO</a>
+                </li>
+                <li class="nav-item">
+                    <a href="cardapio.html" class="nav-link">CARDÁPIO</a>
+                </li>
+                <li class="nav-item">
+                    <a href="reservaMesas.html" class="nav-link">RESERVAS</a>
+                </li>
+                <li class="nav-item">
+                    <a href="contato.html" class="nav-link">CONTATO</a>
+                </li>
+                <li class="nav-item" id="loginLink">
+                    <a href="login.html" class="nav-link btn-outline">LOGIN</a>
+                </li>
+                <li class="nav-item" id="registerLink">
+                    <a href="registro.html" class="nav-link btn-primary">REGISTRAR</a>
+                </li>
+            </ul>
 
       </nav>
         <div class="mobile-menu-btn">
@@ -41,124 +57,84 @@
         <a href="login.html">LOGIN</a>
     </div>
 
-
       <div class="titulo" id="titulo">
         <h1>SELECIONE SUA MESA</h1>
     </div>
 
   </header>
 
-
   <div class="Fundomesa">
     <img src="imgs/fundoMesa.png" alt="fundoMesa">
   </div>
 
-
   <div class="container">
-    <div class="Mesa1" data-image="imgs/Entrar.png">
+    <div class="Mesa1" data-table="1" data-capacity="4">
       <img src="imgs/mesacliente.png" alt="">
     </div>
-    <div class="Mesa2" data-image="imgs/Entrar.png">
+    <div class="Mesa2" data-table="2" data-capacity="4">
       <img src="imgs/mesacliente.png" alt="">
     </div>
-    <div class="Mesa3" data-image="imgs/Entrar.png">
+    <div class="Mesa3" data-table="3" data-capacity="4">
       <img src="imgs/mesacliente.png" alt="">
     </div>
-    <div class="Mesa4" data-image="imgs/Entrar.png">
-      <img src="imgs/mesacliente.png" alt="">
-    </div>
-
-    <div class="Mesa5" data-image="imgs/Entrar.png">
+    <div class="Mesa4" data-table="4" data-capacity="4">
       <img src="imgs/mesacliente.png" alt="">
     </div>
 
-    <div class="Mesa6" data-image="imgs/Entrar.png">
+    <div class="Mesa5" data-table="5" data-capacity="4">
       <img src="imgs/mesacliente.png" alt="">
     </div>
 
-    <div class="Mesa7" data-image="imgs/Entrar.png">
+    <div class="Mesa6" data-table="6" data-capacity="4">
       <img src="imgs/mesacliente.png" alt="">
     </div>
 
-    <div class="Mesa8" data-image="imgs/Entrar.png">
+    <div class="Mesa7" data-table="7" data-capacity="4">
       <img src="imgs/mesacliente.png" alt="">
     </div>
 
+    <div class="Mesa8" data-table="8" data-capacity="4">
+      <img src="imgs/mesacliente.png" alt="">
+    </div>
 
 <div class="container2">
   <div>
-       <div class="Mesape1" data-image="imgs/Entrar.png">
+       <div class="Mesape1" data-table="9" data-capacity="2">
       <img src="imgs/mesa2pé.png" alt="">
     </div>
 
-    <div class="Mesape2" data-image="imgs/Entrar.png">
+    <div class="Mesape2" data-table="10" data-capacity="2">
       <img src="imgs/mesa2pé.png" alt="">
     </div>
 
-    <div class="Mesape3" data-image="imgs/Entrar.png">
+    <div class="Mesape3" data-table="11" data-capacity="2">
       <img src="imgs/mesa2pé.png" alt="">
     </div>
 
-    <div class="Mesape4" data-image="imgs/Entrar.png">
+    <div class="Mesape4" data-table="12" data-capacity="2">
       <img src="imgs/mesa2pé.png" alt="">
     </div>
  </div>
-
 
  <div class="container3">
-    <div class="Mesadeitada1" data-image="imgs/Entrar.png">
+    <div class="Mesadeitada1" data-table="13" data-capacity="2">
       <img src="imgs/mesa2deitada.png" alt="">
     </div>
 
-    <div class="Mesadeitada2" data-image="imgs/Entrar.png">
+    <div class="Mesadeitada2" data-table="14" data-capacity="2">
       <img src="imgs/mesa2deitada.png" alt="">
     </div>
 
-    <div class="Mesadeitada3" data-image="imgs/Entrar.png">
+    <div class="Mesadeitada3" data-table="15" data-capacity="2">
       <img src="imgs/mesa2deitada.png" alt="">
     </div>
 
-    <div class="Mesadeitada4" data-image="imgs/Entrar.png">
+    <div class="Mesadeitada4" data-table="16" data-capacity="2">
       <img src="imgs/mesa2deitada.png" alt="">
     </div>
  </div>
-    
-   
-
-
-<!-- Modal para exibir a imagem -->
-
-<div id="modal" class="modal">
-  <span id="close" class="close">&times;</span>
-  <img id="modal-image" class="modal-content" src="imgs/">
-
-  <div class="camposEntrar">
-    <input type="text" class="CPF" placeholder="Digite seu CPF" />
-    <input type="password" class="senha" placeholder="Digite sua senha" />
-
-    <a href="reservaMesas.html">
-      <div class="entrar"><h2>ENTRAR</h2></div>
-    </a>
-    
-    <div>
-      <a href="registro.html">
-      <div class="cadastrar">CADASTRE-SE</div>
-    </a>
-    </div>
-  </div>
-
-
-  
 </div>
-
-    
 </div>
-
-</div>
-
-   
-  
-
 
 <footer class="footer">
   <div class="footer-container">
@@ -228,48 +204,183 @@
   </div>
 </footer>
 
-
-</body>
-
-<script>
-  // Pega o modal e seus elementos internos
-  const modal = document.getElementById("modal");
-  const modalImage = document.getElementById("modal-image");
-  const closeBtn = document.getElementById("close");
-
-  // Função para abrir o modal com a imagem "Entrar.png"
-  function abrirModal() {
-    modal.style.display = "block";
-    modalImage.src = "imgs/Entrar.png";
-  }
-
-  // Fecha o modal ao clicar no "X"
-  closeBtn.onclick = function () {
-    modal.style.display = "none";
-  };
-
-  // Fecha o modal ao clicar fora da imagem
-  window.onclick = function (event) {
-    if (event.target == modal) {
-      modal.style.display = "none";
-    }
-  };
-
-  // Seleciona todas as mesas com base no data-image
-  const mesas = document.querySelectorAll('[data-image="imgs/Entrar.png"]');
-
-  // Adiciona o evento de clique a todas as mesas
-  mesas.forEach(mesa => {
-    mesa.addEventListener("click", abrirModal);
-  });
-
-
-  
-
-</script>
 <script src="js/auth.js"></script>
 <script src="js/main.js"></script>
 <script src="js/bia.js" defer></script>
 
+<script>
+console.log("🍽️ Reserva Mesas JS iniciando...")
 
+document.addEventListener("DOMContentLoaded", () => {
+  console.log("🍽️ DOM carregado, inicializando seleção de mesas")
+
+  initializeTableSelection()
+  loadTableAvailability()
+})
+
+function initializeTableSelection() {
+  console.log("🪑 Configurando seleção de mesas...")
+
+  // Selecionar todas as mesas
+  const tables = document.querySelectorAll("[data-table]")
+
+  console.log(`🪑 Encontradas ${tables.length} mesas`)
+
+  tables.forEach((table) => {
+    const tableNumber = table.getAttribute("data-table")
+    const capacity = table.getAttribute("data-capacity")
+
+    console.log(`🪑 Configurando mesa ${tableNumber} (capacidade: ${capacity})`)
+
+    // Adicionar evento de clique
+    table.addEventListener("click", () => {
+      handleTableSelection(tableNumber, capacity)
+    })
+
+    // Adicionar cursor pointer
+    table.style.cursor = "pointer"
+
+    // Adicionar hover effect
+    table.addEventListener("mouseenter", () => {
+      table.style.transform = "scale(1.05)"
+      table.style.transition = "transform 0.3s ease"
+    })
+
+    table.addEventListener("mouseleave", () => {
+      table.style.transform = "scale(1)"
+    })
+  })
+}
+
+async function loadTableAvailability() {
+  console.log("📅 Carregando disponibilidade das mesas...")
+
+  try {
+    // Buscar reservas para hoje
+    const today = new Date().toISOString().split("T")[0]
+    const response = await fetch(`/api/admin/tables?date=${today}`)
+
+    if (!response.ok) {
+      console.log("⚠️ Não foi possível carregar disponibilidade das mesas")
+      return
+    }
+
+    const data = await response.json()
+
+    if (data.success) {
+      updateTableVisualStatus(data.tables)
+    }
+  } catch (error) {
+    console.error("❌ Erro ao carregar disponibilidade:", error)
+    // Continuar sem mostrar status visual
+  }
+}
+
+function updateTableVisualStatus(tables) {
+  console.log("🎨 Atualizando status visual das mesas:", tables)
+
+  tables.forEach((table) => {
+    const tableElement = document.querySelector(`[data-table="${table.table_number}"]`)
+
+    if (tableElement) {
+      // Remover classes anteriores
+      tableElement.classList.remove("available", "occupied", "reserved")
+
+      // Adicionar classe baseada no status
+      if (table.status === "occupied") {
+        tableElement.classList.add("occupied")
+        tableElement.style.cursor = "not-allowed"
+        tableElement.style.opacity = "0.5"
+      } else if (table.status === "reserved") {
+        tableElement.classList.add("reserved")
+        tableElement.style.opacity = "0.7"
+      } else {
+        tableElement.classList.add("available")
+        tableElement.style.opacity = "1"
+      }
+    }
+  })
+}
+
+function handleTableSelection(tableNumber, capacity) {
+  console.log(`🪑 Mesa ${tableNumber} selecionada (capacidade: ${capacity})`)
+
+  // Verificar se a mesa está disponível
+  const tableElement = document.querySelector(`[data-table="${tableNumber}"]`)
+
+  if (tableElement.classList.contains("occupied")) {
+    alert("Esta mesa está ocupada. Por favor, selecione outra mesa.")
+    return
+  }
+
+  // Verificar se o usuário está logado
+  if (!window.auth || !window.auth.isLoggedIn()) {
+    console.log("👤 Usuário não está logado, redirecionando para login")
+
+    // Salvar mesa selecionada no localStorage
+    localStorage.setItem(
+      "selectedTable",
+      JSON.stringify({
+        tableNumber: tableNumber,
+        capacity: capacity,
+        timestamp: Date.now(),
+      }),
+    )
+
+    alert("Para fazer uma reserva, você precisa estar logado. Redirecionando para o login...")
+    window.location.href = "login.html"
+    return
+  }
+
+  // Usuário logado, prosseguir com a reserva
+  proceedWithReservation(tableNumber, capacity)
+}
+
+function proceedWithReservation(tableNumber, capacity) {
+  console.log(`✅ Prosseguindo com reserva da mesa ${tableNumber}`)
+
+  // Salvar dados da mesa selecionada
+  const tableData = {
+    tableNumber: tableNumber,
+    capacity: capacity,
+    timestamp: Date.now(),
+  }
+
+  localStorage.setItem("selectedTable", JSON.stringify(tableData))
+
+  // Redirecionar para página de reserva completa
+  window.location.href = "reservaCompleta.html"
+}
+
+// Verificar se há mesa selecionada ao carregar a página
+function checkSelectedTable() {
+  const selectedTable = localStorage.getItem("selectedTable")
+
+  if (selectedTable) {
+    try {
+      const tableData = JSON.parse(selectedTable)
+      const now = Date.now()
+      const fiveMinutes = 5 * 60 * 1000 // 5 minutos em millisegundos
+
+      // Se a seleção foi há mais de 5 minutos, limpar
+      if (now - tableData.timestamp > fiveMinutes) {
+        localStorage.removeItem("selectedTable")
+        console.log("⏰ Seleção de mesa expirou")
+      } else {
+        console.log("🪑 Mesa previamente selecionada:", tableData)
+      }
+    } catch (error) {
+      console.error("❌ Erro ao verificar mesa selecionada:", error)
+      localStorage.removeItem("selectedTable")
+    }
+  }
+}
+
+// Verificar mesa selecionada ao carregar
+checkSelectedTable()
+
+console.log("✅ Reserva Mesas JS carregado completamente")
+</script>
+
+</body>
 </html>

@@ -1,12 +1,18 @@
-require("dotenv").config()
+import dotenv from "dotenv"
+import express from "express"
+import mysql from "mysql2/promise"
+import bcrypt from "bcrypt"
+import jwt from "jsonwebtoken"
+import cors from "cors"
+import path from "path"
+import fs from "fs"
+import { fileURLToPath } from "url"
 
-const express = require("express")
-const mysql = require("mysql2/promise")
-const bcrypt = require("bcrypt")
-const jwt = require("jsonwebtoken")
-const cors = require("cors")
-const path = require("path")
-const fs = require("fs")
+// ES modules equivalent of __dirname
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+
+dotenv.config()
 
 const app = express()
 const PORT = process.env.PORT || 3000
@@ -131,7 +137,7 @@ async function createTables() {
       )
     `)
 
-    // Reservations table
+    // Reservations table - UPDATED with table_number
     await db.execute(`
       CREATE TABLE IF NOT EXISTS reservations (
         id INT AUTO_INCREMENT PRIMARY KEY,
@@ -142,12 +148,14 @@ async function createTables() {
         date DATE NOT NULL,
         time VARCHAR(10) NOT NULL,
         guests INT NOT NULL,
+        table_number INT,
         special_requests TEXT,
         status ENUM('pending', 'confirmed', 'cancelled') DEFAULT 'pending',
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         INDEX idx_user_id (user_id),
         INDEX idx_date (date),
-        INDEX idx_status (status)
+        INDEX idx_status (status),
+        INDEX idx_table_number (table_number)
       )
     `)
 
@@ -255,13 +263,19 @@ function authenticateToken(req, res, next) {
 
   if (!token) {
     console.log("❌ Token não fornecido")
-    return res.status(401).json({ message: "Access token required" })
+    return res.status(401).json({
+      success: false,
+      message: "Access token required",
+    })
   }
 
   jwt.verify(token, JWT_SECRET, (err, user) => {
     if (err) {
       console.log("❌ Token inválido:", err.message)
-      return res.status(403).json({ message: "Invalid token" })
+      return res.status(403).json({
+        success: false,
+        message: "Invalid token",
+      })
     }
     console.log("✅ Token válido para usuário:", user.userId)
     req.user = user
@@ -303,7 +317,7 @@ app.get("/api/test", (req, res) => {
   })
 })
 
-// User Registration - CORRIGIDO para garantir salvamento
+// User Registration
 app.post("/api/register", async (req, res) => {
   console.log("🔥 ROTA /api/register CHAMADA!")
   console.log("📋 Headers:", req.headers)
@@ -363,18 +377,11 @@ app.post("/api/register", async (req, res) => {
       name: name.trim(),
       email: email.toLowerCase().trim(),
       password: hashedPassword,
-      cpf: cpf ? cpf.replace(/\D/g, "") : null, // Remove caracteres não numéricos do CPF
+      cpf: cpf ? cpf.replace(/\D/g, "") : null,
       date_birth: date_birth || null,
     }
 
     console.log("💾 Salvando usuário no banco...")
-    console.log("Dados a serem salvos:", {
-      name: userData.name,
-      email: userData.email,
-      cpf: userData.cpf,
-      date_birth: userData.date_birth,
-      password: "[CRIPTOGRAFADA]",
-    })
 
     // Create user com transação para garantir consistência
     await db.beginTransaction()
@@ -431,7 +438,7 @@ app.post("/api/register", async (req, res) => {
   }
 })
 
-// User Login - ATUALIZADO para suportar admin
+// User Login
 app.post("/api/login", async (req, res) => {
   try {
     console.log("=== LOGIN ===")
@@ -579,12 +586,6 @@ app.post("/api/contact", async (req, res) => {
     console.log("Telefone:", telefone || "Não informado")
     console.log("Mensagem:", mensagem)
 
-    // Aqui você pode:
-    // 1. Salvar no banco de dados
-    // 2. Enviar email para o administrador
-    // 3. Integrar com sistema de tickets
-
-    // Por enquanto, apenas log
     console.log("✅ Mensagem de contato processada com sucesso")
 
     res.json({
@@ -604,10 +605,13 @@ app.post("/api/contact", async (req, res) => {
 app.post("/api/reservations", optionalAuth, async (req, res) => {
   try {
     console.log("=== CRIANDO RESERVA ===")
-    const { name, email, phone, date, time, guests, specialRequests } = req.body
+    console.log("Body recebido:", req.body)
+
+    const { name, email, phone, date, time, guests, specialRequests, tableNumber } = req.body
 
     // Validate input
     if (!name || !email || !phone || !date || !time || !guests) {
+      console.log("❌ Campos obrigatórios faltando")
       return res.status(400).json({
         success: false,
         message: "Todos os campos obrigatórios devem ser preenchidos",
@@ -617,6 +621,7 @@ app.post("/api/reservations", optionalAuth, async (req, res) => {
     // Validar formato do email
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     if (!emailRegex.test(email)) {
+      console.log("❌ Email inválido:", email)
       return res.status(400).json({
         success: false,
         message: "Por favor, insira um email válido",
@@ -629,34 +634,46 @@ app.post("/api/reservations", optionalAuth, async (req, res) => {
     today.setHours(0, 0, 0, 0)
 
     if (reservationDate < today) {
+      console.log("❌ Data no passado:", date)
       return res.status(400).json({
         success: false,
         message: "A data da reserva não pode ser no passado",
       })
     }
 
-    console.log("📋 Dados da reserva:", {
+    console.log("📋 Dados da reserva validados:", {
       name,
       email,
       phone,
       date,
       time,
       guests,
+      tableNumber,
       specialRequests,
     })
 
+    // Verificar se a conexão com o banco está ativa
+    if (!db) {
+      console.log("❌ Conexão com banco não disponível")
+      return res.status(500).json({
+        success: false,
+        message: "Erro de conexão com o banco de dados",
+      })
+    }
+
     // Inserir reserva no banco
     const [result] = await db.execute(
-      `INSERT INTO reservations (user_id, name, email, phone, date, time, guests, special_requests, status) 
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'pending')`,
+      `INSERT INTO reservations (user_id, name, email, phone, date, time, guests, table_number, special_requests, status) 
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending')`,
       [
-        req.user ? req.user.userId : null, // user_id se estiver logado
+        req.user ? req.user.userId : null,
         name,
         email,
         phone,
         date,
         time,
         guests,
+        tableNumber || null,
         specialRequests || null,
       ],
     )
@@ -670,9 +687,11 @@ app.post("/api/reservations", optionalAuth, async (req, res) => {
     })
   } catch (error) {
     console.error("❌ Erro ao criar reserva:", error)
+    console.error("Stack trace:", error.stack)
     res.status(500).json({
       success: false,
       message: "Erro interno do servidor",
+      error: process.env.NODE_ENV === "development" ? error.message : undefined,
     })
   }
 })
@@ -754,46 +773,560 @@ app.put("/api/reservations/:id/cancel", authenticateToken, async (req, res) => {
   }
 })
 
-// Rota específica para contato.html
-app.get("/contato.html", (req, res) => {
-  res.sendFile(path.join(__dirname, "../contato.html"))
+// Inventory API Routes
+
+// Get all inventory items
+app.get("/api/inventory", authenticateToken, async (req, res) => {
+  try {
+    console.log("=== BUSCANDO ITENS DO ESTOQUE ===")
+    console.log("👤 Usuário autenticado:", req.user)
+
+    // Check if user is admin
+    if (req.user.type !== "admin") {
+      console.log("❌ Usuário não é admin:", req.user.type)
+      return res.status(403).json({
+        success: false,
+        message: "Acesso negado. Apenas administradores podem acessar o estoque.",
+      })
+    }
+
+    console.log("🔍 Executando query no banco de dados...")
+    const [inventory] = await db.execute(`
+      SELECT id, name, category, current_stock, min_stock, unit, supplier, 
+             created_at, updated_at 
+      FROM inventory 
+      ORDER BY name ASC
+    `)
+
+    console.log("📊 Resultados da query:", {
+      count: inventory.length,
+      items: inventory.map((item) => ({ id: item.id, name: item.name })),
+    })
+
+    res.json({
+      success: true,
+      inventory,
+    })
+  } catch (error) {
+    console.error("❌ Erro ao buscar estoque:", error)
+    res.status(500).json({
+      success: false,
+      message: "Erro interno do servidor: " + error.message,
+    })
+  }
 })
 
-// Rotas específicas para arquivos HTML
-app.get("/registro.html", (req, res) => {
-  res.sendFile(path.join(__dirname, "../registro.html"))
+// Create new inventory item
+app.post("/api/inventory", authenticateToken, async (req, res) => {
+  try {
+    console.log("=== CRIANDO ITEM DO ESTOQUE ===")
+
+    // Check if user is admin
+    if (req.user.type !== "admin") {
+      return res.status(403).json({
+        success: false,
+        message: "Acesso negado. Apenas administradores podem gerenciar o estoque.",
+      })
+    }
+
+    const { name, category, currentStock, minStock, unit, supplier } = req.body
+
+    // Validate input
+    if (!name || !category || currentStock === undefined || minStock === undefined || !unit) {
+      return res.status(400).json({
+        success: false,
+        message: "Nome, categoria, estoque atual, estoque mínimo e unidade são obrigatórios",
+      })
+    }
+
+    if (currentStock < 0 || minStock < 0) {
+      return res.status(400).json({
+        success: false,
+        message: "Os valores de estoque não podem ser negativos",
+      })
+    }
+
+    console.log("📋 Dados do item:", { name, category, currentStock, minStock, unit, supplier })
+
+    // Insert inventory item
+    const [result] = await db.execute(
+      `
+      INSERT INTO inventory (name, category, current_stock, min_stock, unit, supplier) 
+      VALUES (?, ?, ?, ?, ?, ?)
+    `,
+      [name, category, currentStock, minStock, unit, supplier || null],
+    )
+
+    console.log("✅ Item do estoque criado com ID:", result.insertId)
+
+    // Get the created item
+    const [createdItem] = await db.execute(
+      `
+      SELECT id, name, category, current_stock, min_stock, unit, supplier, 
+             created_at, updated_at 
+      FROM inventory 
+      WHERE id = ?
+    `,
+      [result.insertId],
+    )
+
+    res.status(201).json({
+      success: true,
+      message: "Item adicionado ao estoque com sucesso!",
+      item: createdItem[0],
+    })
+  } catch (error) {
+    console.error("❌ Erro ao criar item do estoque:", error)
+    res.status(500).json({
+      success: false,
+      message: "Erro interno do servidor",
+    })
+  }
 })
 
-app.get("/login.html", (req, res) => {
-  res.sendFile(path.join(__dirname, "../login.html"))
+// Update inventory item
+app.put("/api/inventory/:id", authenticateToken, async (req, res) => {
+  try {
+    const itemId = req.params.id
+    console.log("=== ATUALIZANDO ITEM DO ESTOQUE ===")
+    console.log("Item ID:", itemId)
+
+    // Check if user is admin
+    if (req.user.type !== "admin") {
+      return res.status(403).json({
+        success: false,
+        message: "Acesso negado. Apenas administradores podem gerenciar o estoque.",
+      })
+    }
+
+    const { name, category, currentStock, minStock, unit, supplier } = req.body
+
+    // Validate input
+    if (!name || !category || currentStock === undefined || minStock === undefined || !unit) {
+      return res.status(400).json({
+        success: false,
+        message: "Nome, categoria, estoque atual, estoque mínimo e unidade são obrigatórios",
+      })
+    }
+
+    if (currentStock < 0 || minStock < 0) {
+      return res.status(400).json({
+        success: false,
+        message: "Os valores de estoque não podem ser negativos",
+      })
+    }
+
+    // Check if item exists
+    const [existingItem] = await db.execute("SELECT id FROM inventory WHERE id = ?", [itemId])
+
+    if (existingItem.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Item não encontrado",
+      })
+    }
+
+    // Update inventory item
+    await db.execute(
+      `
+      UPDATE inventory 
+      SET name = ?, category = ?, current_stock = ?, min_stock = ?, unit = ?, supplier = ?, updated_at = NOW()
+      WHERE id = ?
+    `,
+      [name, category, currentStock, minStock, unit, supplier || null, itemId],
+    )
+
+    console.log("✅ Item do estoque atualizado com sucesso")
+
+    // Get the updated item
+    const [updatedItem] = await db.execute(
+      `
+      SELECT id, name, category, current_stock, min_stock, unit, supplier, 
+             created_at, updated_at 
+      FROM inventory 
+      WHERE id = ?
+    `,
+      [itemId],
+    )
+
+    res.json({
+      success: true,
+      message: "Item atualizado com sucesso!",
+      item: updatedItem[0],
+    })
+  } catch (error) {
+    console.error("❌ Erro ao atualizar item do estoque:", error)
+    res.status(500).json({
+      success: false,
+      message: "Erro interno do servidor",
+    })
+  }
 })
 
-app.get("/menu.html", (req, res) => {
-  res.sendFile(path.join(__dirname, "../menu.html"))
+// Delete inventory item
+app.delete("/api/inventory/:id", authenticateToken, async (req, res) => {
+  try {
+    const itemId = req.params.id
+    console.log("=== EXCLUINDO ITEM DO ESTOQUE ===")
+    console.log("Item ID:", itemId)
+
+    // Check if user is admin
+    if (req.user.type !== "admin") {
+      return res.status(403).json({
+        success: false,
+        message: "Acesso negado. Apenas administradores podem gerenciar o estoque.",
+      })
+    }
+
+    // Check if item exists
+    const [existingItem] = await db.execute("SELECT id, name FROM inventory WHERE id = ?", [itemId])
+
+    if (existingItem.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Item não encontrado",
+      })
+    }
+
+    // Delete inventory item
+    await db.execute("DELETE FROM inventory WHERE id = ?", [itemId])
+
+    console.log("✅ Item do estoque excluído:", existingItem[0].name)
+
+    res.json({
+      success: true,
+      message: "Item excluído com sucesso!",
+    })
+  } catch (error) {
+    console.error("❌ Erro ao excluir item do estoque:", error)
+    res.status(500).json({
+      success: false,
+      message: "Erro interno do servidor",
+    })
+  }
 })
 
-// Rota para CSS específicos
-app.get("/css/registro.css", (req, res) => {
-  res.setHeader("Content-Type", "text/css")
-  res.sendFile(path.join(__dirname, "../css/registro.css"))
+// Get inventory statistics
+app.get("/api/inventory/stats", authenticateToken, async (req, res) => {
+  try {
+    console.log("=== BUSCANDO ESTATÍSTICAS DO ESTOQUE ===")
+
+    // Check if user is admin
+    if (req.user.type !== "admin") {
+      return res.status(403).json({
+        success: false,
+        message: "Acesso negado. Apenas administradores podem acessar as estatísticas.",
+      })
+    }
+
+    // Get inventory statistics with new logic (min_stock + 5)
+    const [totalItems] = await db.execute("SELECT COUNT(*) as total FROM inventory")
+    const [lowStockItems] = await db.execute(
+      "SELECT COUNT(*) as total FROM inventory WHERE current_stock > 0 AND current_stock <= (min_stock + 5)",
+    )
+    const [outOfStockItems] = await db.execute("SELECT COUNT(*) as total FROM inventory WHERE current_stock = 0")
+    const [categories] = await db.execute("SELECT category, COUNT(*) as total FROM inventory GROUP BY category")
+
+    const stats = {
+      totalItems: totalItems[0].total,
+      lowStockItems: lowStockItems[0].total,
+      outOfStockItems: outOfStockItems[0].total,
+      categories: categories,
+    }
+
+    console.log("✅ Estatísticas do estoque:", stats)
+
+    res.json({
+      success: true,
+      stats,
+    })
+  } catch (error) {
+    console.error("❌ Erro ao buscar estatísticas do estoque:", error)
+    res.status(500).json({
+      success: false,
+      message: "Erro interno do servidor",
+    })
+  }
 })
 
-app.get("/css/login.css", (req, res) => {
-  res.setHeader("Content-Type", "text/css")
-  res.sendFile(path.join(__dirname, "../css/login.css"))
+// Admin API Routes
+
+// Get all users (admin only)
+app.get("/api/admin/users", authenticateToken, async (req, res) => {
+  try {
+    console.log("=== ADMIN: BUSCANDO USUÁRIOS ===")
+
+    // Check if user is admin
+    if (req.user.type !== "admin") {
+      return res.status(403).json({
+        success: false,
+        message: "Acesso negado. Apenas administradores podem acessar esta funcionalidade.",
+      })
+    }
+
+    console.log("🔍 Buscando todos os usuários...")
+    const [users] = await db.execute(`
+      SELECT id, name, email, cpf, date_birth, created_at 
+      FROM users 
+      ORDER BY created_at DESC
+    `)
+
+    console.log("✅ Usuários encontrados:", users.length)
+
+    res.json({
+      success: true,
+      users,
+    })
+  } catch (error) {
+    console.error("❌ Erro ao buscar usuários:", error)
+    res.status(500).json({
+      success: false,
+      message: "Erro interno do servidor",
+    })
+  }
 })
 
-// Catch-all route deve ser o último
+// Get reservations by date (admin only)
+app.get("/api/admin/reservations", authenticateToken, async (req, res) => {
+  try {
+    console.log("=== ADMIN: BUSCANDO RESERVAS ===")
+
+    // Check if user is admin
+    if (req.user.type !== "admin") {
+      console.log("❌ Usuário não é admin:", req.user.type)
+      return res.status(403).json({
+        success: false,
+        message: "Acesso negado. Apenas administradores podem acessar esta funcionalidade.",
+      })
+    }
+
+    const { date } = req.query
+    const targetDate = date || new Date().toISOString().split("T")[0]
+
+    console.log("🔍 Buscando reservas para a data:", targetDate)
+
+    // Verificar se a conexão com o banco está ativa
+    if (!db) {
+      console.log("❌ Conexão com banco não disponível")
+      return res.status(500).json({
+        success: false,
+        message: "Erro de conexão com o banco de dados",
+      })
+    }
+
+    const [reservations] = await db.execute(
+      `
+      SELECT id, user_id, name, email, phone, date, time, guests, 
+             special_requests, status, table_number, created_at 
+      FROM reservations 
+      WHERE date = ? 
+      ORDER BY time ASC
+    `,
+      [targetDate],
+    )
+
+    console.log("✅ Reservas encontradas:", reservations.length)
+
+    res.json({
+      success: true,
+      reservations,
+    })
+  } catch (error) {
+    console.error("❌ Erro ao buscar reservas:", error)
+    console.error("Stack trace:", error.stack)
+    res.status(500).json({
+      success: false,
+      message: "Erro interno do servidor",
+      error: process.env.NODE_ENV === "development" ? error.message : undefined,
+    })
+  }
+})
+
+// Get specific reservation details (admin only)
+app.get("/api/admin/reservations/:id", authenticateToken, async (req, res) => {
+  try {
+    const reservationId = req.params.id
+    console.log("=== ADMIN: BUSCANDO DETALHES DA RESERVA ===")
+    console.log("Reservation ID:", reservationId)
+
+    // Check if user is admin
+    if (req.user.type !== "admin") {
+      return res.status(403).json({
+        success: false,
+        message: "Acesso negado. Apenas administradores podem acessar esta funcionalidade.",
+      })
+    }
+
+    const [reservations] = await db.execute(
+      `
+      SELECT id, user_id, name, email, phone, date, time, guests, 
+             special_requests, status, table_number, created_at 
+      FROM reservations 
+      WHERE id = ?
+    `,
+      [reservationId],
+    )
+
+    if (reservations.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Reserva não encontrada",
+      })
+    }
+
+    console.log("✅ Detalhes da reserva encontrados")
+
+    res.json({
+      success: true,
+      reservation: reservations[0],
+    })
+  } catch (error) {
+    console.error("❌ Erro ao buscar detalhes da reserva:", error)
+    res.status(500).json({
+      success: false,
+      message: "Erro interno do servidor",
+    })
+  }
+})
+
+// Update reservation status (admin only)
+app.put("/api/admin/reservations/:id/status", authenticateToken, async (req, res) => {
+  try {
+    const reservationId = req.params.id
+    const { status } = req.body
+
+    console.log("=== ADMIN: ATUALIZANDO STATUS DA RESERVA ===")
+    console.log("Reservation ID:", reservationId)
+    console.log("New Status:", status)
+
+    // Check if user is admin
+    if (req.user.type !== "admin") {
+      return res.status(403).json({
+        success: false,
+        message: "Acesso negado. Apenas administradores podem acessar esta funcionalidade.",
+      })
+    }
+
+    // Validate status
+    const validStatuses = ["pending", "confirmed", "cancelled"]
+    if (!validStatuses.includes(status)) {
+      return res.status(400).json({
+        success: false,
+        message: "Status inválido",
+      })
+    }
+
+    // Check if reservation exists
+    const [existingReservation] = await db.execute("SELECT id FROM reservations WHERE id = ?", [reservationId])
+
+    if (existingReservation.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Reserva não encontrada",
+      })
+    }
+
+    // Update reservation status
+    await db.execute("UPDATE reservations SET status = ? WHERE id = ?", [status, reservationId])
+
+    console.log("✅ Status da reserva atualizado com sucesso")
+
+    res.json({
+      success: true,
+      message: "Status da reserva atualizado com sucesso",
+    })
+  } catch (error) {
+    console.error("❌ Erro ao atualizar status da reserva:", error)
+    res.status(500).json({
+      success: false,
+      message: "Erro interno do servidor",
+    })
+  }
+})
+
+// Get tables status by date (admin only)
+app.get("/api/admin/tables", authenticateToken, async (req, res) => {
+  try {
+    console.log("=== ADMIN: BUSCANDO STATUS DAS MESAS ===")
+
+    // Check if user is admin
+    if (req.user.type !== "admin") {
+      return res.status(403).json({
+        success: false,
+        message: "Acesso negado. Apenas administradores podem acessar esta funcionalidade.",
+      })
+    }
+
+    const { date } = req.query
+    const targetDate = date || new Date().toISOString().split("T")[0]
+
+    console.log("🔍 Buscando status das mesas para a data:", targetDate)
+
+    // Get reservations for the date to determine table status
+    const [reservations] = await db.execute(
+      `
+      SELECT table_number, id as reservation_id, status, time
+      FROM reservations 
+      WHERE date = ? AND table_number IS NOT NULL AND status != 'cancelled'
+      ORDER BY table_number ASC
+    `,
+      [targetDate],
+    )
+
+    // Create tables array (1-16)
+    const tables = []
+    for (let i = 1; i <= 16; i++) {
+      const reservation = reservations.find((r) => r.table_number === i)
+
+      tables.push({
+        table_number: i,
+        status: reservation ? (reservation.status === "confirmed" ? "occupied" : "reserved") : "available",
+        reservation_id: reservation ? reservation.reservation_id : null,
+        time: reservation ? reservation.time : null,
+      })
+    }
+
+    console.log("✅ Status das mesas calculado:", tables.length)
+
+    res.json({
+      success: true,
+      tables,
+    })
+  } catch (error) {
+    console.error("❌ Erro ao buscar status das mesas:", error)
+    res.status(500).json({
+      success: false,
+      message: "Erro interno do servidor",
+    })
+  }
+})
+
+// Catch-all route para arquivos não encontrados
 app.get("*", (req, res) => {
   console.log(`🔄 Catch-all route hit for: ${req.url}`)
 
-  // Se for uma requisição para um arquivo que não existe, retornar 404
-  if (req.url.includes(".") && !fs.existsSync(path.join(staticPath, req.url))) {
-    return res.status(404).send("File not found")
+  // Se for uma requisição para API que não existe, retornar 404 JSON
+  if (req.url.startsWith("/api/")) {
+    return res.status(404).json({
+      success: false,
+      message: "API endpoint not found",
+    })
   }
 
-  // Caso contrário, servir menu.html
-  res.sendFile(path.join(__dirname, "../menu.html"))
+  // Para outros arquivos, verificar se existem
+  const filePath = path.join(staticPath, req.url)
+  if (fs.existsSync(filePath)) {
+    return res.sendFile(filePath)
+  }
+
+  // Se não encontrar o arquivo, servir index.html se existir
+  const indexPath = path.join(staticPath, "index.html")
+  if (fs.existsSync(indexPath)) {
+    return res.sendFile(indexPath)
+  }
+
+  // Caso contrário, retornar 404
+  res.status(404).send("Page not found")
 })
 
 // Start server

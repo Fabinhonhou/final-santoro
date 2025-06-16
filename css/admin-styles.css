@@ -1,37 +1,267 @@
-/* Estilos específicos para admin */
-.admin-header {
-  text-align: center;
-  margin-bottom: 2rem;
+body {
+  font-family: 'Albert Sans', sans-serif;
+  color: #333;
+  background-color: #fdf4ef;
+  line-height: 1.6;
 }
 
-.admin-header h1 {
-  color: #b91c1c;
-  margin-bottom: 0.5rem;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-.admin-header p {
-  color: #666;
-  margin-bottom: 0;
+body {
+    font-family: 'Albert Sans', sans-serif;
+    color: #333;
+    background-color: #fdf4ef;
+    line-height: 1.6;
 }
 
+
+
+
+
+
+
+/* Header */
+header {
+    background-color: #fff5f0;
+    padding: 5px 30px;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    border-bottom: 1px solid #ccc;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo-container {
+    flex: 1;
+    display: flex;
+    justify-content: flex-start;
+    padding-left: 40px;
+}
+
+header img {
+    max-width: 150px;
+    padding-top: 5px;
+}
+
+header nav {
+    flex: 2;
+    display: flex;
+    justify-content: flex-end;
+    gap: 30px;
+    padding-right: 40px;
+}
+
+header nav a {
+    position: relative;
+    text-decoration: none;
+    color: #640E0E;
+    font-weight: 500;
+    font-family: "Albert Sans", sans-serif;
+    transition: color 0.3s ease;
+    padding-bottom: 4px;
+}
+
+header nav a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 2px;
+    width: 0;
+    background-color: #640E0E;
+    transition: width 0.3s ease;
+}
+
+header nav a:hover::after {
+    width: 100%;
+}
+
+.navbar {
+  background-color: #fdf4ef;
+  padding: 10px 30px;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  border-bottom: 1px solid #ccc;
+}
+
+.nav-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.nav-logo {
+  flex: 1;
+  display: flex;
+  justify-content: flex-start;
+  padding-left: 40px;
+}
+
+.nav-logo a {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #640e0e;
+  text-decoration: none;
+  font-family: "Albert Sans", sans-serif;
+}
+
+.nav-menu {
+  display: flex;
+  list-style: none;
+  align-items: center;
+  gap: 30px;
+  margin: 0;
+  padding: 0;
+  padding-right: 40px;
+}
+
+.nav-item {
+  list-style: none;
+}
+
+.nav-link {
+  position: relative;
+  text-decoration: none;
+  color: #640e0e;
+  font-weight: 500;
+  font-family: "Albert Sans", sans-serif;
+  transition: color 0.3s ease;
+  padding-bottom: 4px;
+}
+
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 2px;
+  width: 0;
+  background-color: #640e0e;
+  transition: width 0.3s ease;
+}
+
+.nav-link:hover::after,
+.nav-link.active::after {
+  width: 100%;
+}
+
+.nav-link.active {
+  color: #640e0e;
+}
+
+.btn-outline {
+  background-color: transparent;
+  color: #640e0e;
+  border: 2px solid #640e0e;
+  padding: 8px 16px;
+  border-radius: 5px;
+  transition: all 0.3s ease;
+}
+
+.btn-outline:hover {
+  background-color: #640e0e;
+  color: white;
+}
+
+.btn-primary {
+  background-color: #640e0e;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 5px;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  background-color: #4a0a0a;
+}
+
+.hamburger {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  padding: 10px;
+}
+
+.bar {
+  width: 25px;
+  height: 3px;
+  background-color: #640e0e;
+  margin: 3px 0;
+  transition: 0.3s;
+}
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+  .nav-menu {
+    position: fixed;
+    left: -100%;
+    top: 80px;
+    flex-direction: column;
+    background-color: #fdf4ef;
+    width: 100%;
+    text-align: center;
+    transition: 0.3s;
+    box-shadow: 0 10px 27px rgba(0, 0, 0, 0.05);
+    padding: 2rem 0;
+    gap: 1rem;
+  }
+
+  .nav-menu.active {
+    left: 0;
+  }
+
+  .hamburger {
+    display: flex;
+  }
+
+  .hamburger.active .bar:nth-child(2) {
+    opacity: 0;
+  }
+
+  .hamburger.active .bar:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+  }
+
+  .hamburger.active .bar:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+  }
+
+  .nav-logo {
+    padding-left: 10px;
+  }
+
+  .nav-menu {
+    padding-right: 0;
+  }
+}
+
+/* Admin Info Box */
 .admin-info {
   margin-top: 2rem;
   padding: 1.5rem;
-  background-color: #f9fafb;
-  border-radius: 8px;
-  border-left: 4px solid #b91c1c;
+  background-color: #fff5f0;
+  border-radius: 12px;
+  border-left: 5px solid #640e0e;
 }
 
 .admin-info p {
   margin-bottom: 1rem;
-  color: #374151;
+  color: #640e0e;
   font-weight: 600;
 }
 
 .admin-info ul {
   list-style: none;
   padding: 0;
-  margin: 0;
 }
 
 .admin-info li {
@@ -43,21 +273,21 @@
 }
 
 .admin-info li i {
-  color: #b91c1c;
+  color: #640e0e;
   width: 16px;
 }
 
-/* Admin profile section */
+/* Admin Profile */
 .admin-profile {
   background: white;
   padding: 1.5rem;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
   margin-bottom: 2rem;
 }
 
 .admin-profile h3 {
-  color: #b91c1c;
+  color: #640e0e;
   margin-bottom: 1rem;
 }
 
@@ -67,23 +297,16 @@
   gap: 1rem;
 }
 
-.admin-profile-item {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-}
-
 .admin-profile-item label {
   font-weight: 600;
-  color: #374151;
-  font-size: 0.875rem;
+  color: #333;
 }
 
 .admin-profile-item span {
-  color: #6b7280;
+  color: #666;
 }
 
-/* Role badges */
+/* Role Badges */
 .role-badge {
   display: inline-flex;
   align-items: center;
@@ -95,26 +318,26 @@
 }
 
 .role-admin {
-  background-color: #dbeafe;
-  color: #1e40af;
+  background-color: #e8f0ff;
+  color: #1e3a8a;
 }
 
 .role-super_admin {
-  background-color: #fef3c7;
+  background-color: #fff8db;
   color: #92400e;
 }
 
-/* Security section */
+/* Security Section */
 .security-section {
   background: white;
   padding: 1.5rem;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
   margin-top: 2rem;
 }
 
 .security-section h3 {
-  color: #b91c1c;
+  color: #640e0e;
   margin-bottom: 1rem;
 }
 
@@ -124,6 +347,158 @@
   flex-wrap: wrap;
 }
 
-.security-actions .btn {
+/* Inventory Section */
+.inventory-section {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  margin-bottom: 2rem;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #e5e7eb;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+}
+
+.section-header h2 {
+  color: #640e0e;
+  margin: 0;
+}
+
+/* Filters */
+.filters-section {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  align-items: flex-end;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
   min-width: 150px;
+}
+
+.filter-group label {
+  font-weight: 600;
+  color: #333;
+}
+
+.filter-group select,
+.filter-group input {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-family: 'Albert Sans', sans-serif;
+}
+
+/* Inventory Table */
+.inventory-table-container {
+  overflow-x: auto;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+}
+
+.inventory-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+}
+
+.inventory-table th,
+.inventory-table td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.inventory-table th {
+  background-color: #fdf4ef;
+  font-weight: 600;
+  color: #640e0e;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+}
+
+/* Stock Status Badges */
+.stock-status {
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.stock-good {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+
+.stock-low {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+.stock-out {
+  background-color: #fee2e2;
+  color: #640e0e;
+}
+
+/* Buttons */
+.btn {
+  font-family: "Albert Sans", sans-serif;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-primary {
+  background-color: #640e0e;
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #4a0a0a;
+}
+
+.btn-outline {
+  background-color: transparent;
+  color: #640e0e;
+  border: 2px solid #640e0e;
+}
+
+.btn-outline:hover {
+  background-color: #640e0e;
+  color: white;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .filters-section {
+    flex-direction: column;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .modal-content {
+    width: 95%;
+  }
+
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
 }

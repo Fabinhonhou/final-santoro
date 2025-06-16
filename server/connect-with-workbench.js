@@ -12,21 +12,21 @@ async function connectWithWorkbench() {
       host: "localhost",
       port: 3306,
       user: "root",
-      password: "",
+      password: "MYdatabase@2025",
     },
     {
       name: "Padrão com senha vazia",
-      host: "127.0.0.1",
+      host: "localhost",
       port: 3306,
       user: "root",
-      password: "",
+      password: "MYdatabase@2025",
     },
     {
       name: "Porta alternativa 3307",
       host: "localhost",
       port: 3307,
       user: "root",
-      password: "",
+      password: "MYdatabase@2025",
     },
   ]
 

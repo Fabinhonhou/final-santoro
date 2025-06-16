@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciamento de Estoque - Santoro's</title>
+    <link rel="stylesheet" href="css/sla.css">
+    <link rel="stylesheet" href="css/admin-styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="index.html">Santoro's Admin</a>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="index.html" class="nav-link">Site Principal</a>
+                </li>
+                <li class="nav-item">
+                    <a href="ReservasServidor.html" class="nav-link">Reservas</a>
+                </li>
+                <li class="nav-item">
+                    <a href="ClientesServidor.html" class="nav-link">Clientes</a>
+                </li>
+                <li class="nav-item">
+                    <a href="admin-estoque.html" class="nav-link active">Estoque</a>
+                </li>
+                <li class="nav-item">
+                    <a href="admin.html" class="nav-link">Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link logout-btn" id="adminLogoutBtn">Sair</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Admin Content -->
+    <div class="admin-page">
+        <div class="container">
+            <!-- Page Header -->
+            <div class="admin-header">
+                <h1><i class="fas fa-boxes"></i> Gerenciamento de Estoque</h1>
+                <p>Controle completo do estoque do restaurante</p>
+            </div>
+
+            <!-- Statistics Cards -->
+            <div class="stats-section">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-box"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="totalItems">0</h3>
+                            <p>Total de Itens</p>
+                        </div>
+                    </div>
+                    <div class="stat-card alert">
+                        <div class="stat-icon">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="lowStockItems">0</h3>
+                            <p>Estoque Baixo</p>
+                        </div>
+                    </div>
+                    <div class="stat-card danger">
+                        <div class="stat-icon">
+                            <i class="fas fa-times-circle"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="outOfStockItems">0</h3>
+                            <p>Sem Estoque</p>
+                        </div>
+                    </div>
+                    <div class="stat-card success">
+                        <div class="stat-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="goodStockItems">0</h3>
+                            <p>Estoque Bom</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Inventory Management -->
+            <div class="inventory-section">
+                <div class="section-header">
+                    <h2>Itens do Estoque</h2>
+                    <button class="btn btn-primary" id="addInventoryBtn">
+                        <i class="fas fa-plus"></i> Adicionar Item
+                    </button>
+                </div>
+                
+                <!-- Inventory Filters -->
+                <div class="filters-section">
+                    <div class="filter-group">
+                        <label for="categoryFilter">Categoria:</label>
+                        <select id="categoryFilter">
+                            <option value="all">Todas</option>
+                            <option value="vegetables">Vegetais</option>
+                            <option value="dairy">Laticínios</option>
+                            <option value="grains">Grãos</option>
+                            <option value="meat">Carnes</option>
+                            <option value="beverages">Bebidas</option>
+                            <option value="other">Outros</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="stockFilter">Status do Estoque:</label>
+                        <select id="stockFilter">
+                            <option value="all">Todos</option>
+                            <option value="low">Estoque Baixo</option>
+                            <option value="out">Sem Estoque</option>
+                            <option value="good">Estoque Bom</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <input type="text" id="searchFilter" placeholder="Buscar item...">
+                    </div>
+                    <div class="filter-group">
+                        <button class="btn btn-secondary" id="refreshBtn">
+                            <i class="fas fa-sync-alt"></i> Atualizar
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Inventory Table -->
+                <div class="inventory-table-container">
+                    <div id="inventory-loading" class="loading-spinner" style="display: none;">
+                        <i class="fas fa-spinner fa-spin"></i> Carregando estoque...
+                    </div>
+                    <div id="inventory-table"></div>
+                </div>
+            </div>
+
+            <!-- Inventory Modal -->
+            <div id="inventoryModal" class="modal" style="display: none;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 id="inventoryModalTitle">Adicionar Item ao Estoque</h3>
+                        <span class="close" id="closeInventoryModal">&times;</span>
+                    </div>
+                    <form id="inventoryForm">
+                        <input type="hidden" id="inventoryId" name="inventoryId">
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="itemName">Nome do Item *</label>
+                                <input type="text" id="itemName" name="itemName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="category">Categoria *</label>
+                                <select id="category" name="category" required>
+                                    <option value="">Selecione uma categoria</option>
+                                    <option value="vegetables">Vegetais</option>
+                                    <option value="dairy">Laticínios</option>
+                                    <option value="grains">Grãos</option>
+                                    <option value="meat">Carnes</option>
+                                    <option value="beverages">Bebidas</option>
+                                    <option value="other">Outros</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="currentStock">Estoque Atual *</label>
+                                <input type="number" id="currentStock" name="currentStock" step="0.01" min="0" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="minStock">Estoque Mínimo *</label>
+                                <input type="number" id="minStock" name="minStock" step="0.01" min="0" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="unit">Unidade *</label>
+                                <select id="unit" name="unit" required>
+                                    <option value="">Selecione uma unidade</option>
+                                    <option value="kg">Quilogramas (kg)</option>
+                                    <option value="g">Gramas (g)</option>
+                                    <option value="l">Litros (l)</option>
+                                    <option value="ml">Mililitros (ml)</option>
+                                    <option value="un">Unidades (un)</option>
+                                    <option value="cx">Caixas (cx)</option>
+                                    <option value="pct">Pacotes (pct)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="supplier">Fornecedor</label>
+                                <input type="text" id="supplier" name="supplier" placeholder="Nome do fornecedor">
+                            </div>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="button" id="cancelInventory" class="btn btn-secondary">Cancelar</button>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save"></i> Salvar Item
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2024 Santoro's Italian Restaurant - Gerenciamento de Estoque</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="js/admin-estoque.js"></script>
+    <script>
+// Debug script para verificar se os elementos existem
+document.addEventListener("DOMContentLoaded", () => {
+  console.log("🔍 Verificando elementos da página...")
+  
+  const elements = {
+    'addInventoryBtn': document.getElementById("addInventoryBtn"),
+    'inventoryModal': document.getElementById("inventoryModal"),
+    'inventoryForm': document.getElementById("inventoryForm"),
+    'inventory-loading': document.getElementById("inventory-loading"),
+    'inventory-table': document.getElementById("inventory-table"),
+    'refreshBtn': document.getElementById("refreshBtn")
+  }
+  
+  console.log("📋 Elementos encontrados:")
+  for (const [name, element] of Object.entries(elements)) {
+    console.log(`  ${name}: ${element ? '✅' : '❌'}`)
+  }
+  
+  // Verificar se o script admin-estoque.js foi carregado
+  console.log("📜 Scripts carregados:")
+  const scripts = document.querySelectorAll('script[src]')
+  scripts.forEach(script => {
+    console.log(`  ${script.src}`)
+  })
+})
+</script>
+</body>
+</html>

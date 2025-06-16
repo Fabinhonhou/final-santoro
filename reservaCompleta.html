@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reservas - Santoro's</title>
+    <link rel="stylesheet" href="css/navbar-common.css">
     <link rel="stylesheet" href="css/tudo.css">
     <style>
         /* Estilos para mensagens de feedback */
@@ -76,13 +77,26 @@
             </a>
         </div>
         
-        <nav>
-            <a href="index.html">INÍCIO</a>
-            <a href="cardapio.html">CARDÁPIO</a>
-            <a href="Reservas.html">RESERVAS</a>
-            <a href="contato.html">CONTATO</a>
-            <a href="login.html">LOGIN</a>
-        </nav>
+        <ul class="nav-menu" id="navMenu">
+                <li class="nav-item">
+                    <a href="index.html" class="nav-link active">INÍCIO</a>
+                </li>
+                <li class="nav-item">
+                    <a href="cardapio.html" class="nav-link">CARDÁPIO</a>
+                </li>
+                <li class="nav-item">
+                    <a href="reservaMesas.html" class="nav-link">RESERVAS</a>
+                </li>
+                <li class="nav-item">
+                    <a href="contato.html" class="nav-link">CONTATO</a>
+                </li>
+                <li class="nav-item" id="loginLink">
+                    <a href="login.html" class="nav-link btn-outline">LOGIN</a>
+                </li>
+                <li class="nav-item" id="registerLink">
+                    <a href="registro.html" class="nav-link btn-primary">REGISTRAR</a>
+                </li>
+            </ul>
         <div class="mobile-menu-btn">
             <button id="mobileMenuToggle">
                 <span></span>
