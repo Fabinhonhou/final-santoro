@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Histórico de Estoque - Santoro's Italian Kitchen</title>
+    <link rel="stylesheet" href="css/estoque.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.263.1/lucide.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navbar -->
+    <header class="navbar">
+        <div class="logo-container">
+            <img src="img/Red_and_Maroon_Classic_Italian_Restaurant_Logo__1_-removebg-preview.png" alt="Santoro's Logo" class="Logo" id="logo" />
+        </div>
+        <div class="nav-container">
+            <ul class="nav-menu" id="navMenu">
+                <li class="nav-item">
+                    <a href="index.html" class="nav-link">SITE</a>
+                </li>    
+                <li class="nav-item">
+                    <a href="ClientesServidor.html" class="nav-link">CLIENTES E RESERVAS</a>
+                </li>    
+                <li class="nav-item">
+                    <a href="admin-estoque.html" class="nav-link">ESTOQUE</a>
+                </li>
+                <li class="nav-item">
+                    <a href="estoque.html" class="nav-link active">HISTÓRICO</a>
+                </li>
+                <li class="nav-item" id="loginLink">
+                    <a href="login.html" class="nav-link btn-outline">LOGIN</a>
+                </li>
+                <li class="nav-item" id="registerLink">
+                    <a href="registro.html" class="nav-link btn-primary">REGISTRAR</a>
+                </li>
+            </ul>
+            <div class="hamburger" id="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Header -->
+            <header class="page-header">
+                <div class="header-content">
+                    <div class="header-text">
+                        <h1 class="title">Histórico de Estoque</h1>
+                        <p class="subtitle">Controle completo de entradas e saídas do Santoro's</p>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Loading State -->
+            <div id="loading-state" class="card" style="display: none;">
+                <div class="card-content" style="text-align: center; padding: 2rem;">
+                    <i data-lucide="loader-2" style="width: 2rem; height: 2rem; animation: spin 1s linear infinite;"></i>
+                    <p style="margin-top: 1rem;">Carregando histórico...</p>
+                </div>
+            </div>
+
+            <!-- Cards de Resumo -->
+            <section class="summary-cards" id="summary-section">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Total de Entradas</h3>
+                        <i data-lucide="trending-up" class="icon icon-green"></i>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-value green" id="total-entradas">0</div>
+                        <p class="card-description" id="peso-entradas">0.0 kg/L total</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Total de Saídas</h3>
+                        <i data-lucide="trending-down" class="icon icon-red"></i>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-value red" id="total-saidas">0</div>
+                        <p class="card-description" id="peso-saidas">0.0 kg/L total</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Movimentações</h3>
+                        <i data-lucide="package" class="icon icon-primary"></i>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-value primary" id="total-movimentacoes">0</div>
+                        <p class="card-description">Registros filtrados</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Saldo Líquido</h3>
+                        <i data-lucide="calendar-days" class="icon icon-accent"></i>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-value accent" id="saldo-liquido">0.0</div>
+                        <p class="card-description">kg/L (entrada - saída)</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Filtros -->
+            <section class="filters-section">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i data-lucide="filter"></i>
+                            Filtros
+                        </h3>
+                        <p class="card-description">Filtre o histórico por tipo, produto ou data</p>
+                    </div>
+                    <div class="card-content">
+                        <div class="filters-grid">
+                            <div class="filter-group">
+                                <label for="filtro-tipo">Tipo de Movimentação</label>
+                                <select id="filtro-tipo" class="select">
+                                    <option value="todos">Todos</option>
+                                    <option value="entrada">Entradas</option>
+                                    <option value="saida">Saídas</option>
+                                    <option value="ajuste">Ajustes</option>
+                                </select>
+                            </div>
+
+                            <div class="filter-group">
+                                <label for="filtro-produto">Produto</label>
+                                <div class="input-with-icon">
+                                    <i data-lucide="search" class="input-icon"></i>
+                                    <input type="text" id="filtro-produto" class="input" placeholder="Buscar produto...">
+                                </div>
+                            </div>
+
+                            <div class="filter-group">
+                                <label for="filtro-data">Data</label>
+                                <input type="date" id="filtro-data" class="input">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tabela de Histórico -->
+            <section class="table-section">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Histórico de Movimentações</h3>
+                        <p class="card-description">Registro detalhado de todas as entradas e saídas de estoque</p>
+                    </div>
+                    <div class="card-content">
+                        <div class="table-container">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Data/Hora</th>
+                                        <th>Produto</th>
+                                        <th>Tipo</th>
+                                        <th class="text-right">Quantidade Anterior</th>
+                                        <th class="text-right">Quantidade Nova</th>
+                                        <th class="text-right">Diferença</th>
+                                        <th>Responsável</th>
+                                        <th>Observações</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tabela-historico">
+                                    <!-- Dados serão inseridos via JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Estado vazio -->
+                        <div id="estado-vazio" class="empty-state" style="display: none;">
+                            <i data-lucide="package" class="empty-icon"></i>
+                            <h3>Nenhum registro encontrado</h3>
+                            <p>Tente ajustar os filtros para ver mais resultados.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+  <div class="footer-container">
+    <div class="footer-grid">
+      <!-- Coluna 1: Logo e Redes Sociais -->
+      <div class="footer-column">
+        <h3 class="footer-logo">Santoro's</h3>
+        <p class="footer-description">
+          Culinária italiana autêntica elaborada com paixão e tradição por mais de três gerações.
+        </p>
+        <div class="social-links">
+          <a href="#" class="social-link">
+            <svg class="social-icon" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+            </svg>
+          </a>
+          <a href="#" class="social-link">
+            <svg class="social-icon" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.174-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.769 1.518 1.688 0 1.029-.653 2.567-.992 3.992-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.199 0 1.033.394 2.143.889 2.741.099.12.112.225.085.345-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.402.165-1.495-.69-2.433-2.878-2.433-4.646 0-3.776 2.748-7.252 7.92-7.252 4.158 0 7.392 2.967 7.392 6.923 0 4.135-2.607 7.462-6.233 7.462-1.214 0-2.357-.629-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24.009 12.017 24c6.624 0 11.99-5.367 11.99-11.987C24.007 5.367 18.641.001 12.017.001z"/>
+            </svg>
+          </a>
+          <a href="#" class="social-link">
+            <svg class="social-icon" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Coluna 2: Links Rápidos -->
+      <div class="footer-column">
+        <h4 class="footer-title">LINKS RÁPIDOS</h4>
+        <ul class="footer-links">
+          <li><a href="#home" class="footer-link">Início</a></li>
+          <li><a href="#about" class="footer-link">Sobre</a></li>
+          <li><a href="#menu" class="footer-link">Cardápio</a></li>
+          <li><a href="#reservations" class="footer-link">Reservas</a></li>
+        </ul>
+      </div>
+
+      <!-- Coluna 3: Informações de Contato -->
+      <div class="footer-column">
+        <h4 class="footer-title">INFORMAÇÕES DE CONTATO</h4>
+        <ul class="footer-info">
+          <li>Rua Italiana, 123</li>
+          <li>Centro</li>
+          <li>São Paulo, SP 01234-567</li>
+          <li>(11) 3456-7890</li>
+        </ul>
+      </div>
+
+      <!-- Coluna 4: Horários -->
+      <div class="footer-column">
+        <h4 class="footer-title">HORÁRIOS</h4>
+        <ul class="footer-hours">
+          <li>Seg-Qui: 17:00 - 22:00</li>
+          <li>Sex-Sáb: 17:00 - 23:00</li>
+          <li>Dom: 16:00 - 21:00</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Copyright -->
+    <div class="footer-bottom">
+      <p>&copy; 2024 Santoros's Italian Kitchen. Todos os direitos reservados.</p>
+    </div>
+  </div>
+</footer>
+
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/admin-protection.js"></script>
+    <script src="js/estoque.js"></script>
+</body>
+</html>

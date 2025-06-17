@@ -8,6 +8,8 @@ document.addEventListener("DOMContentLoaded", () => {
     currentPage.includes("inicio.html") ||
     currentPage.includes("ReservasServidor.html") ||
     currentPage.includes("ClientesServidor.html") ||
+    currentPage.includes("admin-estoque.html") ||
+    currentPage.includes("estoque-historico.html") ||
     currentPage.includes("admin")
 
   if (isAdminPage) {
@@ -58,6 +60,8 @@ function updateAdminNavigation(adminUser) {
         <a href="inicio.html">PAINEL INICIAL</a>
         <a href="ReservasServidor.html">RESERVAS</a>
         <a href="ClientesServidor.html">CLIENTES</a>
+        <a href="admin-estoque.html">ESTOQUE</a>
+        <a href="estoque-historico.html">HISTÓRICO</a>
       `
 
       // Inserir antes do link de logout se existir

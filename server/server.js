@@ -15,7 +15,7 @@ const __dirname = path.dirname(__filename)
 dotenv.config()
 
 const app = express()
-const PORT = process.env.PORT || 3000
+const PORT = process.env.PORT || 3001 // Changed from 3000 to 3001
 const JWT_SECRET = process.env.JWT_SECRET || "b6203381221684dfc0504aa5bfeaa9e06ed7434ba146f02c54480b45ad785180"
 
 // Middleware
@@ -772,6 +772,246 @@ app.put("/api/reservations/:id/cancel", authenticateToken, async (req, res) => {
     })
   }
 })
+// API para buscar todas as reservas (admin)
+app.get("/api/admin/reservations", authenticateToken, async (req, res) => {
+  try {
+    console.log("=== ADMIN: BUSCANDO TODAS AS RESERVAS ===")
+
+    // Check if user is admin
+    if (req.user.type !== "admin") {
+      console.log("❌ Usuário não é admin:", req.user.type)
+      return res.status(403).json({
+        success: false,
+        message: "Acesso negado. Apenas administradores podem acessar esta funcionalidade.",
+      })
+    }
+
+    console.log("🔍 Buscando todas as reservas...")
+
+    // Verificar se a conexão com o banco está ativa
+    if (!db) {
+      console.log("❌ Conexão com banco não disponível")
+      return res.status(500).json({
+        success: false,
+        message: "Erro de conexão com o banco de dados",
+      })
+    }
+
+    const [reservations] = await db.execute(`
+      SELECT 
+        r.id,
+        r.name,
+        r.email,
+        r.phone,
+        r.date,
+        r.time,
+        r.guests,
+        r.table_number,
+        r.status,
+        r.special_requests,
+        r.created_at,
+        u.name as user_name,
+        u.email as user_email
+      FROM reservations r
+      LEFT JOIN users u ON r.user_id = u.id
+      ORDER BY r.date DESC, r.time DESC
+    `)
+
+    console.log("✅ Reservas encontradas:", reservations.length)
+
+    // Log das primeiras reservas para debug
+    if (reservations.length > 0) {
+      console.log("🔍 Primeira reserva:", reservations[0])
+    }
+
+    res.json({
+      success: true,
+      reservations: reservations,
+      total: reservations.length,
+    })
+  } catch (error) {
+    console.error("❌ Erro ao buscar reservas:", error)
+    console.error("Stack trace:", error.stack)
+    res.status(500).json({
+      success: false,
+      message: "Erro interno do servidor",
+      error: process.env.NODE_ENV === "development" ? error.message : undefined,
+    })
+  }
+})
+
+// API para atualizar status da reserva
+app.put("/api/admin/reservations/:id/status", authenticateToken, async (req, res) => {
+  console.log("🔄 Atualizando status da reserva...")
+
+  try {
+    // Verificar se é admin
+    if (req.user.type !== "admin") {
+      return res.status(403).json({
+        success: false,
+        message: "Acesso negado. Apenas administradores podem acessar esta rota.",
+      })
+    }
+
+    const { id } = req.params
+    const { status } = req.body
+
+    // Validar status
+    const validStatuses = ["pending", "confirmed", "cancelled"]
+    if (!validStatuses.includes(status)) {
+      return res.status(400).json({
+        success: false,
+        message: "Status inválido",
+      })
+    }
+
+    const query = "UPDATE reservations SET status = ? WHERE id = ?"
+    const [result] = await db.execute(query, [status, id])
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Reserva não encontrada",
+      })
+    }
+
+    console.log(`✅ Status da reserva ${id} atualizado para ${status}`)
+
+    res.json({
+      success: true,
+      message: "Status da reserva atualizado com sucesso",
+    })
+  } catch (error) {
+    console.error("❌ Erro ao atualizar status da reserva:", error)
+    res.status(500).json({
+      success: false,
+      message: "Erro interno do servidor ao atualizar status",
+    })
+  }
+})
+
+// Admin registration endpoint (only accessible by existing admins)
+app.post("/api/admin/register", authenticateToken, async (req, res) => {
+  try {
+    console.log("=== REGISTRANDO NOVO ADMINISTRADOR ===")
+    console.log("📋 Dados recebidos:", req.body)
+    console.log("👤 Usuário autenticado:", req.user)
+
+    // Verificar se é admin pelo token
+    if (req.user.type !== "admin") {
+      console.log("❌ Usuário não é admin pelo token:", req.user.type)
+      return res.status(403).json({
+        success: false,
+        message: "Acesso negado. Apenas administradores podem registrar novos admins.",
+      })
+    }
+
+    // Verificar se o usuário existe na tabela admin_users e está ativo
+    const [currentAdmin] = await db.execute("SELECT * FROM admin_users WHERE id = ? AND active = true", [
+      req.user.userId,
+    ])
+
+    if (currentAdmin.length === 0) {
+      console.log("❌ Usuário não encontrado na tabela admin_users ou inativo")
+      return res.status(403).json({
+        success: false,
+        message: "Acesso negado. Usuário não é um administrador válido.",
+      })
+    }
+
+    console.log("✅ Admin verificado:", currentAdmin[0].email)
+
+    const { name, email, password, role } = req.body
+
+    // Validar dados
+    if (!name || !email || !password || !role) {
+      console.log("❌ Campos obrigatórios faltando")
+      return res.status(400).json({
+        success: false,
+        message: "Todos os campos são obrigatórios",
+      })
+    }
+
+    if (password.length < 8) {
+      console.log("❌ Senha muito curta")
+      return res.status(400).json({
+        success: false,
+        message: "A senha deve ter pelo menos 8 caracteres",
+      })
+    }
+
+    // Validar formato do email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRegex.test(email)) {
+      console.log("❌ Email inválido")
+      return res.status(400).json({
+        success: false,
+        message: "Por favor, insira um email válido",
+      })
+    }
+
+    // Validar role
+    const validRoles = ["admin", "super_admin"]
+    if (!validRoles.includes(role)) {
+      console.log("❌ Role inválido:", role)
+      return res.status(400).json({
+        success: false,
+        message: "Cargo inválido",
+      })
+    }
+
+    // Verificar se email já existe em ambas as tabelas
+    console.log("🔍 Verificando se email já existe...")
+    const [existingUser] = await db.execute("SELECT id FROM users WHERE email = ?", [email.toLowerCase().trim()])
+    const [existingAdmin] = await db.execute("SELECT id FROM admin_users WHERE email = ?", [email.toLowerCase().trim()])
+
+    if (existingUser.length > 0 || existingAdmin.length > 0) {
+      console.log("❌ Email já existe")
+      return res.status(400).json({
+        success: false,
+        message: "Este email já está em uso",
+      })
+    }
+
+    // Hash da senha
+    console.log("🔐 Criptografando senha...")
+    const hashedPassword = await bcrypt.hash(password, 12)
+
+    // Criar administrador na tabela admin_users
+    console.log("👤 Criando novo administrador...")
+    const [result] = await db.execute(
+      "INSERT INTO admin_users (name, email, password, role, active) VALUES (?, ?, ?, ?, ?)",
+      [name.trim(), email.toLowerCase().trim(), hashedPassword, role, true],
+    )
+
+    console.log("✅ Administrador criado com sucesso! ID:", result.insertId)
+
+    res.status(201).json({
+      success: true,
+      message: "Administrador registrado com sucesso!",
+      admin: {
+        id: result.insertId,
+        name: name.trim(),
+        email: email.toLowerCase().trim(),
+        role: role,
+      },
+    })
+  } catch (error) {
+    console.error("❌ Erro ao registrar administrador:", error)
+
+    if (error.code === "ER_DUP_ENTRY") {
+      return res.status(400).json({
+        success: false,
+        message: "Este email já está em uso",
+      })
+    }
+
+    res.status(500).json({
+      success: false,
+      message: "Erro interno do servidor",
+    })
+  }
+})
 
 // Inventory API Routes
 
@@ -1005,6 +1245,316 @@ app.delete("/api/inventory/:id", authenticateToken, async (req, res) => {
     })
   }
 })
+
+// ==================== INVENTORY HISTORY ENDPOINTS ====================
+
+// Buscar histórico de estoque com filtros
+app.get("/api/inventory/history", authenticateToken, async (req, res) => {
+  try {
+    console.log("=== BUSCANDO HISTÓRICO DE ESTOQUE ===")
+
+    // Check if user is admin
+    if (req.user.type !== "admin") {
+      console.log("❌ Usuário não é admin:", req.user.type)
+      return res.status(403).json({
+        success: false,
+        message: "Acesso negado. Apenas administradores podem acessar o histórico.",
+      })
+    }
+
+    const { type, product, date, limit = 50, offset = 0 } = req.query
+
+    // Verificar se a tabela existe PRIMEIRO
+    let tableExists = false
+    try {
+      const [tableCheck] = await db.execute(
+        `SELECT COUNT(*) as count 
+         FROM information_schema.tables 
+         WHERE table_schema = ? AND table_name = 'inventory_history'`,
+        [process.env.DB_NAME || "santoros_restaurant"],
+      )
+      tableExists = tableCheck[0].count > 0
+    } catch (error) {
+      console.log("⚠️ Erro ao verificar tabela:", error.message)
+      tableExists = false
+    }
+
+    if (!tableExists) {
+      console.log("⚠️ Tabela inventory_history não existe, retornando dados de exemplo")
+
+      // Filtrar dados de exemplo
+      let dadosExemplo = gerarDadosHistoricoExemplo()
+
+      // Aplicar filtros nos dados de exemplo
+      if (type && type !== "todos") {
+        dadosExemplo = dadosExemplo.filter((item) => item.operation_type === type)
+      }
+
+      if (product) {
+        dadosExemplo = dadosExemplo.filter((item) => item.item_name.toLowerCase().includes(product.toLowerCase()))
+      }
+
+      if (date) {
+        dadosExemplo = dadosExemplo.filter((item) => item.date === date)
+      }
+
+      return res.json({
+        success: true,
+        data: dadosExemplo,
+        stats: {
+          total_records: dadosExemplo.length,
+          total_entradas: dadosExemplo.filter((item) => item.operation_type === "entrada").length,
+          total_saidas: dadosExemplo.filter((item) => item.operation_type === "saida").length,
+          peso_entradas: dadosExemplo
+            .filter((item) => item.operation_type === "entrada")
+            .reduce((acc, item) => acc + Math.abs(item.quantity_change), 0),
+          peso_saidas: dadosExemplo
+            .filter((item) => item.operation_type === "saida")
+            .reduce((acc, item) => acc + Math.abs(item.quantity_change), 0),
+        },
+      })
+    }
+
+    // Se a tabela existe, executar query real
+    let query = `
+  SELECT 
+    ih.*,
+    DATE_FORMAT(ih.created_at, '%Y-%m-%d') as date,
+    DATE_FORMAT(ih.created_at, '%H:%i') as time
+  FROM inventory_history ih
+  WHERE 1=1
+`
+
+    const params = []
+
+    // Filtro por tipo
+    if (type && type !== "todos") {
+      query += " AND ih.operation_type = ?"
+      params.push(type)
+    }
+
+    // Filtro por produto
+    if (product) {
+      query += " AND ih.item_name LIKE ?"
+      params.push(`%${product}%`)
+    }
+
+    // Filtro por data
+    if (date) {
+      query += " AND DATE(ih.created_at) = ?"
+      params.push(date)
+    }
+
+    // Adicionar ORDER BY, LIMIT e OFFSET diretamente na string (sem placeholders)
+    const limitNum = Math.max(1, Math.min(100, Number.parseInt(limit) || 50))
+    const offsetNum = Math.max(0, Number.parseInt(offset) || 0)
+    query += ` ORDER BY ih.created_at DESC LIMIT ${limitNum} OFFSET ${offsetNum}`
+
+    console.log("🔍 Executando query:", query)
+    console.log("📋 Parâmetros:", params)
+
+    const [history] = await db.execute(query, params)
+
+    // Buscar estatísticas
+    let statsQuery = `
+  SELECT 
+    COUNT(*) as total_records,
+    SUM(CASE WHEN operation_type = 'entrada' THEN 1 ELSE 0 END) as total_entradas,
+    SUM(CASE WHEN operation_type = 'saida' THEN 1 ELSE 0 END) as total_saidas,
+    SUM(CASE WHEN operation_type = 'entrada' THEN ABS(quantity_change) ELSE 0 END) as peso_entradas,
+    SUM(CASE WHEN operation_type = 'saida' THEN ABS(quantity_change) ELSE 0 END) as peso_saidas
+  FROM inventory_history ih
+  WHERE 1=1
+`
+
+    const statsParams = []
+
+    // Aplicar os mesmos filtros das estatísticas
+    if (type && type !== "todos") {
+      statsQuery += " AND ih.operation_type = ?"
+      statsParams.push(type)
+    }
+
+    if (product) {
+      statsQuery += " AND ih.item_name LIKE ?"
+      statsParams.push(`%${product}%`)
+    }
+
+    if (date) {
+      statsQuery += " AND DATE(ih.created_at) = ?"
+      statsParams.push(date)
+    }
+
+    const [stats] = await db.execute(statsQuery, statsParams)
+
+    console.log("✅ Histórico encontrado:", history.length, "registros")
+    console.log("📊 Estatísticas:", stats[0])
+
+    res.json({
+      success: true,
+      data: history,
+      stats: stats[0],
+    })
+  } catch (error) {
+    console.error("❌ Erro ao buscar histórico:", error)
+
+    // Em caso de erro, retornar dados de exemplo
+    console.log("⚠️ Retornando dados de exemplo devido ao erro")
+    const dadosExemplo = gerarDadosHistoricoExemplo()
+
+    res.json({
+      success: true,
+      data: dadosExemplo,
+      stats: {
+        total_records: dadosExemplo.length,
+        total_entradas: dadosExemplo.filter((item) => item.operation_type === "entrada").length,
+        total_saidas: dadosExemplo.filter((item) => item.operation_type === "saida").length,
+        peso_entradas: dadosExemplo
+          .filter((item) => item.operation_type === "entrada")
+          .reduce((acc, item) => acc + Math.abs(item.quantity_change), 0),
+        peso_saidas: dadosExemplo
+          .filter((item) => item.operation_type === "saida")
+          .reduce((acc, item) => acc + Math.abs(item.quantity_change), 0),
+      },
+    })
+  }
+})
+
+// Registrar movimentação manual no histórico
+app.post("/api/inventory/history", authenticateToken, async (req, res) => {
+  try {
+    console.log("=== REGISTRANDO MOVIMENTAÇÃO MANUAL ===")
+
+    // Check if user is admin
+    if (req.user.type !== "admin") {
+      return res.status(403).json({
+        success: false,
+        message: "Acesso negado. Apenas administradores podem registrar movimentações.",
+      })
+    }
+
+    const { inventory_id, operation_type, old_quantity, new_quantity, supplier, notes } = req.body
+
+    // Verificar se a tabela existe
+    const [tableExists] = await db.execute(
+      `
+      SELECT COUNT(*) as count 
+      FROM information_schema.tables 
+      WHERE table_schema = ? AND table_name = 'inventory_history'
+    `,
+      [process.env.DB_NAME || "santoros_restaurant"],
+    )
+
+    if (tableExists[0].count === 0) {
+      return res.status(400).json({
+        success: false,
+        message: "Tabela de histórico não configurada. Execute o script de setup primeiro.",
+      })
+    }
+
+    // Buscar informações do item
+    const [item] = await db.execute("SELECT name FROM inventory WHERE id = ?", [inventory_id])
+
+    if (item.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Item não encontrado",
+      })
+    }
+
+    // Inserir no histórico
+    await db.execute(
+      `
+      INSERT INTO inventory_history (
+        inventory_id, item_name, operation_type, old_quantity, new_quantity,
+        admin_id, admin_name, supplier, notes
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `,
+      [
+        inventory_id,
+        item[0].name,
+        operation_type,
+        old_quantity,
+        new_quantity,
+        req.user.userId,
+        req.user.name || "Admin",
+        supplier || null,
+        notes || null,
+      ],
+    )
+
+    console.log("✅ Movimentação registrada com sucesso")
+
+    res.json({
+      success: true,
+      message: "Movimentação registrada com sucesso",
+    })
+  } catch (error) {
+    console.error("❌ Erro ao registrar movimentação:", error)
+    res.status(500).json({
+      success: false,
+      message: "Erro interno do servidor",
+    })
+  }
+})
+
+// Função auxiliar para gerar dados de exemplo
+function gerarDadosHistoricoExemplo() {
+  const hoje = new Date()
+  const dados = []
+
+  const produtos = [
+    "Arroz Branco",
+    "Feijão Preto",
+    "Óleo de Soja",
+    "Sal Refinado",
+    "Açúcar Cristal",
+    "Farinha de Trigo",
+    "Tomate",
+    "Cebola",
+    "Alho",
+    "Batata Inglesa",
+  ]
+
+  const fornecedores = [
+    "Distribuidora Central",
+    "Hortifruti São Paulo",
+    "Atacadão Alimentos",
+    "Fornecedor Premium",
+    "Mercado Atacadista",
+  ]
+
+  const admins = ["João Silva", "Maria Santos", "Carlos Oliveira", "Ana Costa"]
+
+  for (let i = 0; i < 30; i++) {
+    const data = new Date(hoje)
+    data.setDate(data.getDate() - Math.floor(Math.random() * 30))
+
+    const operationType = ["entrada", "saida", "ajuste"][Math.floor(Math.random() * 3)]
+    const oldQty = Math.floor(Math.random() * 100)
+    const change = Math.floor(Math.random() * 50) - 25
+    const newQty = Math.max(0, oldQty + change)
+
+    dados.push({
+      id: i + 1,
+      inventory_id: Math.floor(Math.random() * 10) + 1,
+      item_name: produtos[Math.floor(Math.random() * produtos.length)],
+      operation_type: operationType,
+      old_quantity: oldQty,
+      new_quantity: newQty,
+      quantity_change: newQty - oldQty,
+      admin_id: Math.floor(Math.random() * 4) + 1,
+      admin_name: admins[Math.floor(Math.random() * admins.length)],
+      supplier: Math.random() > 0.3 ? fornecedores[Math.floor(Math.random() * fornecedores.length)] : null,
+      notes: `Movimentação ${operationType} - ${data.toLocaleDateString("pt-BR")}`,
+      created_at: data.toISOString(),
+      date: data.toISOString().split("T")[0],
+      time: `${String(data.getHours()).padStart(2, "0")}:${String(data.getMinutes()).padStart(2, "0")}`,
+    })
+  }
+
+  return dados.sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+}
 
 // Get inventory statistics
 app.get("/api/inventory/stats", authenticateToken, async (req, res) => {

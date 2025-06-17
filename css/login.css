@@ -1346,3 +1346,27 @@ html {
         transform: translateY(0);
     }
 }
+
+
+.admin-login-link {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.admin-button {
+    display: inline-block;
+    background-color: #4d0808;
+    color: #ffffff;
+    padding: 10px 40px;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+
+    font-family: "Albert Sans", sans-serif;
+    transition: background-color 0.3s ease;
+}
+
+.admin-button:hover {
+    background-color: #c9302c;
+}

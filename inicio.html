@@ -14,23 +14,23 @@
     <nav class="navbar">
         <div class="nav-container">
             <div class="nav-logo">
-                <a href="index.html">Santoro's Admin</a>
+                <a href="inicio.html">Santoro's Admin</a>
             </div>
             <ul class="nav-menu">
                 <li class="nav-item">
-                    <a href="index.html" class="nav-link">Site Principal</a>
+                    <a href="index.html" class="nav-link">SITE PRINCIPAL</a>
                 </li>
                 <li class="nav-item">
-                    <a href="ReservasServidor.html" class="nav-link">Reservas</a>
+                    <a href="ClientesServidor.html" class="nav-link">CLIENTES E RESERVAS</a>
                 </li>
                 <li class="nav-item">
-                    <a href="ClientesServidor.html" class="nav-link">Clientes</a>
+                    <a href="admin-estoque.html" class="nav-link">ESTOQUE</a>
                 </li>
                 <li class="nav-item">
-                    <a href="admin-estoque.html" class="nav-link">Estoque</a>
+                    <a href="estoque.html" class="nav-link">HISTÓRICO</a>
                 </li>
                    <li class="nav-item">
-                    <a href="inicio.html" class="nav-link active">Dashboard</a>
+                    <a href="inicio.html" class="nav-link active">DASHBOARD</a>
                 </li>
                 <li class="nav-item">
                     <a href="#" class="nav-link logout-btn" id="adminLogoutBtn">Sair</a>
@@ -74,17 +74,7 @@
             <!-- Quick Actions -->
             <div class="quick-actions-section">
                 <h2>Ações Rápidas</h2>
-                <div class="quick-actions-grid">
-                    <a href="ReservasServidor.html" class="quick-action-card">
-                        <div class="quick-action-icon">
-                            <i class="fas fa-calendar-check"></i>
-                        </div>
-                        <div class="quick-action-content">
-                            <h3>Gerenciar Reservas</h3>
-                            <p>Visualizar e gerenciar todas as reservas do restaurante</p>
-                        </div>
-                    </a>
-                    
+                <div class="quick-actions-grid">                    
                     <a href="admin-estoque.html" class="quick-action-card">
                         <div class="quick-action-icon">
                             <i class="fas fa-boxes"></i>
@@ -94,17 +84,26 @@
                             <p>Gerenciar itens do estoque e fornecedores</p>
                         </div>
                     </a>
-
+                    
                     <a href="ClientesServidor.html" class="quick-action-card">
                         <div class="quick-action-icon">
-                            <i class="fas fa-boxes"></i>
+                            <i class="fas fa-list"></i>
                         </div>
                         <div class="quick-action-content">
-                            <h3>Clientes</h3>
-                            <p>Lista de clientes que possuem conta no site</p>
+                            <h3>Clientes e Reservas</h3>
+                            <p>Gerenciar as reservas e os clientes</p>
                         </div>
                     </a>
-                    
+
+                    <a href="estoque.html" class="quick-action-card">
+                        <div class="quick-action-icon">
+                            <i class="fas fa-list"></i>
+                        </div>
+                        <div class="quick-action-content">
+                            <h3>Histórico do Estoque</h3>
+                            <p>Veja o Histórico de saída e entrada do estoque</p>
+                        </div>
+                    </a>
                 </div>
             </div>
 
@@ -147,8 +146,8 @@
             <div class="security-section">
                 <h3>Segurança e Acesso</h3>
                 <div class="security-actions">
-                    <button class="btn btn-warning" onclick="changePassword()">
-                        <i class="fas fa-key"></i> Alterar Senha
+                    <button class="btn btn-success" onclick="openRegisterAdminModal()">
+                        <i class="fas fa-user-plus"></i> Registrar Administrador
                     </button>
                     <button class="btn btn-primary" onclick="viewLogs()">
                         <i class="fas fa-list"></i> Ver Logs
@@ -196,11 +195,73 @@
             displayAdminInfo(userData.user);
             
             // Configurar logout
-            document.getElementById('adminLogoutBtn').addEventListener('click', function(e) {
-                e.preventDefault();
-                confirmLogout();
-            });
+            const logoutBtn = document.getElementById('adminLogoutBtn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    confirmLogout();
+                });
+            }
+
+            // Configurar formulário de registro de admin
+            const registerForm = document.getElementById('registerAdminForm');
+            if (registerForm) {
+                registerForm.addEventListener('submit', handleAdminRegistration);
+            }
         });
+
+        async function handleAdminRegistration(e) {
+            e.preventDefault();
+            
+            console.log('📝 Iniciando registro de administrador...');
+            
+            const formData = new FormData(e.target);
+            const adminData = {
+                name: formData.get('name'),
+                email: formData.get('email'),
+                password: formData.get('password'),
+                role: formData.get('role')
+            };
+            
+            console.log('📋 Dados do admin:', { ...adminData, password: '[HIDDEN]' });
+            
+            try {
+                const session = localStorage.getItem('userSession');
+                if (!session) {
+                    alert('Sessão expirada. Faça login novamente.');
+                    return;
+                }
+                
+                const userData = JSON.parse(session);
+                const token = userData.token;
+                
+                console.log('📡 Enviando requisição para API...');
+                
+                const response = await fetch('/api/admin/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(adminData)
+                });
+                
+                console.log('📡 Status da resposta:', response.status);
+                
+                const result = await response.json();
+                console.log('📋 Resultado da API:', result);
+                
+                if (result.success) {
+                    alert('Administrador registrado com sucesso!');
+                    closeRegisterAdminModal();
+                } else {
+                    alert('Erro ao registrar administrador: ' + result.message);
+                }
+            } catch (error) {
+                console.error('❌ Erro ao registrar administrador:', error);
+                alert('Erro interno. Tente novamente.');
+            }
+        }
         
         function displayAdminInfo(admin) {
             document.getElementById('adminName').textContent = admin.name;
@@ -238,6 +299,18 @@
                 window.location.href = 'login.html';
             }
         }
+
+        function openRegisterAdminModal() {
+            document.getElementById('registerAdminModal').style.display = 'block';
+        }
+
+        function closeRegisterAdminModal() {
+            document.getElementById('registerAdminModal').style.display = 'none';
+            document.getElementById('registerAdminForm').reset();
+        }
+
+        // Handle admin registration form
+        
     </script>
     
     <style>
@@ -353,6 +426,147 @@
             font-size: 0.75rem;
             color: #6b7280;
         }
+
+        .modal {
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 0;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+
+        .modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h3 {
+            margin: 0;
+            color: #1f2937;
+        }
+
+        .close {
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #6b7280;
+        }
+
+        .close:hover {
+            color: #374151;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+            padding: 0 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 1rem;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #b91c1c;
+            box-shadow: 0 0 0 3px rgba(185, 28, 28, 0.1);
+        }
+
+        .form-actions {
+            padding: 1.5rem;
+            border-top: 1px solid #e5e7eb;
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-success {
+            background-color: #10b981;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background-color: #059669;
+        }
+
+        .btn-secondary {
+            background-color: #6b7280;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: #4b5563;
+        }
     </style>
+
+    <!-- Modal de Registro de Administrador -->
+    <div id="registerAdminModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Registrar Novo Administrador</h3>
+                <span class="close" onclick="closeRegisterAdminModal()">&times;</span>
+            </div>
+            <form id="registerAdminForm">
+                <div class="form-group">
+                    <label for="adminName">Nome Completo:</label>
+                    <input type="text" id="adminName" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="adminEmail">Email:</label>
+                    <input type="email" id="adminEmail" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="adminPassword">Senha:</label>
+                    <input type="password" id="adminPassword" name="password" required minlength="8">
+                </div>
+                <div class="form-group">
+                    <label for="adminRole">Cargo:</label>
+                    <select id="adminRole" name="role" required>
+                        <option value="admin">Administrador</option>
+                        <option value="super_admin">Super Administrador</option>
+                    </select>
+                </div>
+                <div class="form-actions">
+                    <button type="button" onclick="closeRegisterAdminModal()" class="btn btn-secondary">Cancelar</button>
+                    <button type="submit" class="btn btn-success">Registrar Administrador</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </body>
 </html>

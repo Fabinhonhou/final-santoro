@@ -9,7 +9,7 @@ body {
   font-family: "Inter", sans-serif;
   line-height: 1.6;
   color: #333;
-  background-color: #fff;
+  background-color: #fdf4ef;
 }
 
 .container {
@@ -85,7 +85,7 @@ p {
 
 /* Navigation */
 .navbar {
-  background-color: white;
+  background-color: #fdf4ef;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   position: fixed;
   top: 0;
@@ -200,7 +200,7 @@ p {
   bottom: -2rem;
   left: -2rem;
   background-color: #b91c1c;
-  color: white;
+  color: #fdf4ef;
   padding: 2rem;
   border-radius: 10px;
   max-width: 250px;
@@ -305,6 +305,331 @@ p {
 .date {
   color: #666;
 }
+
+
+
+/* Footer Principal */
+.footer {
+  background-color: var(--charcoal);
+  color: white;
+  padding: 46px 0;
+}
+
+.footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 32px;
+  margin-bottom: 32px;
+}
+
+/* Colunas do Footer */
+.footer-column {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Logo */
+.footer-logo {
+  font-family: 'Albert Sans', sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--gold);
+  margin-bottom: 16px;
+  margin-top: -px;
+}
+
+/* Descrição */
+.footer-description {
+   font-family: "Albert Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 16px;
+
+  margin-top: -10px;
+  color: #000000;
+  margin-bottom: 16px;
+  line-height: 1.6;
+}
+
+/* Redes Sociais */
+.social-links {
+  display: flex;
+  gap: 16px;
+  
+}
+
+.social-link {
+  
+  color: #000000;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.social-link:hover {
+  color: var(--gold);
+  transform: translateY(-2px);
+}
+
+.social-icon {
+  width: 20px;
+  height: 20px;
+}
+
+/* Títulos das Seções */
+:root {
+  --burgundy: #8b0000;
+  --burgundy-light: #a0252f;
+  --cream: #000000;
+  --cream-dark: #0000;
+  --gold: #8C1616;
+  --charcoal: #E1ddd4;
+}
+
+/* Footer Principal */
+.footer {
+  background-color: var(--charcoal);
+  color: white;
+  padding: 46px 0;
+  z-index: 1000;
+}
+
+.footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 32px;
+  margin-bottom: 32px;
+}
+
+/* Colunas do Footer */
+.footer-column {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Logo */
+.footer-logo {
+  font-family: 'Albert Sans', sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--gold);
+  margin-bottom: 16px;
+  margin-top: -px;
+}
+
+/* Descrição */
+.footer-description {
+   font-family: "Albert Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 16px;
+
+  margin-top: -10px;
+  color: #000000;
+  margin-bottom: 16px;
+  line-height: 1.6;
+}
+
+/* Redes Sociais */
+.social-links {
+  display: flex;
+  gap: 16px;
+  
+}
+
+.social-link {
+  
+  color: #000000;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.social-link:hover {
+  color: var(--gold);
+  transform: translateY(-2px);
+}
+
+.social-icon {
+  width: 20px;
+  height: 20px;
+}
+
+/* Títulos das Seções */
+.footer-title {
+  color: var(--gold);
+  margin-bottom: 13px;
+  font-size: 1.1rem;
+
+    font-family: "Albert Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 900;
+  font-style: normal;
+}
+
+/* Links do Footer */
+.footer-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+   font-family: "Albert Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.footer-links li {
+  margin-bottom: 8px;
+}
+
+.footer-link {
+  color: #000000;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.footer-link:hover {
+  color: #8C1616;
+}
+
+/* Informações de Contato */
+.footer-info {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  color: #000000;
+
+   font-family: "Albert Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.footer-info li {
+  margin-bottom: 8px;
+}
+
+/* Horários */
+.footer-hours {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  color: #000000;
+  font-size: 0.9rem;
+
+  font-family: "Albert Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.footer-hours li {
+  margin-bottom: 8px;
+}
+
+/* Copyright */
+.footer-bottom {
+  border-top: 1px solid #000000;
+  padding-top: 32px;
+  text-align: center;
+}
+
+.footer-bottom p {
+  color: #000000;
+  margin: 0;
+
+  font-family: "Albert Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: normal;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .footer {
+    padding: 32px 0;
+  }
+  
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    text-align: center;
+  }
+  
+  .footer-logo {
+    font-size: 1.75rem;
+  }
+  
+  .social-links {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer-container {
+    padding: 0 12px;
+  }
+  
+  .footer-grid {
+    gap: 20px;
+  }
+  
+  .footer-logo {
+    font-size: 1.5rem;
+  }
+}
+@media (max-width: 480px) {
+    .conteudo h1 {
+        font-size: 2rem;
+    }
+    
+    .section-header h2 {
+        font-size: 1.8rem;
+    }
+    
+    .wine-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    
+    .wine-info {
+        margin-right: 0;
+    }
+    
+    .form-container {
+        padding: 25px;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /* Contact Section */
 .contact {
@@ -790,14 +1115,14 @@ html {
 .dashboard-page {
   margin-top: 80px;
   padding: 3rem 0;
-  background-color: #f9fafb;
+  background-color: #fdf4ef;
   min-height: 100vh;
 }
 
 .dashboard-header {
   text-align: center;
   margin-bottom: 3rem;
-  background: white;
+  background: #fbfbf8;
   padding: 2rem;
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -809,6 +1134,7 @@ html {
 }
 
 .dashboard-content {
+  background: #fbfbf8;
   display: flex;
   flex-direction: column;
   gap: 3rem;
@@ -822,7 +1148,7 @@ html {
 }
 
 .reservations-table {
-  background: white;
+  background: #fbfbf8;
   border-radius: 10px;
   overflow: hidden;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
